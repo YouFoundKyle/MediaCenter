@@ -11,7 +11,6 @@ services:
             PLEX_GID: '${PGID}'
             TZ: '${TZ}'
             PLEX_CLAIM: '${PLEX_CLAIM}'
-            ADVERTISE_IP: '${ADVERTISE_IP}'
         networks:
             - traefik
         ports:
@@ -26,6 +25,7 @@ services:
             traefik.http.routers.plex.entrypoints: https
             traefik.http.routers.plex.tls.certresolver: le
             traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`) || Host(`${ACME_DOMAIN}`)
+            traefik.frontend.rule:'Host:plex.${CF_DOACME_DOMAINMAIN}''
             traefik.http.services.plex_mediaserver.loadbalancer.server.port: 32400
             traefik.http.services.plex_mediaserver.loadbalancer.server.scheme: http
 
@@ -67,7 +67,9 @@ services:
             - '${MEDIA_DIR}:/media'
         labels:
             traefik.enable: true
+            traefik.port:8989
             traefik.docker.network: traefik
+            traefik.frontend.rule: 'Host:sonarr.${ACME_DOMAIN}'
             traefik.http.routers.sonarr.entrypoints: https
             traefik.http.routers.sonarr.tls.certresolver: le
             traefik.http.routers.sonarr.rule: Host(`sonarr.${ACME_DOMAIN}`)
@@ -92,7 +94,9 @@ services:
             - '${MEDIA_DIR}:/media'
         labels:
             traefik.enable: true
+            traefik.port=7878
             traefik.docker.network: traefik
+            traefik.frontend.rule:'Host:radarr.${ACME_DOMAIN}'
             traefik.http.routers.radarr.entrypoints: https
             traefik.http.routers.radarr.tls.certresolver: le
             traefik.http.routers.radarr.rule: Host(`radarr.${ACME_DOMAIN}`)
@@ -184,6 +188,7 @@ networks:
     traefik:
         name: traefik
         attachable: true
+        external: true
 
 volumes:
     traefik:
