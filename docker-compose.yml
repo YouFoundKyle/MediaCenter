@@ -186,7 +186,7 @@ services:
             traefik.http.routers.traefik.entrypoints: https
             traefik.http.routers.traefik.tls.certresolver: dnsChallenge
             #traefik.http.routers.traefik.rule: Host(`traefik.${ACME_DOMAIN}`)
-            traefik.http.routers.traefik.rule: (Host(`ACME_DOMAIN`) && Path(`/traefik`))
+            traefik.http.routers.traefik.rule: (Host(`${ACME_DOMAIN}`) && Path(`/traefik`))
             #traefik.http.routers.traefik.middlewares: secureheaders, basicauth
             traefik.http.routers.traefik.middlewares: secureheaders
             traefik.http.routers.traefik.service: api@internal
