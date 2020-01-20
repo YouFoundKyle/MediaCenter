@@ -24,7 +24,7 @@ services:
             traefik.enable: true
             traefik.docker.network: traefik
             traefik.http.routers.plex.entrypoints: https
-            traefik.http.routers.plex.tls.certresolver: tlschallenge
+            traefik.http.routers.plex.tls.certresolver: le
             traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`) || Host(`${ACME_DOMAIN}`)
             traefik.http.services.plex_mediaserver.loadbalancer.server.port: 32400
             traefik.http.services.plex_mediaserver.loadbalancer.server.scheme: http
@@ -47,7 +47,7 @@ services:
             traefik.enable: true
             traefik.docker.network: traefik
             traefik.http.routers.nzbget.entrypoints: https
-            traefik.http.routers.nzbget.tls.certresolver: tlschallenge
+            traefik.http.routers.nzbget.tls.certresolver: le
             traefik.http.routers.nzbget.rule: Host(`nzbget.${ACME_DOMAIN}`)
 
     # https://hub.docker.com/r/linuxserver/sonarr/
@@ -69,7 +69,7 @@ services:
             traefik.enable: true
             traefik.docker.network: traefik
             traefik.http.routers.sonarr.entrypoints: https
-            traefik.http.routers.sonarr.tls.certresolver: tlschallenge
+            traefik.http.routers.sonarr.tls.certresolver: le
             traefik.http.routers.sonarr.rule: Host(`sonarr.${ACME_DOMAIN}`)
         links:
             - hydra
@@ -94,7 +94,7 @@ services:
             traefik.enable: true
             traefik.docker.network: traefik
             traefik.http.routers.radarr.entrypoints: https
-            traefik.http.routers.radarr.tls.certresolver: tlschallenge
+            traefik.http.routers.radarr.tls.certresolver: le
             traefik.http.routers.radarr.rule: Host(`radarr.${ACME_DOMAIN}`)
         links:
             - hydra
@@ -118,7 +118,7 @@ services:
             traefik.enable: true
             traefik.docker.network: traefik
             traefik.http.routers.hydra.entrypoints: https
-            traefik.http.routers.hydra.tls.certresolver: tlschallenge
+            traefik.http.routers.hydra.tls.certresolver: le
             traefik.http.routers.hydra.rule: Host(`hydra.${ACME_DOMAIN}`)
 
     # https://hub.docker.com/_/traefik/
@@ -145,15 +145,20 @@ services:
             - "--entrypoints.https.address=:443"
             - "--providers.docker=true"
             - "--providers.docker.exposedbydefault=false"
-            - "--certificatesResolvers.tlschallenge.acme.tlschallenge=true"
-            - "--certificatesresolvers.tlschallenge.acme.storage=/etc/traefik/acme.json"
-            - "--certificatesresolvers.tlschallenge.acme.email=${ACME_EMAIL}"
-            # - "--certificatesresolvers.tlschallenge.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
-        labels:
+            - "--certificatesresolvers.mydnschallenge.acme.dnschallenge=true"
+            - "--certificatesResolvers.le.acme.dnsChallenge.provider=cloudflare"
+            - "--certificatesResolvers.le.acme.dnsChallenge.delayBeforeCheck=0"
+            - "--certificatesResolvers.le.acme.storage=acme.json"
+            #- "--certificatesResolvers.tlschallenge.acme.tlschallenge=true"
+            #- "--certificatesresolvers.tlschallenge.acme.storage=/etc/traefik/acme.json"
+            - "--certificatesresolvers.le.acme.email=${ACME_EMAIL}"
+            - "--certificatesresolvers.le.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+            - "--certificatesResolvers.le.acme.keyType=RSA4096"
+            labels:
             traefik.enable: true
             traefik.docker.network: traefik
             traefik.http.routers.traefik.entrypoints: https
-            traefik.http.routers.traefik.tls.certresolver: tlschallenge
+            traefik.http.routers.traefik.tls.certresolver: dnsChallenge
             traefik.http.routers.traefik.rule: Host(`traefik.${ACME_DOMAIN}`)
             traefik.http.routers.traefik.middlewares: secureheaders, basicauth
             traefik.http.routers.traefik.service: api@internal
