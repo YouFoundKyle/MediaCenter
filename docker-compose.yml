@@ -24,8 +24,9 @@ services:
             traefik.docker.network: traefik
             traefik.http.routers.plex.entrypoints: https
             traefik.http.routers.plex.tls.certresolver: le
-            traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`) || Host(`${ACME_DOMAIN}`)
-            traefik.frontend.rule: 'Host:plex.${ACME_DOMAIN}'
+            #traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`) || Host(`${ACME_DOMAIN}`)
+            #traefik.frontend.rule: 'Host:plex.${ACME_DOMAIN}'
+            traefik.frontend.rule: 'Host:${ACME_DOMAIN}; PathPrefix: /plex'
             traefik.http.services.plex_mediaserver.loadbalancer.server.port: 32400
             traefik.http.services.plex_mediaserver.loadbalancer.server.scheme: http
 
@@ -51,7 +52,8 @@ services:
             traefik.docker.network: traefik
             traefik.http.routers.nzbget.entrypoints: https
             traefik.http.routers.nzbget.tls.certresolver: le
-            traefik.http.routers.nzbget.rule: Host(`nzbget.${ACME_DOMAIN}`)
+            #traefik.http.routers.nzbget.rule: Host(`nzbget.${ACME_DOMAIN}`)
+            traefik.frontend.rule: 'Host:${ACME_DOMAIN}; PathPrefix: /nzbget'
 
     # https://hub.docker.com/r/linuxserver/sonarr/
     sonarr:
@@ -74,7 +76,8 @@ services:
             traefik.enable: true
             traefik.port: 8989
             traefik.docker.network: traefik
-            traefik.frontend.rule: 'Host:sonarr.${ACME_DOMAIN}'
+            #traefik.frontend.rule: 'Host:sonarr.${ACME_DOMAIN}'
+            traefik.frontend.rule: 'Host:${ACME_DOMAIN}; PathPrefix: /radarr'
             traefik.http.routers.sonarr.entrypoints: https
             traefik.http.routers.sonarr.tls.certresolver: le
             traefik.http.routers.sonarr.rule: Host(`sonarr.${ACME_DOMAIN}`)
@@ -174,8 +177,10 @@ services:
             traefik.docker.network: traefik
             traefik.http.routers.traefik.entrypoints: https
             traefik.http.routers.traefik.tls.certresolver: dnsChallenge
-            traefik.http.routers.traefik.rule: Host(`traefik.${ACME_DOMAIN}`)
+            #traefik.http.routers.traefik.rule: Host(`traefik.${ACME_DOMAIN}`)
+            traefik.http.routers.traefik.rule: Host(`${ACME_DOMAIN}`)
             traefik.http.routers.traefik.middlewares: secureheaders, basicauth
+            #traefik.http.routers.traefik.middlewares: secureheaders
             traefik.http.routers.traefik.service: api@internal
             traefik.http.routers.http.entrypoints: http
             traefik.http.routers.http.rule: HostRegexp(`${ACME_DOMAIN}`, `{subdomain:[a-z]+}.${ACME_DOMAIN}`)
@@ -198,7 +203,6 @@ networks:
     traefik:
         name: traefik
         attachable: true
-        external: true
 
 volumes:
     traefik:
