@@ -154,7 +154,7 @@ services:
             - "--certificatesresolvers.le.acme.email=${ACME_EMAIL}"
             - "--certificatesresolvers.le.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
             - "--certificatesResolvers.le.acme.keyType=RSA4096"
-            labels:
+        labels:
             traefik.enable: true
             traefik.docker.network: traefik
             traefik.http.routers.traefik.entrypoints: https
