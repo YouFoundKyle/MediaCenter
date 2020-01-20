@@ -138,6 +138,7 @@ services:
             - 'traefik:/etc/traefik:rw'
         command:
             - "--log.level=INFO"
+            - "--log.filePath=${LOGS_DIR}/traefik/traefik.log"
             - "--api=true"
             - "--global.sendanonymoususage=false"
             - "--serverstransport.insecureskipverify"
