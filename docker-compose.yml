@@ -136,10 +136,10 @@ services:
             - '${CONFIG_DIR}/hydra:/config'
             - '${DOWNLOADS_DIR}:/downloads'
         ports:
-            - '8080:80/tcp'
+            - '8081:80/tcp'
         labels:
             traefik.enable: true
-            traefik.port: 8080
+            traefik.port: 8081
             traefik.docker.network: traefik
             traefik.http.routers.hydra.entrypoints: https
             traefik.http.routers.hydra.tls.certresolver: le
@@ -184,9 +184,10 @@ services:
             traefik.enable: true
             traefik.docker.network: traefik
             traefik.http.routers.traefik.entrypoints: https
-            traefik.http.routers.traefik.tls.certresolver: dnsChallenge
+            traefik.http.routers.traefik.tls.certresolver: le
             #traefik.http.routers.traefik.rule: Host(`traefik.${ACME_DOMAIN}`)
             traefik.http.routers.traefik.rule: (Host(`${ACME_DOMAIN}`) && Path(`/traefik`))
+            traefik.frontend.rule: (Host(`${ACME_DOMAIN}`) && Path(`/traefik`))
             #traefik.http.routers.traefik.middlewares: secureheaders, basicauth
             traefik.http.routers.traefik.middlewares: secureheaders
             traefik.http.routers.traefik.service: api@internal
