@@ -26,7 +26,7 @@ services:
             traefik.http.routers.plex.tls.certresolver: le
             #traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`) || Host(`${ACME_DOMAIN}`)
             #traefik.frontend.rule: 'Host:plex.${ACME_DOMAIN}'
-            traefik.frontend.rule: (Host(`${ACME_DOMAIN}`) && Path(`/plex`))
+            #traefik.frontend.rule: (Host(`${ACME_DOMAIN}`) && Path(`/plex`))
             traefik.http.services.plex_mediaserver.loadbalancer.server.port: 32400
             traefik.http.services.plex_mediaserver.loadbalancer.server.scheme: http
             traefik.http.routers.plex.rule: (Host(`${ACME_DOMAIN}`) && Path(`/plex`))
@@ -54,7 +54,7 @@ services:
             traefik.http.routers.nzbget.entrypoints: https
             traefik.http.routers.nzbget.tls.certresolver: le
             #traefik.http.routers.nzbget.rule: Host(`nzbget.${ACME_DOMAIN}`)
-            traefik.frontend.rule: (Host(`${ACME_DOMAIN}`) && Path(`/nzbget`))
+            #traefik.frontend.rule: (Host(`${ACME_DOMAIN}`) && Path(`/nzbget`))
             traefik.http.routers.nzbget.rule: (Host(`${ACME_DOMAIN}`) && Path(`/nzbget`))
 
     # https://hub.docker.com/r/linuxserver/sonarr/
@@ -79,7 +79,7 @@ services:
             traefik.port: 8989
             traefik.docker.network: traefik
             #traefik.frontend.rule: 'Host:sonarr.${ACME_DOMAIN}'
-            traefik.frontend.rule: (Host(`${ACME_DOMAIN}`) && Path(`/sonarr`))
+            #traefik.frontend.rule: (Host(`${ACME_DOMAIN}`) && Path(`/sonarr`))
             traefik.http.routers.sonarr.entrypoints: https
             traefik.http.routers.sonarr.tls.certresolver: le
             #traefik.http.routers.sonarr.rule: Host(`sonarr.${ACME_DOMAIN}`)
@@ -111,7 +111,7 @@ services:
             traefik.port: 7878
             traefik.docker.network: traefik
             #traefik.frontend.rule: 'Host:radarr.${ACME_DOMAIN}'
-            traefik.frontend.rule: (Host(`${ACME_DOMAIN}`) && Path(`/radarr`))
+            #traefik.frontend.rule: (Host(`${ACME_DOMAIN}`) && Path(`/radarr`))
             traefik.http.routers.radarr.entrypoints: https
             traefik.http.routers.radarr.tls.certresolver: le
             #traefik.http.routers.radarr.rule: Host(`radarr.${ACME_DOMAIN}`)
@@ -189,7 +189,6 @@ services:
             traefik.http.routers.traefik.rule: (Host(`${ACME_DOMAIN}`))
             traefik.frontend.rule: (Host(`${ACME_DOMAIN}`))
             #traefik.http.routers.traefik.middlewares: secureheaders, basicauth
-            traefik.http.routers.traefik.middlewares: secureheaders
             traefik.http.routers.traefik.service: api@internal
             traefik.http.routers.http.entrypoints: http
             traefik.http.routers.http.rule: HostRegexp(`${ACME_DOMAIN}`, `{subdomain:[a-z]+}.${ACME_DOMAIN}`)
