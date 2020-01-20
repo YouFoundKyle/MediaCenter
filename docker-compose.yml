@@ -26,9 +26,10 @@ services:
             traefik.http.routers.plex.tls.certresolver: le
             #traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`) || Host(`${ACME_DOMAIN}`)
             #traefik.frontend.rule: 'Host:plex.${ACME_DOMAIN}'
-            traefik.frontend.rule: 'Host:${ACME_DOMAIN}; PathPrefix: /plex'
+            traefik.frontend.rule: (Host(`ACME_DOMAIN`) && Path(`/plex`))
             traefik.http.services.plex_mediaserver.loadbalancer.server.port: 32400
             traefik.http.services.plex_mediaserver.loadbalancer.server.scheme: http
+            traefik.http.routers.plex.rule: (Host(`ACME_DOMAIN`) && Path(`/plex`))
 
     # https://hub.docker.com/r/linuxserver/nzbget/
     nzbget:
@@ -53,7 +54,8 @@ services:
             traefik.http.routers.nzbget.entrypoints: https
             traefik.http.routers.nzbget.tls.certresolver: le
             #traefik.http.routers.nzbget.rule: Host(`nzbget.${ACME_DOMAIN}`)
-            traefik.frontend.rule: 'Host:${ACME_DOMAIN}; PathPrefix: /nzbget'
+            traefik.frontend.rule: (Host(`ACME_DOMAIN`) && Path(`/nzbget`))
+            traefik.http.routers.nzbget.rule: (Host(`ACME_DOMAIN`) && Path(`/nzbget`))
 
     # https://hub.docker.com/r/linuxserver/sonarr/
     sonarr:
@@ -77,10 +79,12 @@ services:
             traefik.port: 8989
             traefik.docker.network: traefik
             #traefik.frontend.rule: 'Host:sonarr.${ACME_DOMAIN}'
-            traefik.frontend.rule: 'Host:${ACME_DOMAIN}; PathPrefix: /radarr'
+            traefik.frontend.rule: (Host(`ACME_DOMAIN`) && Path(`/sonarr`))
             traefik.http.routers.sonarr.entrypoints: https
             traefik.http.routers.sonarr.tls.certresolver: le
-            traefik.http.routers.sonarr.rule: Host(`sonarr.${ACME_DOMAIN}`)
+            #traefik.http.routers.sonarr.rule: Host(`sonarr.${ACME_DOMAIN}`)
+            traefik.http.routers.sonarr.rule: (Host(`ACME_DOMAIN`) && Path(`/sonarr`))
+
         links:
             - hydra
             - nzbget
@@ -106,10 +110,13 @@ services:
             traefik.enable: true
             traefik.port: 7878
             traefik.docker.network: traefik
-            traefik.frontend.rule: 'Host:radarr.${ACME_DOMAIN}'
+            #traefik.frontend.rule: 'Host:radarr.${ACME_DOMAIN}'
+            traefik.frontend.rule: (Host(`ACME_DOMAIN`) && Path(`/radarr`))
             traefik.http.routers.radarr.entrypoints: https
             traefik.http.routers.radarr.tls.certresolver: le
-            traefik.http.routers.radarr.rule: Host(`radarr.${ACME_DOMAIN}`)
+            #traefik.http.routers.radarr.rule: Host(`radarr.${ACME_DOMAIN}`)
+            traefik.http.routers.radarr.rule: (Host(`ACME_DOMAIN`) && Path(`/radarr`))
+
         links:
             - hydra
             - nzbget
@@ -136,7 +143,8 @@ services:
             traefik.docker.network: traefik
             traefik.http.routers.hydra.entrypoints: https
             traefik.http.routers.hydra.tls.certresolver: le
-            traefik.http.routers.hydra.rule: Host(`hydra.${ACME_DOMAIN}`)
+            #traefik.http.routers.hydra.rule: Host(`hydra.${ACME_DOMAIN}`)
+            traefik.http.routers.hydra.rule: (Host(`ACME_DOMAIN`) && Path(`/hydra`))
 
     # https://hub.docker.com/_/traefik/
     traefik:
@@ -178,9 +186,9 @@ services:
             traefik.http.routers.traefik.entrypoints: https
             traefik.http.routers.traefik.tls.certresolver: dnsChallenge
             #traefik.http.routers.traefik.rule: Host(`traefik.${ACME_DOMAIN}`)
-            traefik.http.routers.traefik.rule: Host(`${ACME_DOMAIN}`)
-            traefik.http.routers.traefik.middlewares: secureheaders, basicauth
-            #traefik.http.routers.traefik.middlewares: secureheaders
+            traefik.http.routers.traefik.rule: (Host(`ACME_DOMAIN`) && Path(`/traefik`))
+            #traefik.http.routers.traefik.middlewares: secureheaders, basicauth
+            traefik.http.routers.traefik.middlewares: secureheaders
             traefik.http.routers.traefik.service: api@internal
             traefik.http.routers.http.entrypoints: http
             traefik.http.routers.http.rule: HostRegexp(`${ACME_DOMAIN}`, `{subdomain:[a-z]+}.${ACME_DOMAIN}`)
