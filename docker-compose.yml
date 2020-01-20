@@ -136,10 +136,10 @@ services:
             - '${CONFIG_DIR}/hydra:/config'
             - '${DOWNLOADS_DIR}:/downloads'
         ports:
-            - '8081:80/tcp'
+            - '5076:5076/tcp'
         labels:
             traefik.enable: true
-            traefik.port: 8081
+            traefik.port: 5076
             traefik.docker.network: traefik
             traefik.http.routers.hydra.entrypoints: https
             traefik.http.routers.hydra.tls.certresolver: le
