@@ -146,7 +146,7 @@ services:
             - "--entrypoints.https.address=:443"
             - "--providers.docker=true"
             - "--providers.docker.exposedbydefault=false"
-            - "--certificatesresolvers.mydnschallenge.acme.dnschallenge=true"
+            - "--certificatesresolvers.le.acme.dnsChallenge=true"
             - "--certificatesResolvers.le.acme.dnsChallenge.provider=cloudflare"
             - "--certificatesResolvers.le.acme.dnsChallenge.delayBeforeCheck=0"
             - "--certificatesResolvers.le.acme.storage=acme.json"
