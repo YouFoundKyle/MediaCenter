@@ -136,9 +136,9 @@ services:
         volumes:
             - '/var/run/docker.sock:/var/run/docker.sock:ro'
             - 'traefik:/etc/traefik:rw'
+        privilege: true
         command:
-            - "--log.level=INFO"
-            - "--log.filePath=${LOGS_DIR}/traefik/traefik.log"
+            - "--log.level=DEBUG"
             - "--api=true"
             - "--global.sendanonymoususage=false"
             - "--serverstransport.insecureskipverify"
