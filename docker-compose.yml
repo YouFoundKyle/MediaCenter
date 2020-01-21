@@ -145,6 +145,7 @@ services:
             traefik.http.routers.hydra.tls.certresolver: le
             #traefik.http.routers.hydra.rule: Host(`hydra.${ACME_DOMAIN}`)
             traefik.http.routers.hydra.rule: (Host(`${ACME_DOMAIN}`) && Path(`/hydra`))
+            traefik.frontend.rule: PathPrefix:/hydra
 
     # https://hub.docker.com/_/traefik/
     traefik:
@@ -165,6 +166,7 @@ services:
         command:
             - "--log.level=DEBUG"
             - "--api=true"
+            - "--api.dashboard=true"
             - "--global.sendanonymoususage=false"
             - "--serverstransport.insecureskipverify"
             - "--entrypoints.http.address=:80"
@@ -187,8 +189,8 @@ services:
             traefik.http.routers.traefik.tls.certresolver: le
             #traefik.http.routers.traefik.rule: Host(`traefik.${ACME_DOMAIN}`)
             traefik.http.routers.traefik.rule: (Host(`${ACME_DOMAIN}`))
-            traefik.frontend.rule: (Host(`${ACME_DOMAIN}`))
-            #traefik.http.routers.traefik.middlewares: secureheaders, basicauth
+            #traefik.frontend.rule: (Host(`${ACME_DOMAIN}`))
+            traefik.http.routers.traefik.middlewares: secureheaders, basicauth
             traefik.http.routers.traefik.service: api@internal
             traefik.http.routers.http.entrypoints: http
             traefik.http.routers.http.rule: HostRegexp(`${ACME_DOMAIN}`, `{subdomain:[a-z]+}.${ACME_DOMAIN}`)
