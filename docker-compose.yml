@@ -30,6 +30,7 @@ services:
             traefik.http.services.plex_mediaserver.loadbalancer.server.port: 32400
             traefik.http.services.plex_mediaserver.loadbalancer.server.scheme: http
             traefik.http.routers.plex.rule: (Host(`${ACME_DOMAIN}`) && Path(`/plex`))
+            traefik.frontend.rule: (Host:${DOMAINNAME}; PathPrefixStrip: /plex)
 
     # https://hub.docker.com/r/linuxserver/nzbget/
     nzbget:
@@ -56,6 +57,7 @@ services:
             #traefik.http.routers.nzbget.rule: Host(`nzbget.${ACME_DOMAIN}`)
             #traefik.frontend.rule: (Host(`${ACME_DOMAIN}`) && Path(`/nzbget`))
             traefik.http.routers.nzbget.rule: (Host(`${ACME_DOMAIN}`) && Path(`/nzbget`))
+            traefik.frontend.rule: (Host:${DOMAINNAME}; PathPrefixStrip: /nzbget)
 
     # https://hub.docker.com/r/linuxserver/sonarr/
     sonarr:
@@ -84,6 +86,7 @@ services:
             traefik.http.routers.sonarr.tls.certresolver: le
             #traefik.http.routers.sonarr.rule: Host(`sonarr.${ACME_DOMAIN}`)
             traefik.http.routers.sonarr.rule: (Host(`${ACME_DOMAIN}`) && Path(`/sonarr`))
+            traefik.frontend.rule: (Host:${DOMAINNAME}; PathPrefixStrip: /sonarr)
 
         links:
             - hydra
@@ -116,6 +119,7 @@ services:
             traefik.http.routers.radarr.tls.certresolver: le
             #traefik.http.routers.radarr.rule: Host(`radarr.${ACME_DOMAIN}`)
             traefik.http.routers.radarr.rule: (Host(`${ACME_DOMAIN}`) && Path(`/radarr`))
+            traefik.frontend.rule: (Host:${DOMAINNAME}; PathPrefixStrip: /radarr)
 
         links:
             - hydra
@@ -145,7 +149,7 @@ services:
             traefik.http.routers.hydra.tls.certresolver: le
             #traefik.http.routers.hydra.rule: Host(`hydra.${ACME_DOMAIN}`)
             traefik.http.routers.hydra.rule: (Host(`${ACME_DOMAIN}`) && Path(`/hydra`))
-            traefik.frontend.rule: PathPrefix:/hydra
+            traefik.frontend.rule: (Host:${DOMAINNAME}; PathPrefixStrip: /hydra)
 
     # https://hub.docker.com/_/traefik/
     traefik:
@@ -189,8 +193,10 @@ services:
             traefik.http.routers.traefik.tls.certresolver: le
             #traefik.http.routers.traefik.rule: Host(`traefik.${ACME_DOMAIN}`)
             traefik.http.routers.traefik.rule: (Host(`${ACME_DOMAIN}`))
-            #traefik.frontend.rule: (Host(`${ACME_DOMAIN}`))
+            #traefik.frontend.rule: Host(`traefik.${ACME_DOMAIN}`)
+            traefik.frontend.rule: (Host:${DOMAINNAME}; PathPrefixStrip: /traefik)
             traefik.http.routers.traefik.middlewares: secureheaders, basicauth
+            traefik.http.routers.traefik.middlewares: secureheaders
             traefik.http.routers.traefik.service: api@internal
             traefik.http.routers.http.entrypoints: http
             traefik.http.routers.http.rule: HostRegexp(`${ACME_DOMAIN}`, `{subdomain:[a-z]+}.${ACME_DOMAIN}`)
