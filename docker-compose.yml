@@ -29,8 +29,8 @@ services:
             #traefik.frontend.rule: (Host(`${ACME_DOMAIN}`) && Path(`/plex`))
             traefik.http.services.plex_mediaserver.loadbalancer.server.port: 32400
             traefik.http.services.plex_mediaserver.loadbalancer.server.scheme: http
-            traefik.http.routers.plex.rule: (Host(`${ACME_DOMAIN}`) && Path(`/plex`))
-            traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/plex`))
+            traefik.http.routers.plex.rule: (Host(`${ACME_DOMAIN}`) && Path(`/plex/`))
+            traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/plex/`))
 
     # https://hub.docker.com/r/linuxserver/nzbget/
     nzbget:
@@ -56,8 +56,8 @@ services:
             traefik.http.routers.nzbget.tls.certresolver: le
             #traefik.http.routers.nzbget.rule: Host(`nzbget.${ACME_DOMAIN}`)
             #traefik.frontend.rule: (Host(`${ACME_DOMAIN}`) && Path(`/nzbget`))
-            traefik.http.routers.nzbget.rule: (Host(`${ACME_DOMAIN}`) && Path(`/nzbget`))
-            traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/nzbget`))
+            traefik.http.routers.nzbget.rule: (Host(`${ACME_DOMAIN}`) && Path(`/nzbget/`))
+            traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/nzbget/`))
 
     # https://hub.docker.com/r/linuxserver/sonarr/
     sonarr:
@@ -85,8 +85,8 @@ services:
             traefik.http.routers.sonarr.entrypoints: https
             traefik.http.routers.sonarr.tls.certresolver: le
             #traefik.http.routers.sonarr.rule: Host(`sonarr.${ACME_DOMAIN}`)
-            traefik.http.routers.sonarr.rule: (Host(`${ACME_DOMAIN}`) && Path(`/sonarr`))
-            traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/sonarr`))
+            traefik.http.routers.sonarr.rule: (Host(`${ACME_DOMAIN}`) && Path(`/sonarr/`))
+            traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/sonarr/`))
 
         links:
             - hydra
@@ -118,8 +118,8 @@ services:
             traefik.http.routers.radarr.entrypoints: https
             traefik.http.routers.radarr.tls.certresolver: le
             #traefik.http.routers.radarr.rule: Host(`radarr.${ACME_DOMAIN}`)
-            traefik.http.routers.radarr.rule: (Host(`${ACME_DOMAIN}`) && Path(`/radarr`))
-            traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/radarr`))
+            traefik.http.routers.radarr.rule: (Host(`${ACME_DOMAIN}`) && Path(`/radarr/`))
+            traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/radarr/`))
 
         links:
             - hydra
@@ -148,8 +148,8 @@ services:
             traefik.http.routers.hydra.entrypoints: https
             traefik.http.routers.hydra.tls.certresolver: le
             #traefik.http.routers.hydra.rule: Host(`hydra.${ACME_DOMAIN}`)
-            traefik.http.routers.hydra.rule: (Host(`${ACME_DOMAIN}`) && Path(`/hydra`))
-            traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/hydra`))
+            traefik.http.routers.hydra.rule: (Host(`${ACME_DOMAIN}`) && Path(`/hydra/`))
+            traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/hydra/`))
 
     # https://hub.docker.com/_/traefik/
     traefik:
@@ -192,9 +192,10 @@ services:
             traefik.http.routers.traefik.entrypoints: https
             traefik.http.routers.traefik.tls.certresolver: le
             #traefik.http.routers.traefik.rule: Host(`traefik.${ACME_DOMAIN}`)
-            traefik.http.routers.traefik.rule: (Host(`${ACME_DOMAIN}`))
+            #traefik.http.routers.traefik.rule: (Host(`${ACME_DOMAIN}`))
+            traefik.http.routers.traefik.rule: (Host(`${ACME_DOMAIN}`) && Path(`/traefik/`))
             #traefik.frontend.rule: Host(`traefik.${ACME_DOMAIN}`)
-            traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/traefik`))
+            traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/traefik/`))
             traefik.http.routers.traefik.middlewares: secureheaders, basicauth
             traefik.http.routers.traefik.middlewares: secureheaders
             traefik.http.routers.traefik.service: api@internal
