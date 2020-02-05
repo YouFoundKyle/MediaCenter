@@ -192,7 +192,7 @@ services:
             traefik.http.routers.traefik.entrypoints: https
             traefik.http.routers.traefik.tls.certresolver: le
             #traefik.http.routers.traefik.rule: Host(`traefik.${ACME_DOMAIN}`)
-            traefik.http.routers.traefik.rule: (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/traefik`))
+            traefik.http.routers.traefik.rule: (Host(`${ACME_DOMAIN}`))
             #traefik.frontend.rule: Host(`traefik.${ACME_DOMAIN}`)
             traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/traefik`))
             traefik.http.routers.traefik.middlewares: secureheaders, basicauth
