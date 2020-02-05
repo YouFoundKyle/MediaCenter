@@ -200,7 +200,7 @@ services:
             traefik.http.routers.traefik.service: api@internal
             traefik.http.routers.http.entrypoints: http
             #traefik.http.routers.http.rule: HostRegexp(`${ACME_DOMAIN}`, `{subdomain:[a-z]+}.${ACME_DOMAIN}`)
-            traefik.http.routers.http.rule: (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/traefik`))
+            traefik.http.routers.http.rule: (Host(`${ACME_DOMAIN}`)
             traefik.http.routers.http.middlewares: redirectscheme
             traefik.http.middlewares.redirectscheme.redirectscheme.scheme: https
             traefik.http.middlewares.basicauth.basicauth.users: ${HTPASSWD}
