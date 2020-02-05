@@ -1,96 +1,96 @@
 version: '3.7'
 services:
 
-    # https://hub.docker.com/r/plexinc/pms-docker
-    plex:
-        container_name: plex
-        image: plexinc/pms-docker:latest
-        restart: unless-stopped
-        environment:
-            PLEX_UID: '${PUID}'
-            PLEX_GID: '${PGID}'
-            TZ: '${TZ}'
-            PLEX_CLAIM: '${PLEX_CLAIM}'
-        networks:
-            - traefik
-        ports:
-            - '32400:32400/tcp'
-        volumes:
-            - '${CONFIG_DIR}/plex:/config'
-            - '${MEDIA_DIR}:/media'
-            - '/tmp:/tmp'
-        labels:
-            traefik.enable: true
-            traefik.docker.network: traefik
-            traefik.http.routers.plex.entrypoints: https
-            traefik.http.routers.plex.tls.certresolver: le
-            #traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`) || Host(`${ACME_DOMAIN}`)
-            #traefik.frontend.rule: 'Host:plex.${ACME_DOMAIN}'
-            #traefik.frontend.rule: (Host(`${ACME_DOMAIN}`) && Path(`/plex`))
-            traefik.http.services.plex_mediaserver.loadbalancer.server.port: 32400
-            traefik.http.services.plex_mediaserver.loadbalancer.server.scheme: http
-            traefik.http.routers.plex.rule: (Host(`${ACME_DOMAIN}`) && Path(`/plex`))
-            #traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/plex`))
+    # # https://hub.docker.com/r/plexinc/pms-docker
+    # plex:
+    #     container_name: plex
+    #     image: plexinc/pms-docker:latest
+    #     restart: unless-stopped
+    #     environment:
+    #         PLEX_UID: '${PUID}'
+    #         PLEX_GID: '${PGID}'
+    #         TZ: '${TZ}'
+    #         PLEX_CLAIM: '${PLEX_CLAIM}'
+    #     networks:
+    #         - traefik
+    #     ports:
+    #         - '32400:32400/tcp'
+    #     volumes:
+    #         - '${CONFIG_DIR}/plex:/config'
+    #         - '${MEDIA_DIR}:/media'
+    #         - '/tmp:/tmp'
+    #     labels:
+    #         traefik.enable: true
+    #         traefik.docker.network: traefik
+    #         traefik.http.routers.plex.entrypoints: https
+    #         traefik.http.routers.plex.tls.certresolver: le
+    #         #traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`) || Host(`${ACME_DOMAIN}`)
+    #         #traefik.frontend.rule: 'Host:plex.${ACME_DOMAIN}'
+    #         #traefik.frontend.rule: (Host(`${ACME_DOMAIN}`) && Path(`/plex`))
+    #         traefik.http.services.plex_mediaserver.loadbalancer.server.port: 32400
+    #         traefik.http.services.plex_mediaserver.loadbalancer.server.scheme: http
+    #         traefik.http.routers.plex.rule: (Host(`${ACME_DOMAIN}`) && Path(`/plex`))
+    #         #traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/plex`))
 
-    # https://hub.docker.com/r/linuxserver/nzbget/
-    nzbget:
-        container_name: nzbget
-        image: linuxserver/nzbget:latest
-        restart: unless-stopped
-        environment:
-            PUID: '${PUID}'
-            PGID: '${PGID}'
-            TZ: '${TZ}'
-        networks:
-            - traefik
-        volumes:
-            - '${CONFIG_DIR}/nzbget:/config'
-            - '${DOWNLOADS_DIR}:/downloads'
-        ports:
-            - '6789:6789/tcp'
-        labels:
-            traefik.enable: true
-            traefik.port: 6789
-            traefik.docker.network: traefik
-            traefik.http.routers.nzbget.entrypoints: https
-            traefik.http.routers.nzbget.tls.certresolver: le
-            #traefik.http.routers.nzbget.rule: Host(`nzbget.${ACME_DOMAIN}`)
-            #traefik.frontend.rule: (Host(`${ACME_DOMAIN}`) && Path(`/nzbget`))
-            traefik.http.routers.nzbget.rule: (Host(`${ACME_DOMAIN}`) && Path(`/nzbget`))
-            #traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/nzbget`))
+    # # https://hub.docker.com/r/linuxserver/nzbget/
+    # nzbget:
+    #     container_name: nzbget
+    #     image: linuxserver/nzbget:latest
+    #     restart: unless-stopped
+    #     environment:
+    #         PUID: '${PUID}'
+    #         PGID: '${PGID}'
+    #         TZ: '${TZ}'
+    #     networks:
+    #         - traefik
+    #     volumes:
+    #         - '${CONFIG_DIR}/nzbget:/config'
+    #         - '${DOWNLOADS_DIR}:/downloads'
+    #     ports:
+    #         - '6789:6789/tcp'
+    #     labels:
+    #         traefik.enable: true
+    #         traefik.port: 6789
+    #         traefik.docker.network: traefik
+    #         traefik.http.routers.nzbget.entrypoints: https
+    #         traefik.http.routers.nzbget.tls.certresolver: le
+    #         #traefik.http.routers.nzbget.rule: Host(`nzbget.${ACME_DOMAIN}`)
+    #         #traefik.frontend.rule: (Host(`${ACME_DOMAIN}`) && Path(`/nzbget`))
+    #         traefik.http.routers.nzbget.rule: (Host(`${ACME_DOMAIN}`) && Path(`/nzbget`))
+    #         #traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/nzbget`))
 
-    # https://hub.docker.com/r/linuxserver/sonarr/
-    sonarr:
-        container_name: sonarr
-        image: linuxserver/sonarr:latest
-        restart: unless-stopped
-        environment:
-            PUID: '${PUID}'
-            PGID: '${PGID}'
-            TZ: '${TZ}'
-        networks:
-            - traefik
-        volumes:
-            - '${CONFIG_DIR}/sonarr:/config'
-            - '${DOWNLOADS_DIR}:/downloads'
-            - '${MEDIA_DIR}:/media'
-        ports:
-            - '8989:8989/tcp'
-        labels:
-            traefik.enable: true
-            traefik.port: 8989
-            traefik.docker.network: traefik
-            #traefik.frontend.rule: 'Host:sonarr.${ACME_DOMAIN}'
-            #traefik.frontend.rule: (Host(`${ACME_DOMAIN}`) && Path(`/sonarr`))
-            traefik.http.routers.sonarr.entrypoints: https
-            traefik.http.routers.sonarr.tls.certresolver: le
-            #traefik.http.routers.sonarr.rule: Host(`sonarr.${ACME_DOMAIN}`)
-            traefik.http.routers.sonarr.rule: (Host(`${ACME_DOMAIN}`) && Path(`/sonarr`))
-            #traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/sonarr`))
+    # # https://hub.docker.com/r/linuxserver/sonarr/
+    # sonarr:
+    #     container_name: sonarr
+    #     image: linuxserver/sonarr:latest
+    #     restart: unless-stopped
+    #     environment:
+    #         PUID: '${PUID}'
+    #         PGID: '${PGID}'
+    #         TZ: '${TZ}'
+    #     networks:
+    #         - traefik
+    #     volumes:
+    #         - '${CONFIG_DIR}/sonarr:/config'
+    #         - '${DOWNLOADS_DIR}:/downloads'
+    #         - '${MEDIA_DIR}:/media'
+    #     ports:
+    #         - '8989:8989/tcp'
+    #     labels:
+    #         traefik.enable: true
+    #         traefik.port: 8989
+    #         traefik.docker.network: traefik
+    #         #traefik.frontend.rule: 'Host:sonarr.${ACME_DOMAIN}'
+    #         #traefik.frontend.rule: (Host(`${ACME_DOMAIN}`) && Path(`/sonarr`))
+    #         traefik.http.routers.sonarr.entrypoints: https
+    #         traefik.http.routers.sonarr.tls.certresolver: le
+    #         #traefik.http.routers.sonarr.rule: Host(`sonarr.${ACME_DOMAIN}`)
+    #         traefik.http.routers.sonarr.rule: (Host(`${ACME_DOMAIN}`) && Path(`/sonarr`))
+    #         #traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/sonarr`))
 
-        links:
-            - hydra
-            - nzbget
+    #     links:
+    #         - hydra
+    #         - nzbget
 
     # https://hub.docker.com/r/linuxserver/radarr/
     radarr:
@@ -199,8 +199,8 @@ services:
             traefik.http.routers.traefik.middlewares: secureheaders
             traefik.http.routers.traefik.service: api@internal
             traefik.http.routers.http.entrypoints: http
-            #traefik.http.routers.http.rule: HostRegexp(`${ACME_DOMAIN}`, `{subdomain:[a-z]+}.${ACME_DOMAIN}`)
-            traefik.http.routers.http.rule: (Host(`${ACME_DOMAIN}`) && Path(`/traefik`))
+            traefik.http.routers.http.rule: HostRegexp(`${ACME_DOMAIN}`, `{subdomain:[a-z]+}.${ACME_DOMAIN}`)
+            #traefik.http.routers.http.rule: (Host(`${ACME_DOMAIN}`) && Path(`/traefik`))
             traefik.http.routers.http.middlewares: redirectscheme
             traefik.http.middlewares.redirectscheme.redirectscheme.scheme: https
             traefik.http.middlewares.basicauth.basicauth.users: ${HTPASSWD}
