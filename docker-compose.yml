@@ -148,7 +148,7 @@ services:
             traefik.http.routers.hydra.entrypoints: https
             traefik.http.routers.hydra.tls.certresolver: le
             #traefik.http.routers.hydra.rule: Host(`hydra.${ACME_DOMAIN}`)
-            traefik.http.routers.hydra.rule: (Host(`${ACME_DOMAIN}`))
+            traefik.http.routers.hydra.rule: (Host(`${ACME_DOMAIN}`) && PathPrefix(`/hydra`))
             #traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && Path(`/hydra`))
 
     # https://hub.docker.com/_/traefik/
@@ -191,7 +191,7 @@ services:
             traefik.docker.network: traefik
             traefik.http.routers.traefik.entrypoints: https
             traefik.http.routers.traefik.tls.certresolver: le
-            #traefik.http.routers.traefik.rule: Host(`traefik.${ACME_DOMAIN}`)
+            traefik.http.routers.traefik.rule: Host(`traefik.${ACME_DOMAIN} && PathPrefix(`/traefik`) `)
             #traefik.http.routers.traefik.rule: (Host(`${ACME_DOMAIN}`))
             #traefik.frontend.rule: Host(`traefik.${ACME_DOMAIN}`)
             #traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/traefik`))
