@@ -147,7 +147,7 @@ services:
             traefik.port: 5076
             traefik.docker.network: traefik
             traefik.http.routers.hydra.entrypoints: https
-            traefik.http.routers.hydra.tls.certresolver: le.acme
+            traefik.http.routers.hydra.tls.certresolver: le
             traefik.http.routers.hydra.rule: Host(`hydra.${ACME_DOMAIN}`)
             #traefik.http.routers.hydra.rule: (Host(`${ACME_DOMAIN}`) && PathPrefix(`/hydra`))
             #traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && Path(`/hydra`))
@@ -182,6 +182,7 @@ services:
             - "--certificatesresolvers.le.acme.dnsChallenge=true"
             - "--certificatesResolvers.le.acme.dnsChallenge.provider=cloudflare"
             - "--certificatesResolvers.le.acme.dnsChallenge.delayBeforeCheck=0"
+            - "--certificatesResolvers.le.acme.dnsChallenge.resolvers=1.1.1.1,1.0.0.1"
             - "--certificatesResolvers.le.acme.storage=acme.json"
             #- "--certificatesResolvers.tlschallenge.acme.tlschallenge=true"
             #- "--certificatesresolvers.tlschallenge.acme.storage=/etc/traefik/acme.json"
@@ -192,7 +193,7 @@ services:
             traefik.enable: true
             traefik.docker.network: traefik
             traefik.http.routers.traefik.entrypoints: https
-            traefik.http.routers.traefik.tls.certresolver: le.acme
+            traefik.http.routers.traefik.tls.certresolver: le
             #traefik.http.routers.traefik.rule: Host(`${ACME_DOMAIN} && PathPrefixStrip(`/traefik`) && PathPrefix(`/traefik`) `)
             traefik.http.routers.traefik.rule: (Host(`traefik.${ACME_DOMAIN}`))
             #traefik.frontend.rule: Host(`traefik.${ACME_DOMAIN}`)
