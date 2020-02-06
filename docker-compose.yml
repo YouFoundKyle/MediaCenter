@@ -159,9 +159,7 @@ services:
         restart: unless-stopped
         environment:
             TZ: '${TZ}'
-            #CLOUDFLARE_DNS_API_TOKEN: '${CLOUDFLARE_DNS_API_TOKEN}'
-            CLOUDFLARE_API_KEY: '${CLOUDFLARE_API_KEY}'
-            CLOUDFLARE_EMAIL: '${CLOUDFLARE_EMAIL}'
+            CLOUDFLARE_DNS_API_TOKEN: '${CLOUDFLARE_DNS_API_TOKEN}'
         networks:
             - traefik
         ports:
@@ -194,7 +192,7 @@ services:
             traefik.enable: true
             traefik.docker.network: traefik
             traefik.http.routers.traefik.entrypoints: https
-            traefik.http.routers.traefik.tls.certresolver: le
+            traefik.http.routers.traefik.tls.certresolver: le.acme
             #traefik.http.routers.traefik.rule: Host(`${ACME_DOMAIN} && PathPrefixStrip(`/traefik`) && PathPrefix(`/traefik`) `)
             traefik.http.routers.traefik.rule: (Host(`traefik.${ACME_DOMAIN}`))
             #traefik.frontend.rule: Host(`traefik.${ACME_DOMAIN}`)
