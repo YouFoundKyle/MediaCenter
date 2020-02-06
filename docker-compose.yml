@@ -159,7 +159,9 @@ services:
         restart: unless-stopped
         environment:
             TZ: '${TZ}'
-            CLOUDFLARE_DNS_API_TOKEN: '${CLOUDFLARE_DNS_API_TOKEN}'
+            #CLOUDFLARE_DNS_API_TOKEN: '${CLOUDFLARE_DNS_API_TOKEN}'
+            CLOUDFLARE_API_KEY: '${CLOUDFLARE_API_KEY}'
+            CLOUDFLARE_EMAIL: '${CLOUDFLARE_EMAIL}'
         networks:
             - traefik
         ports:
