@@ -187,7 +187,7 @@ services:
             #- "--certificatesResolvers.tlschallenge.acme.tlschallenge=true"
             #- "--certificatesresolvers.tlschallenge.acme.storage=/etc/traefik/acme.json"
             - "--certificatesresolvers.le.acme.email=${ACME_EMAIL}"
-            - "--certificatesresolvers.le.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+            - "--certificatesresolvers.le.acme.caserver=https://acme-v02.api.letsencrypt.org/directory"
             - "--certificatesResolvers.le.acme.keyType=RSA4096"
         labels:
             traefik.enable: true
