@@ -11,7 +11,6 @@ services:
             PLEX_GID: '${PGID}'
             TZ: '${TZ}'
             PLEX_CLAIM: '${PLEX_CLAIM}'
-            ADVERTISE_IP: '${ADVERTISE_IP}'
         networks:
             - traefik
         ports:
@@ -25,9 +24,11 @@ services:
             traefik.docker.network: traefik
             traefik.http.routers.plex.entrypoints: https
             traefik.http.routers.plex.tls.certresolver: le
-            traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`) || Host(`${ACME_DOMAIN}`)
+            traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`))
+            #traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`) || Host(`${ACME_DOMAIN}`)
             traefik.http.services.plex_mediaserver.loadbalancer.server.port: 32400
             traefik.http.services.plex_mediaserver.loadbalancer.server.scheme: http
+
 
     # https://hub.docker.com/r/linuxserver/nzbget/
     nzbget:
@@ -43,8 +44,11 @@ services:
         volumes:
             - '${CONFIG_DIR}/nzbget:/config'
             - '${DOWNLOADS_DIR}:/downloads'
+        ports:
+            - '6789:6789/tcp'
         labels:
             traefik.enable: true
+            traefik.port: 6789
             traefik.docker.network: traefik
             traefik.http.routers.nzbget.entrypoints: https
             traefik.http.routers.nzbget.tls.certresolver: le
@@ -65,12 +69,16 @@ services:
             - '${CONFIG_DIR}/sonarr:/config'
             - '${DOWNLOADS_DIR}:/downloads'
             - '${MEDIA_DIR}:/media'
+        ports:
+            - '8989:8989/tcp'
         labels:
             traefik.enable: true
+            traefik.port: 8989
             traefik.docker.network: traefik
             traefik.http.routers.sonarr.entrypoints: https
             traefik.http.routers.sonarr.tls.certresolver: le
             traefik.http.routers.sonarr.rule: Host(`sonarr.${ACME_DOMAIN}`)
+
         links:
             - hydra
             - nzbget
@@ -90,12 +98,16 @@ services:
             - '${CONFIG_DIR}/radarr:/config'
             - '${DOWNLOADS_DIR}:/downloads'
             - '${MEDIA_DIR}:/media'
+        ports:
+            - '7878:7878/tcp'
         labels:
             traefik.enable: true
+            traefik.port: 7878
             traefik.docker.network: traefik
             traefik.http.routers.radarr.entrypoints: https
             traefik.http.routers.radarr.tls.certresolver: le
             traefik.http.routers.radarr.rule: Host(`radarr.${ACME_DOMAIN}`)
+
         links:
             - hydra
             - nzbget
@@ -114,8 +126,11 @@ services:
         volumes:
             - '${CONFIG_DIR}/hydra:/config'
             - '${DOWNLOADS_DIR}:/downloads'
+        ports:
+            - '5076:5076/tcp'
         labels:
             traefik.enable: true
+            traefik.port: 5076
             traefik.docker.network: traefik
             traefik.http.routers.hydra.entrypoints: https
             traefik.http.routers.hydra.tls.certresolver: le
@@ -128,6 +143,7 @@ services:
         restart: unless-stopped
         environment:
             TZ: '${TZ}'
+            CLOUDFLARE_DNS_API_TOKEN: '${CLOUDFLARE_DNS_API_TOKEN}'
         networks:
             - traefik
         ports:
@@ -136,10 +152,11 @@ services:
         volumes:
             - '/var/run/docker.sock:/var/run/docker.sock:ro'
             - 'traefik:/etc/traefik:rw'
-        privilege: true
+        privileged: true
         command:
             - "--log.level=DEBUG"
             - "--api=true"
+            - "--api.dashboard=true"
             - "--global.sendanonymoususage=false"
             - "--serverstransport.insecureskipverify"
             - "--entrypoints.http.address=:80"
@@ -149,22 +166,20 @@ services:
             - "--certificatesresolvers.le.acme.dnsChallenge=true"
             - "--certificatesResolvers.le.acme.dnsChallenge.provider=cloudflare"
             - "--certificatesResolvers.le.acme.dnsChallenge.delayBeforeCheck=0"
+            - "--certificatesResolvers.le.acme.dnsChallenge.resolvers=1.1.1.1,1.0.0.1"
             - "--certificatesResolvers.le.acme.storage=acme.json"
-            #- "--certificatesResolvers.tlschallenge.acme.tlschallenge=true"
-            #- "--certificatesresolvers.tlschallenge.acme.storage=/etc/traefik/acme.json"
             - "--certificatesresolvers.le.acme.email=${ACME_EMAIL}"
-            - "--certificatesresolvers.le.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+            - "--certificatesresolvers.le.acme.caserver=https://acme-v02.api.letsencrypt.org/directory"
             - "--certificatesResolvers.le.acme.keyType=RSA4096"
         labels:
             traefik.enable: true
             traefik.docker.network: traefik
             traefik.http.routers.traefik.entrypoints: https
-            traefik.http.routers.traefik.tls.certresolver: dnsChallenge
-            traefik.http.routers.traefik.rule: Host(`traefik.${ACME_DOMAIN}`)
-            traefik.http.routers.traefik.middlewares: secureheaders, basicauth
+            traefik.http.routers.traefik.tls.certresolver: le
+            traefik.http.routers.traefik.rule: (Host(`traefik.${ACME_DOMAIN}`))
+            traefik.http.routers.traefik.middlewares: basicauth, secureheaders 
             traefik.http.routers.traefik.service: api@internal
             traefik.http.routers.http.entrypoints: http
-            traefik.http.routers.http.rule: HostRegexp(`${ACME_DOMAIN}`, `{subdomain:[a-z]+}.${ACME_DOMAIN}`)
             traefik.http.routers.http.middlewares: redirectscheme
             traefik.http.middlewares.redirectscheme.redirectscheme.scheme: https
             traefik.http.middlewares.basicauth.basicauth.users: ${HTPASSWD}
