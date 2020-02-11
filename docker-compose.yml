@@ -54,6 +54,57 @@ services:
             traefik.http.routers.nzbget.tls.certresolver: le
             traefik.http.routers.nzbget.rule: Host(`nzbget.${ACME_DOMAIN}`)
 
+    # https://hub.docker.com/r/linuxserver/ombi/
+    ombi:
+        container_name: ombi
+        image: linuxserver/ombi:latest
+        restart: unless-stopped
+        environment:
+            PUID: '${PUID}'
+            PGID: '${PGID}'
+            TZ: '${TZ}'
+        networks:
+            - traefik
+        volumes:
+            - '${CONFIG_DIR}/ombi:/config'
+            - '${DOWNLOADS_DIR}:/downloads'
+        ports:
+            - '3579:3579'
+        labels:
+            traefik.enable: true
+            traefik.port: 3579
+            traefik.docker.network: traefik
+            traefik.http.routers.nzbget.entrypoints: https
+            traefik.http.routers.nzbget.tls.certresolver: le
+            traefik.http.routers.nzbget.rule: Host(`ombi.${ACME_DOMAIN}`)
+
+    # https://hub.docker.com/r/linuxserver/qbittorrent/
+    qbittorrent:
+        container_name: qbittorrent
+        image: linuxserver/qbittorrent:latest
+        restart: unless-stopped
+        environment:
+            PUID: '${PUID}'
+            PGID: '${PGID}'
+            TZ: '${TZ}'
+            WEBUI_PORT: '6880'
+        networks:
+            - traefik
+        volumes:
+            - '${CONFIG_DIR}/qbittorrent:/config'
+            - '${DOWNLOADS_DIR}:/downloads'
+        ports:
+            - '6881:6881'
+            - '6881:6881/udp'
+            - '6880:6880'
+        labels:
+            traefik.enable: true
+            traefik.port: 6880
+            traefik.docker.network: traefik
+            traefik.http.routers.qbittorrent.entrypoints: https
+            traefik.http.routers.qbittorrent.tls.certresolver: le
+            traefik.http.routers.qbittorrent.rule: Host(`qbittorrent.${ACME_DOMAIN}`)
+
     # https://hub.docker.com/r/linuxserver/sonarr/
     sonarr:
         container_name: sonarr
@@ -78,10 +129,9 @@ services:
             traefik.http.routers.sonarr.entrypoints: https
             traefik.http.routers.sonarr.tls.certresolver: le
             traefik.http.routers.sonarr.rule: Host(`sonarr.${ACME_DOMAIN}`)
-
         links:
             - hydra
-            - nzbget
+            - qbittorrent
 
     # https://hub.docker.com/r/linuxserver/radarr/
     radarr:
@@ -107,10 +157,9 @@ services:
             traefik.http.routers.radarr.entrypoints: https
             traefik.http.routers.radarr.tls.certresolver: le
             traefik.http.routers.radarr.rule: Host(`radarr.${ACME_DOMAIN}`)
-
         links:
             - hydra
-            - nzbget
+            - qbittorrent
 
     # https://hub.docker.com/r/linuxserver/hydra2/
     hydra:
@@ -151,49 +200,16 @@ services:
             - '443:443/tcp'
         volumes:
             - '/var/run/docker.sock:/var/run/docker.sock:ro'
-            - 'traefik:/etc/traefik:rw'
+            - './traefik.toml:/etc/traefik/traefik.toml'
+            - './acme.json:/acme.json'
         privileged: true
         command:
-            - "--log.level=DEBUG"
-            - "--api=true"
-            - "--api.dashboard=true"
-            - "--global.sendanonymoususage=false"
-            - "--serverstransport.insecureskipverify"
-            - "--entrypoints.http.address=:80"
-            - "--entrypoints.https.address=:443"
-            - "--providers.docker=true"
-            - "--providers.docker.exposedbydefault=false"
-            - "--certificatesresolvers.le.acme.dnsChallenge=true"
-            - "--certificatesResolvers.le.acme.dnsChallenge.provider=cloudflare"
-            - "--certificatesResolvers.le.acme.dnsChallenge.delayBeforeCheck=0"
-            - "--certificatesResolvers.le.acme.dnsChallenge.resolvers=1.1.1.1,1.0.0.1"
-            - "--certificatesResolvers.le.acme.storage=acme.json"
             - "--certificatesresolvers.le.acme.email=${ACME_EMAIL}"
-            - "--certificatesresolvers.le.acme.caserver=https://acme-v02.api.letsencrypt.org/directory"
-            - "--certificatesResolvers.le.acme.keyType=RSA4096"
         labels:
             traefik.enable: true
-            traefik.docker.network: traefik
-            traefik.http.routers.traefik.entrypoints: https
-            traefik.http.routers.traefik.tls.certresolver: le
             traefik.http.routers.traefik.rule: (Host(`traefik.${ACME_DOMAIN}`))
-            traefik.http.routers.traefik.middlewares: basicauth, secureheaders 
-            traefik.http.routers.traefik.service: api@internal
-            traefik.http.routers.http.entrypoints: http
-            traefik.http.routers.http.middlewares: redirectscheme
-            traefik.http.middlewares.redirectscheme.redirectscheme.scheme: https
             traefik.http.middlewares.basicauth.basicauth.users: ${HTPASSWD}
-            traefik.http.middlewares.secureheaders.headers.stsSeconds: 15552000
-            traefik.http.middlewares.secureheaders.headers.framedeny: true
-            traefik.http.middlewares.secureheaders.headers.sslForceHost: true
-            traefik.http.middlewares.secureheaders.headers.sslRedirect: true
-            traefik.http.middlewares.secureheaders.headers.stsIncludeSubdomains: true
-            traefik.http.middlewares.secureheaders.headers.browserXssFilter: true
-            traefik.http.middlewares.secureheaders.headers.contentTypeNosniff: true
-            traefik.http.middlewares.secureheaders.headers.forceSTSHeader: true
-            traefik.http.middlewares.secureheaders.headers.stsPreload: true
-            traefik.http.middlewares.secureheaders.headers.customResponseHeaders.X-Robots-Tag: none
-            traefik.http.middlewares.secureheaders.headers.customFrameOptionsValue: SAMEORIGIN
+
 
 networks:
     traefik:
