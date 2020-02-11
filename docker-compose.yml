@@ -181,7 +181,7 @@ services:
             traefik.port: 7878
             traefik.docker.network: traefik
             traefik.http.routers.radarr.entrypoints: https
-            traefik.http.routers.radarr.tls.certresolver: acme
+            traefik.http.routers.radarr.tls.certresolver: le
             traefik.http.routers.radarr.rule: Host(`radarr.${ACME_DOMAIN}`)
         links:
             - hydra
@@ -208,7 +208,7 @@ services:
             traefik.port: 5076
             traefik.docker.network: traefik
             traefik.http.routers.hydra.entrypoints: https
-            traefik.http.routers.hydra.tls.certresolver: acme
+            traefik.http.routers.hydra.tls.certresolver: le
             traefik.http.routers.hydra.rule: Host(`hydra.${ACME_DOMAIN}`)
 
     # https://hub.docker.com/_/traefik/
@@ -232,7 +232,9 @@ services:
             - "--certificatesresolvers.le.acme.email=${ACME_EMAIL}"
         labels:
             traefik.enable: true
+            traefik.http.routers.traefik.tls.certresolver: le
             traefik.http.routers.traefik.rule: Host(`traefik.${ACME_DOMAIN}`)
+            traefik.http.routers.traefik.middlewares: basicauth, secureheaders
             traefik.http.middlewares.basicauth.basicauth.users: ${HTPASSWD}
             traefik.http.middlewares.secureheaders.headers.stsSeconds: 15552000
             traefik.http.middlewares.secureheaders.headers.framedeny: true
