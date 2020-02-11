@@ -162,7 +162,7 @@
   network = 'traefik'
 
   # Enable ACME (Let's Encrypt): automatic SSL.
-[acme]
+[certificatesResolvers.le.acme]
   # File or key used for certificates storage.
   #
   # Required
@@ -199,7 +199,7 @@
 # Use a DNS-01 ACME challenge rather than HTTP-01 challenge.
 # Note: mandatory for wildcard certificate generation.
 
-[acme.dnsChallenge]
+[acertificatesResolvers.le.acme.dnsChallenge]
 
   # DNS provider used.
   #
