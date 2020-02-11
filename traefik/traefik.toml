@@ -169,12 +169,6 @@
   #
   storage = "acme.json"
   # or `storage = "traefik/acme/account"` if using KV store.
-  
-  # Enable watch docker changes.
-  #
-  # Optional
-  #
-  watch = true
 
   #Choose Type of Key used for Certificate
   keyType = 'RSA4096'
