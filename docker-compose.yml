@@ -136,7 +136,7 @@ services:
     # https://hub.docker.com/r/linuxserver/radarr/
     radarr:
         container_name: radarr
-        image: linuxserver/radarr:preview
+        image: linuxserver/radarr:latest
         restart: unless-stopped
         environment:
             PUID: '${PUID}'
@@ -190,7 +190,7 @@ services:
     # https://hub.docker.com/_/traefik/
     traefik:
         container_name: traefik
-        image: traefik:v2.1.0-rc2
+        image: traefik:latest
         restart: unless-stopped
         environment:
             TZ: '${TZ}'
@@ -202,8 +202,7 @@ services:
             - '443:443/tcp'
         volumes:
             - '/var/run/docker.sock:/var/run/docker.sock:ro'
-            - './traefik.toml:/traefik.toml'
-            - './acme.json:/acme.json'
+            - './traefik.toml:/etc/traefik//traefik.toml'
         privileged: true
         command:
             - "--certificatesresolvers.le.acme.email=${ACME_EMAIL}"
