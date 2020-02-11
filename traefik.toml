@@ -24,12 +24,9 @@
 [entryPoints]
   [entryPoints.http]
     address = ":80"
-  [entryPoints.http.redirect]
-    entryPoint = "https"
 
   [entryPoints.https]
     address = ":443"
-    [entryPoints.https.tls]
 
 ################################################################
 # Traefik logs configuration
@@ -133,7 +130,6 @@
 [http.middlewares]
   [http.middlewares.redirectscheme.redirectScheme]
     scheme = "https"
-    permanent = true
   [http.middlewares.secureheaders.headers]
     framedeny = true
     sslForceHost = true
