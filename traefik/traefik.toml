@@ -169,12 +169,6 @@
   #
   storage = "acme.json"
   # or `storage = "traefik/acme/account"` if using KV store.
-
-  # Entrypoint to proxy acme apply certificates to.
-  #
-  # Required
-  #
-  entryPoint = "https"
   
   # Enable watch docker changes.
   #
