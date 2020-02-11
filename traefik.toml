@@ -143,13 +143,6 @@
     customFrameOptionsValue = 'SAMEORIGIN'
     [http.middlewares.secureheaders.headers.customResponseHeaders]
       X-Robots-Tag = 'none'
-
-[http.routers.traefik]
-  entrypoints = 'https'
-  middlewares = ['basicauth', 'secureheaders']
-  service = 'api@internal'
-  [http.routers.traefik.tls]
-    certresolver = 'le'
 ################################################################
 # Docker configuration backend
 ################################################################
