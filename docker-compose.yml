@@ -23,7 +23,7 @@ services:
             traefik.enable: true
             traefik.docker.network: traefik
             traefik.http.routers.plex.entrypoints: https
-            traefik.http.routers.plex.tls.certresolver: acme
+            traefik.http.routers.plex.tls.certresolver: le
             traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`))
             #traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`) || Host(`${ACME_DOMAIN}`)
             traefik.http.services.plex_mediaserver.loadbalancer.server.port: 32400
@@ -77,7 +77,7 @@ services:
             traefik.port: 6789
             traefik.docker.network: traefik
             traefik.http.routers.nzbget.entrypoints: https
-            traefik.http.routers.nzbget.tls.certresolver: acme
+            traefik.http.routers.nzbget.tls.certresolver: le
             traefik.http.routers.nzbget.rule: Host(`nzbget.${ACME_DOMAIN}`)
 
     # https://hub.docker.com/r/linuxserver/ombi/
@@ -101,7 +101,7 @@ services:
             traefik.port: 3579
             traefik.docker.network: traefik
             traefik.http.routers.nzbget.entrypoints: https
-            traefik.http.routers.nzbget.tls.certresolver: acme
+            traefik.http.routers.nzbget.tls.certresolver: le
             traefik.http.routers.nzbget.rule: Host(`ombi.${ACME_DOMAIN}`)
 
     # https://hub.docker.com/r/linuxserver/qbittorrent/
@@ -128,7 +128,7 @@ services:
             traefik.port: 6880
             traefik.docker.network: traefik
             traefik.http.routers.qbittorrent.entrypoints: https
-            traefik.http.routers.qbittorrent.tls.certresolver: acme
+            traefik.http.routers.qbittorrent.tls.certresolver: le
             traefik.http.routers.qbittorrent.rule: Host(`qbittorrent.${ACME_DOMAIN}`)
 
     # https://hub.docker.com/r/linuxserver/sonarr/
@@ -153,7 +153,7 @@ services:
             traefik.port: 8989
             traefik.docker.network: traefik
             traefik.http.routers.sonarr.entrypoints: https
-            traefik.http.routers.sonarr.tls.certresolver: acme
+            traefik.http.routers.sonarr.tls.certresolver: le
             traefik.http.routers.sonarr.rule: Host(`sonarr.${ACME_DOMAIN}`)
         links:
             - hydra
@@ -229,7 +229,7 @@ services:
             - './traefik.toml:/etc/traefik//traefik.toml'
         privileged: true
         command:
-            - "--certificatesresolvers.acme.email=${ACME_EMAIL}"
+            - "--certificatesresolvers.le.acme.email=${ACME_EMAIL}"
         labels:
             traefik.enable: true
             traefik.http.routers.traefik.rule: Host(`traefik.${ACME_DOMAIN}`)
