@@ -182,12 +182,6 @@
   #
   watch = true
 
-  # If true, display debug log messages from the acme client library.
-  acmeLogging = true
-  
-  # Enable certificate generation on frontends host rules.
-  onHostRule = true
-
   #Choose Type of Key used for Certificate
   keyType = 'RSA4096'
 
