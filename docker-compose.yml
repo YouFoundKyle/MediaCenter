@@ -191,26 +191,8 @@ services:
             - '/var/run/docker.sock:/var/run/docker.sock:ro'
             - './traefik.toml:/etc/traefik//traefik.toml'
         privileged: true
-        command:
-            - "--log.level=DEBUG"
-            - "--api=true"
-            - "--api.dashboard=true"
-            - "--global.sendanonymoususage=false"
-            - "--serverstransport.insecureskipverify"
-            - "--entrypoints.http.address=:80"
-            - "--entrypoints.https.address=:443"
-            - "--providers.docker=true"
-            - "--providers.docker.exposedbydefault=false"
-            - "--certificatesresolvers.le.acme.dnsChallenge=true"
-            - "--certificatesResolvers.le.acme.dnsChallenge.provider=cloudflare"
-            - "--certificatesResolvers.le.acme.dnsChallenge.delayBeforeCheck=0"
-            - "--certificatesResolvers.le.acme.dnsChallenge.resolvers=1.1.1.1,1.0.0.1"
-            - "--certificatesResolvers.le.acme.storage=acme.json"
-            #- "--certificatesResolvers.tlschallenge.acme.tlschallenge=true"
-            #- "--certificatesresolvers.tlschallenge.acme.storage=/etc/traefik/acme.json"
-            - "--certificatesresolvers.le.acme.email=${ACME_EMAIL}"
-            - "--certificatesresolvers.le.acme.caserver=https://acme-v02.api.letsencrypt.org/directory"
-            - "--certificatesResolvers.le.acme.keyType=RSA4096"
+        # command:
+        #     - "--certificatesresolvers.le.acme.email=${ACME_EMAIL}"
         labels:
             traefik.enable: true
             traefik.http.routers.traefik.rule: Host(`traefik.${ACME_DOMAIN}`)
