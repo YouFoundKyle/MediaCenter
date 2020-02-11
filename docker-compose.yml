@@ -184,8 +184,6 @@ services:
             traefik.http.routers.hydra.entrypoints: https
             traefik.http.routers.hydra.tls.certresolver: le
             traefik.http.routers.hydra.rule: Host(`hydra.${ACME_DOMAIN}`)
-            #traefik.http.routers.hydra.rule: (Host(`${ACME_DOMAIN}`) && PathPrefix(`/hydra`))
-            #traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && Path(`/hydra`))
 
     # https://hub.docker.com/_/traefik/
     traefik:
@@ -208,7 +206,7 @@ services:
             - "--certificatesresolvers.le.acme.email=${ACME_EMAIL}"
         labels:
             traefik.enable: true
-            traefik.http.routers.traefik.rule: (Host(`traefik.${ACME_DOMAIN}`))
+            traefik.http.routers.traefik.rule: Host(`traefik.${ACME_DOMAIN}`)
             traefik.http.middlewares.basicauth.basicauth.users: ${HTPASSWD}
 
 
