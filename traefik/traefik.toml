@@ -199,7 +199,7 @@
 # Use a DNS-01 ACME challenge rather than HTTP-01 challenge.
 # Note: mandatory for wildcard certificate generation.
 
-[le.acme.dnsChallenge]
+[acme.dnsChallenge]
 
   # DNS provider used.
   #
