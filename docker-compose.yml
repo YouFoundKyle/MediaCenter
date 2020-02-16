@@ -4,8 +4,7 @@ services:
     # https://hub.docker.com/r/linuxserver/nextcloud
     nextcloud:
         container_name: nextcloud
-        image: nextcloud
-        command: '-h ${ACME_DOMAIN}'
+        image: linuxserver/nextcloud
         restart: unless-stopped
         environment: 
             MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
