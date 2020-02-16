@@ -27,12 +27,15 @@ services:
 
     mariadb:
         image: mariadb
-        #command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+        command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
         restart: always
         volumes:
             - '${MARIADB_DIR}:/var/lib/mysql'
         environment:
-            - 'MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}'
+            PUID: '${PUID}'
+            PGID: '${PGID}'
+            TZ: '${TZ}'
+            MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
  
     # https://hub.docker.com/r/plexinc/pms-docker
     plex:
