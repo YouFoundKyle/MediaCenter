@@ -25,9 +25,9 @@ services:
             traefik.http.routers.nextcloud.tls.certresolver: le
             traefik.http.routers.nextcloud.rule: Host(`nextcloud.${ACME_DOMAIN}`)
 
-    db:
+    mariadb:
         image: mariadb
-        command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+        #command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
         restart: always
         volumes:
             - '${MARIADB_DIR}:/var/lib/mysql'
