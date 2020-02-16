@@ -130,7 +130,8 @@
 [http.middlewares]
   [http.middlewares.redirectscheme.redirectScheme]
     scheme = "https"
-[http.middlewares.traefik.secureheaders.headers]
+    permanent = true
+[http.routers.traefik.middlewares.secureheaders.headers]
   framedeny = true
   sslForceHost = true
   sslRedirect = true
@@ -141,7 +142,7 @@
   stsPreload = true
   stsSeconds = 15552000
   customFrameOptionsValue = 'SAMEORIGIN'
-  [http.middlewares.traefik.secureheaders.headers.customResponseHeaders]
+  [http.routers.traefik.middlewares.secureheaders.headers.customResponseHeaders]
     X-Robots-Tag = 'none'
 ################################################################
 # Docker configuration backend
