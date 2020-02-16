@@ -7,16 +7,16 @@ services:
         image: nextcloud:fpm
         restart: unless-stopped
         environment: 
-            - 'MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}'
-            - 'MYSQL_DATABASE=${MYSQL_DATABASE}'
-            - 'MYSQL_USER=${MYSQL_USER}'
+            - MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
+            - MYSQL_DATABASE: '${MYSQL_DATABASE}'
+            - MYSQL_USER: '${MYSQL_USER}'
         networks:
             - traefik
         ports:
             -'9191:80'
         volumes: 
             -'${CONFIG_DIR}/nextcloud:/var/www/html'
-            -'${NEXTCLOUD_DATA_DIR}=/var/www/html/data'
+            -'${NEXTCLOUD_DATA_DIR}:/var/www/html/data'
         labels:
             traefik.enable: true
             traefik.port: 9191
