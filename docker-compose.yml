@@ -5,7 +5,7 @@ services:
     nextcloud:
         container_name: nextcloud
         image: nextcloud
-        command: '-h ${ACME_DOMAIN}''
+        command: '-h ${ACME_DOMAIN}'
         restart: unless-stopped
         environment: 
             MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
