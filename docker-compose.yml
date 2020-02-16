@@ -16,7 +16,7 @@ services:
         networks:
             - traefik
         ports:
-            - '9191:80'
+            - '9191:443'
         volumes: 
             - '${CONFIG_DIR}/nextcloud:/config'
             - '${NEXTCLOUD_DATA_DIR}:/data'
