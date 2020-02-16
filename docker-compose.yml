@@ -249,7 +249,7 @@ services:
             traefik.enable: true
             traefik.http.routers.traefik.tls.certresolver: le
             traefik.http.routers.traefik.rule: Host(`traefik.${ACME_DOMAIN}`)
-            traefik.http.routers.traefik.middlewares: basicauth, secureheaders
+            traefik.http.routers.traefik.middlewares: basicauth
             traefik.http.middlewares.basicauth.basicauth.users: ${HTPASSWD}
             traefik.http.routers.http.rule: HostRegexp(`${ACME_DOMAIN}`, `{subdomain:[a-z]+}.${ACME_DOMAIN}`)
 
