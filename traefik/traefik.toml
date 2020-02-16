@@ -125,25 +125,6 @@
 ################################################################
 [serversTransport]
   insecureSkipVerify = true
-
-[http.routers]
-[http.middlewares]
-  [http.middlewares.redirectscheme.redirectScheme]
-    scheme = "https"
-    permanent = true
-[http.routers.traefik.middlewares.secureheaders.headers]
-  framedeny = true
-  sslForceHost = true
-  sslRedirect = true
-  stsIncludeSubdomains = true
-  browserXssFilter = true
-  contentTypeNosniff = true
-  forceSTSHeader = true
-  stsPreload = true
-  stsSeconds = 15552000
-  customFrameOptionsValue = 'SAMEORIGIN'
-  [http.routers.traefik.middlewares.secureheaders.headers.customResponseHeaders]
-    X-Robots-Tag = 'none'
 ################################################################
 # Docker configuration backend
 ################################################################
