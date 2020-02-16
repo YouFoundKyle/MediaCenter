@@ -1,6 +1,39 @@
 version: '3.7'
 services:
 
+    #https://hub.docker.com/_/nextcloud/
+    nextcloud:
+        container_name: nextcloud
+        image: nextcloud:fpm
+        restart: unless-stopped
+        environment: 
+            - 'MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}'
+            - 'MYSQL_DATABASE=${MYSQL_DATABASE}'
+            - 'MYSQL_USER=${MYSQL_USER}'
+        networks:
+            - traefik
+        ports:
+            -'9191:80'
+        volumes: 
+            -'${CONFIG_DIR}/nextcloud:/var/www/html'
+            -'${NEXTCLOUD_DATA_DIR}=/var/www/html/data'
+        labels:
+            traefik.enable: true
+            traefik.port: 9191
+            traefik.docker.network: traefik
+            traefik.http.routers.nextcloud.entrypoints: https
+            traefik.http.routers.nextcloud.tls.certresolver: le
+            traefik.http.routers.nextcloud.rule: Host(`nextcloud.${ACME_DOMAIN}`)
+
+    mariadb:
+        image: mariadb
+        command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+        restart: always
+        volumes:
+        - '${MARIADB_DIR}:/var/lib/mysql'
+        environment:
+        - 'MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}'
+ 
     # https://hub.docker.com/r/plexinc/pms-docker
     plex:
         container_name: plex
@@ -17,17 +50,16 @@ services:
             - '32400:32400/tcp'
         volumes:
             - '${CONFIG_DIR}/plex:/config'
-            - '${MEDIA_DIR}:/media'
-            - '/tmp:/tmp'
+            - '${MEDIA_DIR}/tv:/tv'
+            - '${MEDIA_DIR}/movies:/movies'
         labels:
             traefik.enable: true
             traefik.docker.network: traefik
+            traefik.port: 32400
             traefik.http.routers.plex.entrypoints: https
             traefik.http.routers.plex.tls.certresolver: le
-            traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`))
-            #traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`) || Host(`${ACME_DOMAIN}`)
-            traefik.http.services.plex_mediaserver.loadbalancer.server.port: 32400
-            traefik.http.services.plex_mediaserver.loadbalancer.server.scheme: http
+            #traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`))
+            traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`) || Host(`${ACME_DOMAIN}`)
 
     # # https://hub.docker.com/r/linuxserver/nzbget/
     # nzbget:
@@ -155,9 +187,7 @@ services:
             traefik.http.routers.sonarr.entrypoints: https
             traefik.http.routers.sonarr.tls.certresolver: le
             traefik.http.routers.sonarr.rule: Host(`sonarr.${ACME_DOMAIN}`)
-        links:
-            - hydra
-            - qbittorrent
+
 
     # https://hub.docker.com/r/linuxserver/radarr/
     radarr:
@@ -183,9 +213,7 @@ services:
             traefik.http.routers.radarr.entrypoints: https
             traefik.http.routers.radarr.tls.certresolver: le
             traefik.http.routers.radarr.rule: Host(`radarr.${ACME_DOMAIN}`)
-        links:
-            - hydra
-            - qbittorrent
+
 
     # https://hub.docker.com/r/linuxserver/hydra2/
     hydra:
@@ -236,17 +264,8 @@ services:
             traefik.http.routers.traefik.rule: Host(`traefik.${ACME_DOMAIN}`)
             traefik.http.routers.traefik.middlewares: basicauth, secureheaders
             traefik.http.middlewares.basicauth.basicauth.users: ${HTPASSWD}
-            traefik.http.middlewares.secureheaders.headers.stsSeconds: 15552000
-            traefik.http.middlewares.secureheaders.headers.framedeny: true
-            traefik.http.middlewares.secureheaders.headers.sslForceHost: true
-            traefik.http.middlewares.secureheaders.headers.sslRedirect: true
-            traefik.http.middlewares.secureheaders.headers.stsIncludeSubdomains: true
-            traefik.http.middlewares.secureheaders.headers.browserXssFilter: true
-            traefik.http.middlewares.secureheaders.headers.contentTypeNosniff: true
-            traefik.http.middlewares.secureheaders.headers.forceSTSHeader: true
-            traefik.http.middlewares.secureheaders.headers.stsPreload: true
-            traefik.http.middlewares.secureheaders.headers.customResponseHeaders.X-Robots-Tag: none
-            traefik.http.middlewares.secureheaders.headers.customFrameOptionsValue: SAMEORIGIN
+            traefik.http.routers.http.rule: HostRegexp(`${ACME_DOMAIN}`, `{subdomain:[a-z]+}.${ACME_DOMAIN}`)
+            traefik.http.routers.http.middlewares: redirectscheme
 
 networks:
     traefik:
