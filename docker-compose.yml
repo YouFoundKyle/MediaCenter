@@ -7,9 +7,9 @@ services:
         image: nextcloud:fpm
         restart: unless-stopped
         environment: 
-            - MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
-            - MYSQL_DATABASE: '${MYSQL_DATABASE}'
-            - MYSQL_USER: '${MYSQL_USER}'
+            MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
+            MYSQL_DATABASE: '${MYSQL_DATABASE}'
+            MYSQL_USER: '${MYSQL_USER}'
         networks:
             - traefik
         ports:
@@ -30,9 +30,9 @@ services:
         command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
         restart: always
         volumes:
-        - '${MARIADB_DIR}:/var/lib/mysql'
+            - '${MARIADB_DIR}:/var/lib/mysql'
         environment:
-        - 'MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}'
+            - 'MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}'
  
     # https://hub.docker.com/r/plexinc/pms-docker
     plex:
