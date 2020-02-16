@@ -4,7 +4,7 @@ services:
     # https://hub.docker.com/r/linuxserver/nextcloud
     nextcloud:
         container_name: nextcloud
-        image: linuxserver/nextcloud
+        image: nextcloud
         restart: unless-stopped
         environment: 
             MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
@@ -28,9 +28,9 @@ services:
             traefik.http.routers.nextcloud.tls.certresolver: le
             traefik.http.routers.nextcloud.rule: Host(`nextcloud.${ACME_DOMAIN}`)
 
-    # https://hub.docker.com/_/mariadb
+    # https://hub.docker.com/r/linuxserver/mariadb/
     mariadb:
-        container_name: mariadb
+        container_name: linuxserver/mariadb
         image: mariadb
         command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
         restart: always
