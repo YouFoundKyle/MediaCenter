@@ -47,32 +47,32 @@ services:
             traefik.port: 3306
             traefik.docker.network: traefik
  
-    # https://hub.docker.com/r/plexinc/pms-docker
-    plex:
-        container_name: plex
-        image: plexinc/pms-docker:latest
-        restart: unless-stopped
-        environment:
-            PLEX_UID: '${PUID}'
-            PLEX_GID: '${PGID}'
-            TZ: '${TZ}'
-            PLEX_CLAIM: '${PLEX_CLAIM}'
-        networks:
-            - traefik
-        ports:
-            - '32400:32400/tcp'
-        volumes:
-            - '${CONFIG_DIR}/plex:/config'
-            - '${MEDIA_DIR}/tv:/tv'
-            - '${MEDIA_DIR}/movies:/movies'
-        labels:
-            traefik.enable: true
-            traefik.docker.network: traefik
-            traefik.port: 32400
-            traefik.http.routers.plex.entrypoints: https
-            traefik.http.routers.plex.tls.certresolver: le
-            #traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`))
-            traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`) || Host(`${ACME_DOMAIN}`)
+    # # https://hub.docker.com/r/plexinc/pms-docker
+    # plex:
+    #     container_name: plex
+    #     image: plexinc/pms-docker:latest
+    #     restart: unless-stopped
+    #     environment:
+    #         PLEX_UID: '${PUID}'
+    #         PLEX_GID: '${PGID}'
+    #         TZ: '${TZ}'
+    #         PLEX_CLAIM: '${PLEX_CLAIM}'
+    #     networks:
+    #         - traefik
+    #     ports:
+    #         - '32400:32400/tcp'
+    #     volumes:
+    #         - '${CONFIG_DIR}/plex:/config'
+    #         - '${MEDIA_DIR}/tv:/tv'
+    #         - '${MEDIA_DIR}/movies:/movies'
+    #     labels:
+    #         traefik.enable: true
+    #         traefik.docker.network: traefik
+    #         traefik.port: 32400
+    #         traefik.http.routers.plex.entrypoints: https
+    #         traefik.http.routers.plex.tls.certresolver: le
+    #         #traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`))
+    #         traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`) || Host(`${ACME_DOMAIN}`)
 
     # # https://hub.docker.com/r/linuxserver/nzbget/
     # nzbget:
@@ -101,156 +101,156 @@ services:
     #         #traefik.http.routers.nzbget.rule: (Host(`${ACME_DOMAIN}`) && Path(`/nzbget`))
     #         #traefik.frontend.rule:  (Host(`${ACME_DOMAIN}`) && PathPrefixStrip(`/nzbget`))
 
-    # https://hub.docker.com/r/linuxserver/nzbget/
-    nzbget:
-        container_name: nzbget
-        image: linuxserver/nzbget:latest
-        restart: unless-stopped
-        environment:
-            PUID: '${PUID}'
-            PGID: '${PGID}'
-            TZ: '${TZ}'
-        networks:
-            - traefik
-        volumes:
-            - '${CONFIG_DIR}/nzbget:/config'
-            - '${DOWNLOADS_DIR}:/downloads'
-        ports:
-            - '6789:6789/tcp'
-        labels:
-            traefik.enable: true
-            traefik.port: 6789
-            traefik.docker.network: traefik
-            traefik.http.routers.nzbget.entrypoints: https
-            traefik.http.routers.nzbget.tls.certresolver: le
-            traefik.http.routers.nzbget.rule: Host(`nzbget.${ACME_DOMAIN}`)
+    # # https://hub.docker.com/r/linuxserver/nzbget/
+    # nzbget:
+    #     container_name: nzbget
+    #     image: linuxserver/nzbget:latest
+    #     restart: unless-stopped
+    #     environment:
+    #         PUID: '${PUID}'
+    #         PGID: '${PGID}'
+    #         TZ: '${TZ}'
+    #     networks:
+    #         - traefik
+    #     volumes:
+    #         - '${CONFIG_DIR}/nzbget:/config'
+    #         - '${DOWNLOADS_DIR}:/downloads'
+    #     ports:
+    #         - '6789:6789/tcp'
+    #     labels:
+    #         traefik.enable: true
+    #         traefik.port: 6789
+    #         traefik.docker.network: traefik
+    #         traefik.http.routers.nzbget.entrypoints: https
+    #         traefik.http.routers.nzbget.tls.certresolver: le
+    #         traefik.http.routers.nzbget.rule: Host(`nzbget.${ACME_DOMAIN}`)
 
-    # https://hub.docker.com/r/linuxserver/ombi/
-    ombi:
-        container_name: ombi
-        image: linuxserver/ombi:latest
-        restart: unless-stopped
-        environment:
-            PUID: '${PUID}'
-            PGID: '${PGID}'
-            TZ: '${TZ}'
-        networks:
-            - traefik
-        volumes:
-            - '${CONFIG_DIR}/ombi:/config'
-            - '${DOWNLOADS_DIR}:/downloads'
-        ports:
-            - '3579:3579'
-        labels:
-            traefik.enable: true
-            traefik.port: 3579
-            traefik.docker.network: traefik
-            traefik.http.routers.nzbget.entrypoints: https
-            traefik.http.routers.nzbget.tls.certresolver: le
-            traefik.http.routers.nzbget.rule: Host(`ombi.${ACME_DOMAIN}`)
+    # # https://hub.docker.com/r/linuxserver/ombi/
+    # ombi:
+    #     container_name: ombi
+    #     image: linuxserver/ombi:latest
+    #     restart: unless-stopped
+    #     environment:
+    #         PUID: '${PUID}'
+    #         PGID: '${PGID}'
+    #         TZ: '${TZ}'
+    #     networks:
+    #         - traefik
+    #     volumes:
+    #         - '${CONFIG_DIR}/ombi:/config'
+    #         - '${DOWNLOADS_DIR}:/downloads'
+    #     ports:
+    #         - '3579:3579'
+    #     labels:
+    #         traefik.enable: true
+    #         traefik.port: 3579
+    #         traefik.docker.network: traefik
+    #         traefik.http.routers.nzbget.entrypoints: https
+    #         traefik.http.routers.nzbget.tls.certresolver: le
+    #         traefik.http.routers.nzbget.rule: Host(`ombi.${ACME_DOMAIN}`)
 
-    # https://hub.docker.com/r/linuxserver/qbittorrent/
-    qbittorrent:
-        container_name: qbittorrent
-        image: linuxserver/qbittorrent:latest
-        restart: unless-stopped
-        environment:
-            PUID: '${PUID}'
-            PGID: '${PGID}'
-            TZ: '${TZ}'
-            WEBUI_PORT: '6880'
-        networks:
-            - traefik
-        volumes:
-            - '${CONFIG_DIR}/qbittorrent:/config'
-            - '${DOWNLOADS_DIR}:/downloads'
-        ports:
-            - '6881:6881'
-            - '6881:6881/udp'
-            - '6880:6880'
-        labels:
-            traefik.enable: true
-            traefik.port: 6880
-            traefik.docker.network: traefik
-            traefik.http.routers.qbittorrent.entrypoints: https
-            traefik.http.routers.qbittorrent.tls.certresolver: le
-            traefik.http.routers.qbittorrent.rule: Host(`qbittorrent.${ACME_DOMAIN}`)
+    # # https://hub.docker.com/r/linuxserver/qbittorrent/
+    # qbittorrent:
+    #     container_name: qbittorrent
+    #     image: linuxserver/qbittorrent:latest
+    #     restart: unless-stopped
+    #     environment:
+    #         PUID: '${PUID}'
+    #         PGID: '${PGID}'
+    #         TZ: '${TZ}'
+    #         WEBUI_PORT: '6880'
+    #     networks:
+    #         - traefik
+    #     volumes:
+    #         - '${CONFIG_DIR}/qbittorrent:/config'
+    #         - '${DOWNLOADS_DIR}:/downloads'
+    #     ports:
+    #         - '6881:6881'
+    #         - '6881:6881/udp'
+    #         - '6880:6880'
+    #     labels:
+    #         traefik.enable: true
+    #         traefik.port: 6880
+    #         traefik.docker.network: traefik
+    #         traefik.http.routers.qbittorrent.entrypoints: https
+    #         traefik.http.routers.qbittorrent.tls.certresolver: le
+    #         traefik.http.routers.qbittorrent.rule: Host(`qbittorrent.${ACME_DOMAIN}`)
 
-    # https://hub.docker.com/r/linuxserver/sonarr/
-    sonarr:
-        container_name: sonarr
-        image: linuxserver/sonarr:latest
-        restart: unless-stopped
-        environment:
-            PUID: '${PUID}'
-            PGID: '${PGID}'
-            TZ: '${TZ}'
-        networks:
-            - traefik
-        volumes:
-            - '${CONFIG_DIR}/sonarr:/config'
-            - '${DOWNLOADS_DIR}:/downloads'
-            - '${MEDIA_DIR}:/media'
-        ports:
-            - '8989:8989/tcp'
-        labels:
-            traefik.enable: true
-            traefik.port: 8989
-            traefik.docker.network: traefik
-            traefik.http.routers.sonarr.entrypoints: https
-            traefik.http.routers.sonarr.tls.certresolver: le
-            traefik.http.routers.sonarr.rule: Host(`sonarr.${ACME_DOMAIN}`)
-
-
-    # https://hub.docker.com/r/linuxserver/radarr/
-    radarr:
-        container_name: radarr
-        image: linuxserver/radarr:latest
-        restart: unless-stopped
-        environment:
-            PUID: '${PUID}'
-            PGID: '${PGID}'
-            TZ: '${TZ}'
-        networks:
-            - traefik
-        volumes:
-            - '${CONFIG_DIR}/radarr:/config'
-            - '${DOWNLOADS_DIR}:/downloads'
-            - '${MEDIA_DIR}:/media'
-        ports:
-            - '7878:7878/tcp'
-        labels:
-            traefik.enable: true
-            traefik.port: 7878
-            traefik.docker.network: traefik
-            traefik.http.routers.radarr.entrypoints: https
-            traefik.http.routers.radarr.tls.certresolver: le
-            traefik.http.routers.radarr.rule: Host(`radarr.${ACME_DOMAIN}`)
+    # # https://hub.docker.com/r/linuxserver/sonarr/
+    # sonarr:
+    #     container_name: sonarr
+    #     image: linuxserver/sonarr:latest
+    #     restart: unless-stopped
+    #     environment:
+    #         PUID: '${PUID}'
+    #         PGID: '${PGID}'
+    #         TZ: '${TZ}'
+    #     networks:
+    #         - traefik
+    #     volumes:
+    #         - '${CONFIG_DIR}/sonarr:/config'
+    #         - '${DOWNLOADS_DIR}:/downloads'
+    #         - '${MEDIA_DIR}:/media'
+    #     ports:
+    #         - '8989:8989/tcp'
+    #     labels:
+    #         traefik.enable: true
+    #         traefik.port: 8989
+    #         traefik.docker.network: traefik
+    #         traefik.http.routers.sonarr.entrypoints: https
+    #         traefik.http.routers.sonarr.tls.certresolver: le
+    #         traefik.http.routers.sonarr.rule: Host(`sonarr.${ACME_DOMAIN}`)
 
 
-    # https://hub.docker.com/r/linuxserver/hydra2/
-    hydra:
-        container_name: hydra
-        image: linuxserver/hydra2:latest
-        restart: unless-stopped
-        environment:
-            PUID: '${PUID}'
-            PGID: '${PGID}'
-            TZ: '${TZ}'
-        networks:
-            - traefik
-        volumes:
-            - '${CONFIG_DIR}/hydra:/config'
-            - '${DOWNLOADS_DIR}:/downloads'
-        ports:
-            - '5076:5076/tcp'
-        labels:
-            traefik.enable: true
-            traefik.port: 5076
-            traefik.docker.network: traefik
-            traefik.http.routers.hydra.entrypoints: https
-            traefik.http.routers.hydra.tls.certresolver: le
-            traefik.http.routers.hydra.rule: Host(`hydra.${ACME_DOMAIN}`)
+    # # https://hub.docker.com/r/linuxserver/radarr/
+    # radarr:
+    #     container_name: radarr
+    #     image: linuxserver/radarr:latest
+    #     restart: unless-stopped
+    #     environment:
+    #         PUID: '${PUID}'
+    #         PGID: '${PGID}'
+    #         TZ: '${TZ}'
+    #     networks:
+    #         - traefik
+    #     volumes:
+    #         - '${CONFIG_DIR}/radarr:/config'
+    #         - '${DOWNLOADS_DIR}:/downloads'
+    #         - '${MEDIA_DIR}:/media'
+    #     ports:
+    #         - '7878:7878/tcp'
+    #     labels:
+    #         traefik.enable: true
+    #         traefik.port: 7878
+    #         traefik.docker.network: traefik
+    #         traefik.http.routers.radarr.entrypoints: https
+    #         traefik.http.routers.radarr.tls.certresolver: le
+    #         traefik.http.routers.radarr.rule: Host(`radarr.${ACME_DOMAIN}`)
+
+
+    # # https://hub.docker.com/r/linuxserver/hydra2/
+    # hydra:
+    #     container_name: hydra
+    #     image: linuxserver/hydra2:latest
+    #     restart: unless-stopped
+    #     environment:
+    #         PUID: '${PUID}'
+    #         PGID: '${PGID}'
+    #         TZ: '${TZ}'
+    #     networks:
+    #         - traefik
+    #     volumes:
+    #         - '${CONFIG_DIR}/hydra:/config'
+    #         - '${DOWNLOADS_DIR}:/downloads'
+    #     ports:
+    #         - '5076:5076/tcp'
+    #     labels:
+    #         traefik.enable: true
+    #         traefik.port: 5076
+    #         traefik.docker.network: traefik
+    #         traefik.http.routers.hydra.entrypoints: https
+    #         traefik.http.routers.hydra.tls.certresolver: le
+    #         traefik.http.routers.hydra.rule: Host(`hydra.${ACME_DOMAIN}`)
 
     # https://hub.docker.com/_/traefik/
     traefik:
