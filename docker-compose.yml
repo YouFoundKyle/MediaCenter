@@ -10,6 +10,7 @@ services:
             MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
             MYSQL_DATABASE: '${MYSQL_DATABASE}'
             MYSQL_USER: '${MYSQL_USER}'
+            NEXTCLOUD_DATA_DIR: '/data'
             PUID: '${PUID}'
             PGID: '${PGID}'
             TZ: '${TZ}'
@@ -36,12 +37,16 @@ services:
         command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
         restart: always
         volumes:
-            - '${MARIADB_DIR}:/config'
+            - '${MARIADB_DIR}/config:/config'
+            - '${MARIADB_DIR}/mysql:/var/lib/mysql'
         environment:
             PUID: '${PUID}'
             PGID: '${PGID}'
             TZ: '${TZ}'
             MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
+            MYSQL_USER: '${MYSQL_USER}'
+            MYSQL_PASSWORD: '{MYSQL_PASSWORD}'
+            MYSQL_DATABASE: '${MYSQL_DATABASE}'
         ports:
             - '3306:3306'
         labels: 
