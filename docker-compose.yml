@@ -6,13 +6,12 @@ services:
         container_name: nextcloud
         image: nextcloud
         restart: unless-stopped
+        user: "${PUID}:${PGID}"
         environment: 
             MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
             MYSQL_DATABASE: '${MYSQL_DATABASE}'
             MYSQL_USER: '${MYSQL_USER}'
             NEXTCLOUD_DATA_DIR: '/data'
-            PUID: '${PUID}'
-            PGID: '${PGID}'
             TZ: '${TZ}'
         networks:
             - traefik
@@ -39,9 +38,8 @@ services:
         volumes:
             - '${MARIADB_DIR}/config:/config'
             - '${MARIADB_DIR}/mysql:/var/lib/mysql'
+        user: "${PUID}:${PGID}"
         environment:
-            PUID: '${PUID}'
-            PGID: '${PGID}'
             TZ: '${TZ}'
             MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
             MYSQL_USER: '${MYSQL_USER}'
