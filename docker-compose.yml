@@ -4,7 +4,7 @@ services:
     # https://hub.docker.com/r/linuxserver/nextcloud
     nextcloud:
         container_name: nextcloud
-        image: nextcloud:fpm
+        image: linuxserver/nextcloud
         restart: unless-stopped
         user: '${PUID}:${PGID}'
         environment: 
@@ -13,7 +13,8 @@ services:
             MYSQL_USER: '${MYSQL_USER}'
             NEXTCLOUD_DATA_DIR: '/data'
             TZ: '${TZ}'
-        user: '${PUID}'
+            PUID: '${PUID}'
+            PGID: '${PGID}'
         networks:
             - traefik
         ports:
@@ -33,19 +34,21 @@ services:
     # https://hub.docker.com/_/mariadb
     mariadb:
         container_name: mariadb
-        image: mariadb
+        image: linuxserver/mariadb
         command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
         restart: always
         volumes:
             - '${MARIADB_DIR}/config:/config'
             - '${MARIADB_DIR}/mysql:/var/lib/mysql'
-        user: '${PUID}'
+        #user: '${PUID}:${PGID}'
         environment:
             TZ: '${TZ}'
             MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
             MYSQL_USER: '${MYSQL_USER}'
             MYSQL_PASSWORD: '{MYSQL_PASSWORD}'
             MYSQL_DATABASE: '${MYSQL_DATABASE}'
+            PUID: '${PUID}'
+            PGID: '${PGID}'
         ports:
             - '3306:3306'
         labels: 
