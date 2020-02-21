@@ -6,7 +6,7 @@ services:
         container_name: nextcloud
         image: nextcloud:fpm
         restart: unless-stopped
-        #user: ${PUID}:${PGID}
+        user: ${PUID}:${PGID}
         environment: 
             MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
             MYSQL_DATABASE: '${MYSQL_DATABASE}'
@@ -38,7 +38,7 @@ services:
         volumes:
             - '${MARIADB_DIR}/config:/config'
             - '${MARIADB_DIR}/mysql:/var/lib/mysql'
-        #user: ${PUID}:${PGID}
+        user: ${PUID}:${PGID}
         environment:
             TZ: '${TZ}'
             MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
