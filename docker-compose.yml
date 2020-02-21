@@ -6,7 +6,7 @@ services:
         container_name: nextcloud
         image: nextcloud
         restart: unless-stopped
-        user: '${PUID}:${PGID}'
+        #user: '${PUID}:${PGID}'
         environment: 
             MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
             MYSQL_DATABASE: '${MYSQL_DATABASE}'
