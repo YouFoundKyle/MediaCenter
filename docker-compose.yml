@@ -13,7 +13,7 @@ services:
             MYSQL_USER: '${MYSQL_USER}'
             NEXTCLOUD_DATA_DIR: '/data'
             TZ: '${TZ}'
-        user: ${PUID}:${PGID}
+        user: ${PUID}
         networks:
             - traefik
         ports:
@@ -39,7 +39,7 @@ services:
         volumes:
             - '${MARIADB_DIR}/config:/config'
             - '${MARIADB_DIR}/mysql:/var/lib/mysql'
-        user: ${PUID}:${PGID}
+        user: ${PUID}
         environment:
             TZ: '${TZ}'
             MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
