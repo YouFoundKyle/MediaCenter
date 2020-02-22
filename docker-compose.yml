@@ -34,7 +34,7 @@ services:
     mariadb:
         container_name: mariadb
         image: linuxserver/mariadb
-        command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+        #command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
         restart: always
         volumes:
             - '${MARIADB_DIR}/config:/config'
