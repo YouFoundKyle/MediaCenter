@@ -28,6 +28,8 @@ services:
             traefik.http.routers.nextcloud.entrypoints: https
             traefik.http.routers.nextcloud.tls.certresolver: le
             traefik.http.routers.nextcloud.rule: Host(`nextcloud.${ACME_DOMAIN}`)
+        link:
+            mariadb
 
     # https://hub.docker.com/r/linuxserver/mariadb/
     # https://hub.docker.com/_/mariadb
