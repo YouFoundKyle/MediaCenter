@@ -72,7 +72,7 @@ services:
             traefik.port: 32400
             traefik.http.routers.plex.entrypoints: https
             traefik.http.routers.plex.tls.certresolver: le
-            traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`))
+            traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`)
             #traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`) || Host(`${ACME_DOMAIN}`)
 
 
