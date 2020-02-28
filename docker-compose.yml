@@ -43,11 +43,9 @@ services:
             MYSQL_DATABASE: '${MYSQL_DATABASE}'
         networks:
             - traefik        
-        # ports:
-        #     - '3306:3306'
+
         labels: 
             traefik.enable: true
-            # traefik.port: 3306
             traefik.docker.network: traefik
  
     # https://hub.docker.com/r/plexinc/pms-docker
@@ -74,8 +72,8 @@ services:
             traefik.port: 32400
             traefik.http.routers.plex.entrypoints: https
             traefik.http.routers.plex.tls.certresolver: le
-            #traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`))
-            traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`) || Host(`${ACME_DOMAIN}`)
+            traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`))
+            #traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`) || Host(`${ACME_DOMAIN}`)
 
     # # https://hub.docker.com/r/linuxserver/nzbget/
     # nzbget:
@@ -148,9 +146,9 @@ services:
             traefik.enable: true
             traefik.port: 3579
             traefik.docker.network: traefik
-            traefik.http.routers.nzbget.entrypoints: https
-            traefik.http.routers.nzbget.tls.certresolver: le
-            traefik.http.routers.nzbget.rule: Host(`ombi.${ACME_DOMAIN}`)
+            traefik.http.routers.ombi.entrypoints: https
+            traefik.http.routers.ombi.tls.certresolver: le
+            traefik.http.routers.ombi.rule: Host(`ombi.${ACME_DOMAIN}`)
 
     # https://hub.docker.com/r/linuxserver/qbittorrent/
     qbittorrent:
@@ -177,7 +175,7 @@ services:
             traefik.docker.network: traefik
             traefik.http.routers.qbittorrent.entrypoints: https
             traefik.http.routers.qbittorrent.tls.certresolver: le
-            traefik.http.routers.qbittorrent.rule: Host(`qbittorrent.${ACME_DOMAIN}`)
+            traefik.http.routers.qbittorrent.rule: Host(`qbit.${ACME_DOMAIN}`)
 
     # https://hub.docker.com/r/linuxserver/sonarr/
     sonarr:
