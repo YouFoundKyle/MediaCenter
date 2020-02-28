@@ -61,7 +61,11 @@ services:
         networks:
             - traefik
         ports:
-            - '32400:32400/tcp'
+            - "32400:32400"
+            - "32400:32400/udp"
+            - "32469:32469"
+            - "32469:32469/udp"
+            - "1900:1900/udp"
         volumes:
             - '${CONFIG_DIR}/plex:/config'
             - '${MEDIA_DIR}/tv:/tv'
