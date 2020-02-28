@@ -50,11 +50,11 @@ services:
             MYSQL_DATABASE: '${MYSQL_DATABASE}'
         networks:
             - traefik        
-        ports:
-            - '3306:3306'
+        # ports:
+        #     - '3306:3306'
         labels: 
             traefik.enable: true
-            traefik.port: 3306
+            # traefik.port: 3306
             traefik.docker.network: traefik
  
     # # https://hub.docker.com/r/plexinc/pms-docker
