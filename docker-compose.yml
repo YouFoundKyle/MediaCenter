@@ -78,7 +78,7 @@ services:
             traefik.http.routers.plex.tls.certresolver: le
             traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`)
             traefik.http.services.plex_mediaserver.loadbalancer.server.port: 32400
-            traefik.http.services.plex_mediaserver.loadbalancer.server.scheme: https
+            traefik.http.services.plex_mediaserver.loadbalancer.server.scheme: http
 
     # https://hub.docker.com/r/linuxserver/nzbget/
     nzbget:
