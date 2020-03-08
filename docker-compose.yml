@@ -68,8 +68,8 @@ services:
             - "1900:1900/udp"
         volumes:
             - '${CONFIG_DIR}/plex:/config'
-            - '${MEDIA_DIR}/tv:/data/tv'
-            - '${MEDIA_DIR}/movies:/data/movies'
+            - '${MEDIA_DIR}:/data'
+            #- '${MEDIA_DIR}/movies:/data/movies'
             - '${MEDIA_DIR}/transcode:/transcode'
         labels:
             traefik.enable: true
