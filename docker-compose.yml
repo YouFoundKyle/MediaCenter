@@ -49,19 +49,15 @@ services:
             traefik.docker.network: traefik
  
     # https://hub.docker.com/r/plexinc/pms-docker
-    # https://hub.docker.com/r/linuxserver/plex
     plex:
         container_name: plex
-        image: linuxserver/plex
+        image: plexinc/pms-docker:latest
         restart: unless-stopped
         environment:
-            # PLEX_UID: '${PUID}'
-            # PLEX_GID: '${PGID}'
-            PUID: '${PUID}'
-            PGID: '${PGID}'
+            PLEX_UID: '${PUID}'
+            PLEX_GID: '${PGID}'
             TZ: '${TZ}'
             PLEX_CLAIM: '${PLEX_CLAIM}'
-            VERSION: 'docker'
         networks:
             - traefik
         ports:
@@ -72,9 +68,9 @@ services:
             - "1900:1900/udp"
         volumes:
             - '${CONFIG_DIR}/plex:/config'
-            - '${MEDIA_DIR}/tv:/tv'
-            - '${MEDIA_DIR}/movies:/movies'
-            #- '${MEDIA_DIR}/transcode:/transcode'
+            - '${MEDIA_DIR}/tv:/data/tv'
+            - '${MEDIA_DIR}/movies:/data/movies'
+            - '${MEDIA_DIR}/transcode:/transcode'
         labels:
             traefik.enable: true
             traefik.docker.network: traefik
