@@ -43,7 +43,7 @@ The following subdomains should point to the public IP of your server:
 
 3. clone mediaserver repo
 ```bash
-git clone https://github.com/klutchell/mediaserver.git
+git clone https://github.com/YouFoundKyle/selfhosted.git
 ```
 
 ## Configuration
@@ -60,15 +60,16 @@ Pull and deploy containers with docker-compose
 
 ```bash
 docker-compose pull
-docker-compose up -d
+docker-compose up -d  
 ```
 
 ## Author
 
-Kyle Harding <https://klutchell.dev>
+Kyle
 
 ## Acknowledgments
 
+This was initially adapted from [Kyle Harding](https://klutchell.dev) and his [MediaServer](git clone https://github.com/klutchell/mediaserver.git) repo
 I didn't create any of these docker images myself, so credit goes to the
 maintainers, and the original software creators.
 
@@ -76,6 +77,6 @@ maintainers, and the original software creators.
 - [linuxserver.io](https://linuxserver.io/)
 - [traefik.io](https://traefik.io/)
 
-## License
+## License  
 
 [MIT License](./LICENSE)
