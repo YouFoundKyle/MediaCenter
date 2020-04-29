@@ -69,7 +69,7 @@ Kyle
 
 ## Acknowledgments
 
-This was initially adapted from [Kyle Harding](https://klutchell.dev) and his [MediaServer](git clone https://github.com/klutchell/mediaserver.git) repo
+This was initially adapted from [Kyle Harding](https://klutchell.dev) and his [MediaServer](https://github.com/klutchell/mediaserver.git) repo
 I didn't create any of these docker images myself, so credit goes to the
 maintainers, and the original software creators.
 
