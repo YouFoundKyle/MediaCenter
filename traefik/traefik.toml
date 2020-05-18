@@ -1,0 +1,176 @@
+################################################################
+#
+# Configuration sample for Traefik v2.
+#
+# For Traefik v1: https://github.com/containous/traefik/blob/v1.7/traefik.sample.toml
+#
+################################################################
+
+################################################################
+# Global configuration
+################################################################
+[global]
+  checkNewVersion = true
+  sendAnonymousUsage = false
+
+################################################################
+# Entrypoints configuration
+################################################################
+
+# Entrypoints definition
+#
+# Optional
+# Default:
+[entryPoints]
+  [entryPoints.http]
+    address = ":80"
+
+  [entryPoints.https]
+    address = ":443"
+
+################################################################
+# Traefik logs configuration
+################################################################
+
+# Traefik logs
+# Enabled by default and log to stdout
+#
+# Optional
+#
+[log]
+
+  # Log level
+  #
+  # Optional
+  # Default: "ERROR"
+  #
+  level = "ERROR"
+
+  # Sets the filepath for the traefik log. If not specified, stdout will be used.
+  # Intermediate directories are created if necessary.
+  #
+  # Optional
+  # Default: os.Stdout
+  #
+  # filePath = "log/traefik.log"
+
+  # Format is either "json" or "common".
+  #
+  # Optional
+  # Default: "common"
+  #
+  # format = "json"
+
+################################################################
+# Access logs configuration
+################################################################
+
+# Enable access logs
+# By default it will write to stdout and produce logs in the textual
+# Common Log Format (CLF), extended with additional fields.
+#
+# Optional
+#
+[accessLog]
+
+  # Sets the file path for the access log. If not specified, stdout will be used.
+  # Intermediate directories are created if necessary.
+  #
+  # Optional
+  # Default: os.Stdout
+  #
+  # filePath = "/path/to/log/log.txt"
+
+  # Format is either "json" or "common".
+  #
+  # Optional
+  # Default: "common"
+  #
+  # format = "json"
+
+################################################################
+# API and dashboard configuration
+################################################################
+
+# Enable API and dashboard
+[api]
+
+  # Enable the API in insecure mode
+  #
+  # Optional
+  # Default: true
+  #
+  # insecure = false
+
+  # Enabled Dashboard
+  dashboard = true
+
+################################################################
+# Ping configuration
+################################################################
+
+# Enable ping
+[ping]
+
+  # Name of the related entry point
+  #
+  # Optional
+  # Default: "traefik"
+  #
+  # entryPoint = "traefik"
+
+
+################################################################
+# Router configuration
+################################################################
+[serversTransport]
+  insecureSkipVerify = true
+################################################################
+# Docker configuration backend
+################################################################
+
+# Enable Docker configuration backend
+[providers.docker]
+  # Expose containers by default in traefik
+  exposedByDefault = false
+  # Name of the network Containers will connect to
+  network = 'traefik'
+
+  # Enable ACME (Let's Encrypt): automatic SSL.
+[certificatesResolvers.le.acme]
+  # File or key used for certificates storage.
+  #
+  # Required
+  #
+  storage = "acme.json"
+  # or `storage = "traefik/acme/account"` if using KV store.
+
+  #Choose Type of Key used for Certificate
+  keyType = 'RSA4096'
+
+  # Optional
+  # Choose the Certificate Authority Server to be used for Let's Encrypt
+  # Default: "https://acme-v02.api.letsencrypt.org/directory"
+  #
+  # caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+  caServer = "https://acme-v02.api.letsencrypt.org/directory"
+
+# Use a DNS-01 ACME challenge rather than HTTP-01 challenge.
+# Note: mandatory for wildcard certificate generation.
+
+[certificatesResolvers.le.acme.dnsChallenge]
+
+  # DNS provider used.
+  #
+  # Required
+  #
+  provider = "cloudflare"
+
+  # By default, the provider will verify the TXT DNS challenge record before letting ACME verify.
+  # If delayBeforeCheck is greater than zero, this check is delayed for the configured duration in seconds.
+  # Useful if internal networks block external DNS queries.
+  delayBeforeCheck = 0
+
+  # DNS Resolvers
+  # Required for Cloudflare
+  resolvers = ["1.1.1.1:53", "1.0.0.1:53"]
