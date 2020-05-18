@@ -1,0 +1,35 @@
+version: '3.7'
+services:
+
+    # https://hub.docker.com/r/plexinc/pms-docker
+    plex:
+        container_name: plex
+        image: plexinc/pms-docker:latest
+        restart: unless-stopped
+        environment:
+            PLEX_UID: '${PUID}'
+            PLEX_GID: '${PGID}'
+            TZ: '${TZ}'
+            PLEX_CLAIM: '${PLEX_CLAIM}'
+        networks:
+            - traefik
+        ports:
+            - "32400:32400"
+            - "32400:32400/udp"
+            - "32469:32469"
+            - "32469:32469/udp"
+            - "1900:1900/udp"
+        volumes:
+            - '${CONFIG_DIR}/plex:/config'
+            - '${MEDIA_DIR}/tv:/data/tv'
+            - '${MEDIA_DIR}/movies:/data/movies'
+            - '${MEDIA_DIR}/transcode:/transcode'
+        labels:
+            traefik.enable: true
+            traefik.docker.network: traefik
+            traefik.port: 32400
+            traefik.http.routers.plex.entrypoints: https
+            traefik.http.routers.plex.tls.certresolver: le
+            traefik.http.routers.plex.rule: Host(`plex.${ACME_DOMAIN}`)
+            traefik.http.services.plex_mediaserver.loadbalancer.server.port: 32400
+            traefik.http.services.plex_mediaserver.loadbalancer.server.scheme: http
