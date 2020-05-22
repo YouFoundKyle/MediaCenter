@@ -54,6 +54,7 @@ Copy `env.sample` to `.env` and fill all required fields
 cp env.sample .env && nano .env
 ```
 
+Must Run docker compose command in same folder as .env
 ## Deployment
 
 Pull and deploy containers with docker-compose
