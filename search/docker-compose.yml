@@ -10,7 +10,7 @@ services:
             PUID: '${PUID}'
             PGID: '${PGID}'
             WEBUI_PORT_ENV: '6880'
-            LAN_NETWORK: '${LAN_NETWORK}'
+            LAN_NETWORK: '192.168.1.0/24'
             VPN_ENABLED: 'no'
             INCOMING_PORT_ENV: '6881'
         networks:
