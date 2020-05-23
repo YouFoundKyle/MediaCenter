@@ -18,7 +18,7 @@ services:
             VPN_PASS: ' ${VPN_PASS}'
             INCOMING_PORT: '6881'
             NAME_SERVERS: '${NAME_SERVERS}'
-            STRICT_PORT_FORWARD: 'yes'
+            STRICT_PORT_FORWARD: 'no'
             ENABLE_PRIVOXY: 'no'
             DELUGE_DAEMON_LOG_LEVEL: 'info'
             DELUGE_WEB_LOG_LEVEL: 'info'
