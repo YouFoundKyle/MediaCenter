@@ -1,16 +1,18 @@
 version: '3.7'
 services:
 
-    # https://hub.docker.com/r/linuxserver/qbittorrent/
+    # https://hub.docker.com/r/markusmcnugen/qbittorrentvpn/
     qbittorrent:
         container_name: qbittorrent
-        image: linuxserver/qbittorrent:latest
+        image: markusmcnugen/qbittorrentvpn:latest
         restart: unless-stopped
         environment:
             PUID: '${PUID}'
             PGID: '${PGID}'
-            TZ: '${TZ}'
-            WEBUI_PORT: '6880'
+            WEBUI_PORT_ENV: '6880'
+            LAN_NETWORK: '${LAN_NETWORK}'
+            VPN_ENABLED: 'Yes'
+            INCOMING_PORT_ENV: '6881'
         networks:
             - traefik
         volumes:
