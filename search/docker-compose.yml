@@ -14,6 +14,8 @@ services:
             LAN_NETWORK: '${LAN_NETWORK}'
             VPN_ENABLED: 'yes'
             VPN_PROV: 'pia'
+            VPN_USER: '${VPN_USER}'
+            VPN_PASS: ' ${VPN_PASS}'
             INCOMING_PORT: '6881'
             NAME_SERVERS: '${NAME_SERVERS}'
             STRICT_PORT_FORWARD: 'yes'
