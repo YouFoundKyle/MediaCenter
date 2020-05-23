@@ -10,7 +10,7 @@ services:
             PUID: '${PUID}'
             PGID: '${PGID}'
             #WEBUI_PORT: '6880'
-            LAN_NETWORK: '${LAN_NETWORK}'
+            LAN_NETWORK: '192.168.1.0/'
             VPN_ENABLED: 'yes'
             #INCOMING_PORT: '6881'
             NAME_SERVERS: '${NAME_SERVERS}'
