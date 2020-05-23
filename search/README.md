@@ -2,5 +2,5 @@ QBittorrent:
 
 Change default user/pass
 setup proxy using PIA
-Settings > Connections > Proxy Server
-Socks5
+Generate OpenVPN config 
+Put it in config folder
