@@ -32,9 +32,9 @@ services:
             traefik.enable: true
             traefik.port: 8122
             traefik.docker.network: traefik
-            traefik.http.routers.qbittorrent.entrypoints: https
-            traefik.http.routers.qbittorrent.tls.certresolver: le
-            traefik.http.routers.qbittorrent.rule: Host(`qbit.${ACME_DOMAIN}`)
+            traefik.http.routers.deluge.entrypoints: https
+            traefik.http.routers.deluge.tls.certresolver: le
+            traefik.http.routers.deluge.rule: Host(`qbit.${ACME_DOMAIN}`)
     
         # https://hub.docker.com/r/linuxserver/ombi/
     ombi:
