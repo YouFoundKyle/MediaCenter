@@ -11,7 +11,7 @@ services:
             PGID: '${PGID}'
             WEBUI_PORT: '6880'
             LAN_NETWORK: '${LAN_NETWORK}'
-            VPN_ENABLED: 'yes'
+            VPN_ENABLED: 'no'
             INCOMING_PORT: '6881'
             NAME_SERVERS: '${NAME_SERVERS}'
         networks:
