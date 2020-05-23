@@ -6,6 +6,7 @@ services:
         container_name: deluge
         image: binhex/arch-delugevpn:latest
         restart: unless-stopped
+        privileged: true
         cap_add:
             - NET_ADMIN
         environment:
