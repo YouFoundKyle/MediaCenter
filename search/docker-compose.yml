@@ -6,10 +6,12 @@ services:
         container_name: deluge
         image: binhex/arch-delugevpn:latest
         restart: unless-stopped
+        cap_add:
+            - NET_ADMIN
         environment:
             PUID: '${PUID}'
             PGID: '${PGID}'
-            LAN_NETWORK: '192.168.1.0/24'
+            LAN_NETWORK: '${LAN_NETWORK}'
             VPN_ENABLED: 'yes'
             VPN_PROV: 'pia'
             INCOMING_PORT: '6881'
