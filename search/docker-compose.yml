@@ -9,7 +9,7 @@ services:
         environment:
             PUID: '${PUID}'
             PGID: '${PGID}'
-            WEBUI_PORT: '6880'
+            #WEBUI_PORT: '6880'
             LAN_NETWORK: '192.168.1.0/24'
             VPN_ENABLED: 'yes'
             INCOMING_PORT: '6881'
@@ -22,7 +22,7 @@ services:
         ports:
             - '6881:6881'
             - '6881:6881/udp'
-            - '6880:6880'
+            - '6880:8080'
         labels:
             traefik.enable: true
             traefik.port: 6880
