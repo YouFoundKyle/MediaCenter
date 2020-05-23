@@ -29,7 +29,7 @@ services:
             - traefik
         volumes:
             - '${CONFIG_DIR}/qbittorrent:/config'
-            - '${DOWNLOADS_DIR}:/data'
+            - '${DOWNLOADS_DIR}:/downloads'
             - '/etc/localtime:/etc/localtime:ro'
         ports:
             - '6881:6881'
