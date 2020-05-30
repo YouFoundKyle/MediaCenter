@@ -40,10 +40,10 @@ services:
             GF_DATABASE_PASSWORD: '${MYSQL_PASSWORD}'
             GF_DATABASE_USER: '${MYSQL_USER}'
         env_file:
-            - ./metrics/config.env
-            - ./env
+            - ./config.env
+            - ../.env
         volumes:
-            - './metrics/prometheus.yml:/etc/prometheus/prometheus.yml'
+            - './prometheus.yml:/etc/prometheus/prometheus.yml'
         networks:
             - traefik
         ports:
