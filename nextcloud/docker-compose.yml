@@ -6,10 +6,12 @@ services:
         container_name: nextcloud
         image: nextcloud
         restart: unless-stopped
+        depends_on:
+            - mariadb
         environment: 
-            MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
-            MYSQL_DATABASE: '${MYSQL_DATABASE}'  
-            MYSQL_USER: '${MYSQL_USER}'
+            MYSQL_ROOT_PASSWORD: '${MARIADB_ROOT_PASSWORD}'
+            MYSQL_DATABASE: '${MARIADB_DATABASE}'  
+            MYSQL_USER: '${MARIADB_USER}'
             NEXTCLOUD_DATA_DIR: '/data'
         networks:
             - traefik
@@ -25,7 +27,7 @@ services:
             traefik.docker.network: traefik
             traefik.http.routers.nextcloud.entrypoints: https
             traefik.http.routers.nextcloud.tls.certresolver: le
-            traefik.http.routers.nextcloud.rule: Host(`nextcloud.${ACME_DOMAIN}`)
+            traefik.http.routers.nextcloud.rule: Host(`nextcloud.${DOMAIN}`)
 
     # https://hub.docker.com/_/mariadb
     mariadb:
@@ -33,17 +35,16 @@ services:
         image: mariadb
         restart: always
         volumes:
-            - '${MARIADB_DIR}/config:/config'
-            - '${MARIADB_DIR}/mysql:/var/lib/mysql'
+            - '${DATABASE_DIR}/mariadb/config:/config'
+            - '${DATABASE_DIR}/mariadb/data:/var/lib/mysql'
         user: '${PUID}:${PGID}'
         environment:
-            MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
-            MYSQL_USER: '${MYSQL_USER}'
-            MYSQL_PASSWORD: '{MYSQL_PASSWORD}'
-            MYSQL_DATABASE: '${MYSQL_DATABASE}'
+            MYSQL_ROOT_PASSWORD: '${MARIADB_ROOT_PASSWORD}'
+            MYSQL_USER: '${MARIADB_USER}'
+            MYSQL_PASSWORD: '{MARIADB_PASSWORD}'
+            MYSQL_DATABASE: '${MARIADB_DATABASE}'
         networks:
             - traefik        
-
         labels: 
             traefik.enable: true
             traefik.docker.network: traefik

@@ -28,6 +28,9 @@
   [entryPoints.https]
     address = ":443"
 
+  [entryPoints.metrics]
+    address = ":8082"
+
 ################################################################
 # Traefik logs configuration
 ################################################################
@@ -174,3 +177,35 @@
   # DNS Resolvers
   # Required for Cloudflare
   resolvers = ["1.1.1.1:53", "1.0.0.1:53"]
+
+# Metrics definition
+[metrics]
+  # To enable Traefik to export internal metrics to Prometheus
+  [metrics.prometheus]
+
+    # Name of the related entry point
+    #
+    # Optional
+    # Default: "traefik"
+    #
+    entryPoint = "traefik"
+
+    # Buckets for latency metrics
+    #
+    # Optional
+    # Default: [0.1, 0.3, 1.2, 5.0]
+    #
+    buckets = [0.1,0.3,1.2,5.0]
+
+    # Enable metrics on entry points.
+    #
+    # Optional
+    # Default=true
+  
+    addEntryPointsLabels = true
+
+    # Enable metrics on services.
+    #
+    # Optional
+    # Default=true
+    addServicesLabels = true

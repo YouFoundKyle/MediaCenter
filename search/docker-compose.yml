@@ -41,7 +41,7 @@ services:
             traefik.docker.network: traefik
             traefik.http.routers.deluge.entrypoints: https
             traefik.http.routers.deluge.tls.certresolver: le
-            traefik.http.routers.deluge.rule: Host(`qbit.${ACME_DOMAIN}`)
+            traefik.http.routers.deluge.rule: Host(`qbit.${DOMAIN}`)
     
         # https://hub.docker.com/r/linuxserver/ombi/
     ombi:
@@ -65,9 +65,4 @@ services:
             traefik.docker.network: traefik
             traefik.http.routers.ombi.entrypoints: https
             traefik.http.routers.ombi.tls.certresolver: le
-            traefik.http.routers.ombi.rule: Host(`ombi.${ACME_DOMAIN}`)
-
-networks:
-    traefik:
-        name: traefik
-        attachable: true
+            traefik.http.routers.ombi.rule: Host(`ombi.${DOMAIN}`)
