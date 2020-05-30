@@ -5,6 +5,7 @@ services:
         container_name: traefik
         image: traefik:latest
         restart: unless-stopped
+        privileged: true
         environment:
             TZ: '${TZ}'
             CLOUDFLARE_DNS_API_TOKEN: '${CLOUDFLARE_DNS_API_TOKEN}'
@@ -15,8 +16,8 @@ services:
             - '443:443/tcp'
         volumes:
             - '/var/run/docker.sock:/var/run/docker.sock:ro'
-            - './traefik.toml:/etc/traefik//traefik.toml'
-        privileged: true
+            - './traefik/traefik.toml:/etc/traefik//traefik.toml'
+            - './traefik/acme.json:/etc/traefik/acme'
         command:
             - "--certificatesresolvers.le.acme.email=${ACME_EMAIL}"
         labels:
@@ -24,7 +25,7 @@ services:
             traefik.docker.network: traefik
             traefik.http.routers.traefik.entrypoints: https
             traefik.http.routers.traefik.tls.certresolver: le
-            traefik.http.routers.traefik.rule: (Host(`traefik.${ACME_DOMAIN}`))
+            traefik.http.routers.traefik.rule: (Host(`traefik.${DOMAIN}`))
             traefik.http.routers.traefik.middlewares: basicauth, secureheaders 
             traefik.http.routers.traefik.service: api@internal
             traefik.http.routers.http.entrypoints: http

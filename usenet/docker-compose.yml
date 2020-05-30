@@ -24,7 +24,7 @@ services:
             traefik.docker.network: traefik
             traefik.http.routers.sonarr.entrypoints: https
             traefik.http.routers.sonarr.tls.certresolver: le
-            traefik.http.routers.sonarr.rule: Host(`sonarr.${ACME_DOMAIN}`)
+            traefik.http.routers.sonarr.rule: Host(`sonarr.${DOMAIN}`)
 
 
     # https://hub.docker.com/r/linuxserver/radarr/
@@ -50,7 +50,7 @@ services:
             traefik.docker.network: traefik
             traefik.http.routers.radarr.entrypoints: https
             traefik.http.routers.radarr.tls.certresolver: le
-            traefik.http.routers.radarr.rule: Host(`radarr.${ACME_DOMAIN}`)
+            traefik.http.routers.radarr.rule: Host(`radarr.${DOMAIN}`)
     
     # https://hub.docker.com/r/linuxserver/hydra2/
     hydra:
@@ -74,4 +74,4 @@ services:
             traefik.docker.network: traefik
             traefik.http.routers.hydra.entrypoints: https
             traefik.http.routers.hydra.tls.certresolver: le
-            traefik.http.routers.hydra.rule: Host(`hydra.${ACME_DOMAIN}`)
+            traefik.http.routers.hydra.rule: Host(`hydra.${DOMAIN}`)
