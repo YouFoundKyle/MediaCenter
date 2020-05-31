@@ -17,6 +17,7 @@ services:
         volumes:
             - '/var/run/docker.sock:/var/run/docker.sock:ro'
             - './traefik.toml:/etc/traefik/traefik.toml'
+            - './acme.json:/etc/traefik/acme'
         command:
             - "--certificatesresolvers.le.acme.email=${ACME_EMAIL}"
         labels:
