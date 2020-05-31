@@ -66,3 +66,8 @@ services:
             traefik.http.routers.ombi.entrypoints: https
             traefik.http.routers.ombi.tls.certresolver: le
             traefik.http.routers.ombi.rule: Host(`ombi.${DOMAIN}`)
+
+networks:
+    traefik:
+        name: traefik
+        attachable: true

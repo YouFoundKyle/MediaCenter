@@ -33,3 +33,8 @@ services:
             traefik.http.routers.plex.rule: Host(`plex.${DOMAIN}`)
             traefik.http.services.plex_mediaserver.loadbalancer.server.port: 32400
             traefik.http.services.plex_mediaserver.loadbalancer.server.scheme: http
+
+networks:
+    traefik:
+        name: traefik
+        attachable: true
