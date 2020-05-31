@@ -5,6 +5,7 @@ services:
         container_name: traefik
         image: traefik:latest
         restart: unless-stopped
+        privileged: true
         environment:
             TZ: '${TZ}'
             CLOUDFLARE_DNS_API_TOKEN: '${CLOUDFLARE_DNS_API_TOKEN}'
@@ -15,9 +16,8 @@ services:
             - '443:443/tcp'
         volumes:
             - '/var/run/docker.sock:/var/run/docker.sock:ro'
-            - './traefik.toml:/etc/traefik//traefik.toml'
-            #- './acme.json:/etc/traefik/acme'
-        privileged: true
+            - './traefik.toml:/etc/traefik/traefik.toml'
+            - './acme.json:/etc/traefik/acme'
         command:
             - "--certificatesresolvers.le.acme.email=${ACME_EMAIL}"
         labels:
