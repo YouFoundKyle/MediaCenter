@@ -134,7 +134,7 @@
 # Middleware configuration
 ################################################################
 [http.middlewares.secureheaders.headers]
-  stsSeconds = '15552000'
+  stsSeconds = 15552000
   framedeny = true
   sslForceHost = true
   sslRedirect = true
