@@ -32,6 +32,7 @@ services:
         depends_on:
             - mysql
         restart: unless-stopped
+        user: '${PUID}:${PGID}'
         environment:
             GF_DATABASE_HOST: 'mysql:3306'
             GF_DATABASE_PASSWORD: '${MYSQL_PASSWORD}'
