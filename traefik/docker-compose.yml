@@ -26,7 +26,7 @@ services:
             traefik.http.routers.traefik.entrypoints: https
             traefik.http.routers.traefik.tls.certresolver: le
             traefik.http.routers.traefik.rule: (Host(`traefik.${DOMAIN}`))
-            traefik.http.routers.traefik.middlewares: basicauth #, secureheaders 
+            traefik.http.routers.traefik.middlewares: basicauth , secureheaders 
             traefik.http.routers.traefik.service: api@internal
             traefik.http.routers.http.entrypoints: http
             traefik.http.routers.http.middlewares: redirectscheme
