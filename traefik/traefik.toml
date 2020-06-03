@@ -130,23 +130,23 @@
   insecureSkipVerify = true
 
 
-################################################################
-# Middleware configuration
-################################################################
-[http.middlewares.secureheaders.headers]
-  stsSeconds = 15552000
-  framedeny = true
-  sslForceHost = true
-  sslRedirect = true
-  stsIncludeSubdomains = true
-  browserXssFilter = true
-  contentTypeNosniff = true
-  forceSTSHeader = true
-  stsPreload = true
-  customFrameOptionsValue = 'SAMEORIGIN'
+# ################################################################
+# # Middleware configuration
+# ################################################################
+# [http.middlewares.secureheaders.headers]
+#   stsSeconds = 15552000
+#   framedeny = true
+#   sslForceHost = true
+#   sslRedirect = true
+#   stsIncludeSubdomains = true
+#   browserXssFilter = true
+#   contentTypeNosniff = true
+#   forceSTSHeader = true
+#   stsPreload = true
+#   customFrameOptionsValue = 'SAMEORIGIN'
 
-[http.middlewares.secureheaders.headers.customResponseHeaders]
-  X-Robots-Tag = 'none'
+# [http.middlewares.secureheaders.headers.customResponseHeaders]
+#   X-Robots-Tag = 'none'
 ################################################################
 # Docker configuration backend
 ################################################################
