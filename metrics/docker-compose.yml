@@ -14,7 +14,7 @@ services:
         volumes:
         - './prometheus.yml:/etc/prometheus/prometheus.yml'
         networks:
-            - inbound       
+            - internal       
         ports:
             - '9090:9090'
         labels:
@@ -43,7 +43,7 @@ services:
         volumes:
             - './prometheus.yml:/etc/prometheus/prometheus.yml'
         networks:
-            - inbound       
+            - internal       
         ports:
             - '3000:3000'
         labels:
@@ -68,15 +68,12 @@ services:
             MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
             MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
         networks:
-            - inbound       
+            - internal       
         labels: 
             traefik.enable: true
             traefik.docker.network: traefik
 
 networks:
-    traefik:
-        name: traefik
-        attachable: true
     internal:
         name: internal
         attachable: true
