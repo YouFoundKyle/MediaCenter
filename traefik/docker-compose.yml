@@ -1,5 +1,5 @@
 version: '3.7'
-services:    
+services:
     # https://hub.docker.com/_/traefik/
     traefik:
         container_name: traefik
