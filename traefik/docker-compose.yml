@@ -11,6 +11,7 @@ services:
             CLOUDFLARE_DNS_API_TOKEN: '${CLOUDFLARE_DNS_API_TOKEN}'
         networks:
             - traefik
+            - internal
         ports:
             - '80:80/tcp'
             - '443:443/tcp'
@@ -26,7 +27,7 @@ services:
             traefik.http.routers.traefik.entrypoints: https
             traefik.http.routers.traefik.tls.certresolver: le
             traefik.http.routers.traefik.rule: (Host(`traefik.${DOMAIN}`))
-            traefik.http.routers.traefik.middlewares: basicauth #, secureheaders 
+            traefik.http.routers.traefik.middlewares: basicauth , secureheaders 
             traefik.http.routers.traefik.service: api@internal
             traefik.http.routers.http.entrypoints: http
             traefik.http.routers.http.middlewares: redirectscheme
@@ -46,6 +47,9 @@ services:
 networks:
     traefik:
         name: traefik
+        attachable: true
+    internal:
+        name: internal
         attachable: true
 
 volumes:
