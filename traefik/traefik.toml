@@ -164,7 +164,7 @@
   #
   # Required
   #
-  storage = "acme.json"
+  storage = "/cert/acme.json"
   # or `storage = "traefik/acme/account"` if using KV store.
 
   #Choose Type of Key used for Certificate
