@@ -50,6 +50,7 @@ services:
             traefik.docker.network: traefik
             traefik.http.routers.radarr.entrypoints: https
             traefik.http.routers.radarr.tls.certresolver: le
+            traefik.http.routers.radarr.middlewares: secureheaders 
             traefik.http.routers.radarr.rule: Host(`radarr.${DOMAIN}`)
     
     # https://hub.docker.com/r/linuxserver/hydra2/
@@ -74,4 +75,5 @@ services:
             traefik.docker.network: traefik
             traefik.http.routers.hydra.entrypoints: https
             traefik.http.routers.hydra.tls.certresolver: le
+            traefik.http.routers.hydra.middlewares: secureheaders 
             traefik.http.routers.hydra.rule: Host(`hydra.${DOMAIN}`)

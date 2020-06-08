@@ -14,7 +14,7 @@ services:
         volumes:
         - './prometheus.yml:/etc/prometheus/prometheus.yml'
         networks:
-            - traefik
+            - inbound       
         ports:
             - '9090:9090'
         labels:
@@ -43,16 +43,17 @@ services:
         volumes:
             - './prometheus.yml:/etc/prometheus/prometheus.yml'
         networks:
-            - traefik
+            - inbound       
         ports:
             - '3000:3000'
         labels:
             traefik.enable: true
             traefik.port: 3000
             traefik.docker.network: traefik
-            traefik.http.routers.prometheus.entrypoints: https
-            traefik.http.routers.prometheus.tls.certresolver: le
-            traefik.http.routers.prometheus.rule: Host(`grafana.${DOMAIN}`)
+            traefik.http.routers.grafana.entrypoints: https
+            traefik.http.routers.grafana.tls.certresolver: le
+            traefik.http.routers.grafana.middlewares: basicauth , secureheaders 
+            traefik.http.routers.grafana.rule: Host(`grafana.${DOMAIN}`)
     
     # https://hub.docker.com/_/mysql
     mysql:
@@ -67,7 +68,7 @@ services:
             MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
             MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
         networks:
-            - traefik        
+            - inbound       
         labels: 
             traefik.enable: true
             traefik.docker.network: traefik
@@ -75,4 +76,7 @@ services:
 networks:
     traefik:
         name: traefik
+        attachable: true
+    internal:
+        name: internal
         attachable: true
