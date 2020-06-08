@@ -14,13 +14,13 @@ services:
         volumes:
         - './prometheus.yml:/etc/prometheus/prometheus.yml'
         networks:
-            - internal       
+            - traefik       
         ports:
             - '9090:9090'
         labels:
             traefik.enable: true
             traefik.port: 9090
-            traefik.docker.network: internal
+            traefik.docker.network: traefik
             traefik.http.routers.prometheus.entrypoints: https
             traefik.http.routers.prometheus.tls.certresolver: le
             traefik.http.routers.prometheus.rule: Host(`prometheus.${DOMAIN}`)
@@ -43,13 +43,13 @@ services:
         volumes:
             - './prometheus.yml:/etc/prometheus/prometheus.yml'
         networks:
-            - internal       
+            - traefik
         ports:
             - '3000:3000'
         labels:
             traefik.enable: true
             traefik.port: 3000
-            traefik.docker.network: internal
+            traefik.docker.network: traefik
             traefik.http.routers.grafana.entrypoints: https
             traefik.http.routers.grafana.tls.certresolver: le
             traefik.http.routers.grafana.middlewares: basicauth , secureheaders 
@@ -68,12 +68,13 @@ services:
             MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
             MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
         networks:
-            - internal       
+            - traefik       
         labels: 
             traefik.enable: true
-            traefik.docker.network: internal
+            traefik.docker.network: traefik
 
 networks:
-    internal:
-        name: internal
+    traefik:
+        name: traefik
         attachable: true
+
