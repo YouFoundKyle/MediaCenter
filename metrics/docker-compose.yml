@@ -30,7 +30,7 @@ services:
         container_name: grafana
         image: grafana/grafana:latest
         depends_on:
-            -  
+            -  mysql-db
         restart: unless-stopped
         user: '${PUID}:${PGID}'
         environment:
