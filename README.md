@@ -20,7 +20,7 @@ Qbittorrent
     WebUI = 6880
     Data = 6881
 Plex
-    Loadbalancer  = 8752# interal = 32400
+    Loadbalancer  = 32400 NAt 8752
 
     ??? = 32469
     ??? = 1900
