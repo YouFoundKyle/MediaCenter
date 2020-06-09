@@ -20,7 +20,8 @@ Qbittorrent
     WebUI = 6880
     Data = 6881
 Plex
-    Loadbalancer  = 32400
+    Loadbalancer  = 8752# interal = 32400
+
     ??? = 32469
     ??? = 1900
 Nextcloud
