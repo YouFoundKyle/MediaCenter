@@ -34,7 +34,7 @@ services:
         restart: unless-stopped
         user: '${PUID}:${PGID}'
         environment:
-            GF_DATABASE_HOST: ' mysql-db:3306'
+            GF_DATABASE_HOST: 'mysql-db:3306'
             GF_DATABASE_PASSWORD: '${MYSQL_PASSWORD}'
             GF_DATABASE_USER: '${MYSQL_USER}'
         env_file:
