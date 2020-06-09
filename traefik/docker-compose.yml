@@ -33,6 +33,7 @@ services:
             traefik.http.routers.http.middlewares: redirectscheme
             traefik.http.middlewares.redirectscheme.redirectscheme.scheme: https
             traefik.http.middlewares.basicauth.basicauth.users: ${HTPASSWD}
+            traefik.http.middlewares.promauth.basicauth.users: ${GRAFPASSWD}
             traefik.http.middlewares.secureheaders.headers.stsSeconds: 15552000
             traefik.http.middlewares.secureheaders.headers.framedeny: true
             traefik.http.middlewares.secureheaders.headers.sslForceHost: true
