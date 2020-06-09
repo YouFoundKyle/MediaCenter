@@ -8,11 +8,12 @@ services:
         restart: unless-stopped
         user: '${PUID}:${PGID}'
         command:
-            --config.file=/etc/prometheus/prometheus.yml
-            --storage.tsdb.path=/data
-            --storage.tsdb.retention.time=30d
+            - '--config.file=/etc/prometheus/prometheus.yml'
+            - '--storage.tsdb.path=/data'
+            - '--storage.tsdb.retention.time=30d'
         volumes:
-        - './prometheus.yml:/etc/prometheus/prometheus.yml'
+            - './prometheus.yml:/etc/prometheus/prometheus.yml'
+            - '${DATABASE_DIR}/prometheus:/data'
         networks:
             - traefik       
         ports:
@@ -40,8 +41,6 @@ services:
         env_file:
             - ./config.env
             - ../.env
-        volumes:
-            - './prometheus.yml:/etc/prometheus/prometheus.yml'
         networks:
             - traefik
         ports:
