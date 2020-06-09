@@ -6,7 +6,6 @@ services:
         container_name: plex
         image: plexinc/pms-docker:latest
         restart: unless-stopped
-        network_mode: host
         environment:
             PLEX_UID: '${PUID}'
             PLEX_GID: '${PGID}'
