@@ -24,12 +24,12 @@
 [entryPoints]
   [entryPoints.http]
     address = ":80"
+  [entryPoints.http.redirect]
+    entryPoint = "https"
 
   [entryPoints.https]
     address = ":443"
-
-  [entryPoints.metrics]
-    address = ":8082"
+    [entryPoints.https.tls]
 
 ################################################################
 # Traefik logs configuration
@@ -46,9 +46,8 @@
   #
   # Optional
   # Default: "ERROR"
-  # 
-  # level = "DEBUG"
-  level = "ERROR"
+  #
+  level = "DEBUG"
 
   # Sets the filepath for the traefik log. If not specified, stdout will be used.
   # Intermediate directories are created if necessary.
@@ -130,24 +129,31 @@
 [serversTransport]
   insecureSkipVerify = true
 
+[http.routers]
+[http.middlewares]
+  [http.middlewares.redirectscheme.redirectScheme]
+    scheme = "https"
+    permanent = true
+  [http.middlewares.secureheaders.headers]
+    framedeny = true
+    sslForceHost = true
+    sslRedirect = true
+    stsIncludeSubdomains = true
+    browserXssFilter = true
+    contentTypeNosniff = true
+    forceSTSHeader = true
+    stsPreload = true
+    stsSeconds = 15552000
+    customFrameOptionsValue = 'SAMEORIGIN'
+    [http.middlewares.secureheaders.headers.customResponseHeaders]
+      X-Robots-Tag = 'none'
 
-# ################################################################
-# # Middleware configuration
-# ################################################################
-# [http.middlewares.secureheaders.headers]
-#   stsSeconds = 15552000
-#   framedeny = true
-#   sslForceHost = true
-#   sslRedirect = true
-#   stsIncludeSubdomains = true
-#   browserXssFilter = true
-#   contentTypeNosniff = true
-#   forceSTSHeader = true
-#   stsPreload = true
-#   customFrameOptionsValue = 'SAMEORIGIN'
-
-# [http.middlewares.secureheaders.headers.customResponseHeaders]
-#   X-Robots-Tag = 'none'
+[http.routers.traefik]
+  entrypoints = 'https'
+  middlewares = ['basicauth', 'secureheaders']
+  service = 'api@internal'
+  [http.routers.traefik.tls]
+    certresolver = 'le'
 ################################################################
 # Docker configuration backend
 ################################################################
@@ -160,28 +166,44 @@
   network = 'traefik'
 
   # Enable ACME (Let's Encrypt): automatic SSL.
-[certificatesResolvers.le.acme]
+[acme]
   # File or key used for certificates storage.
   #
   # Required
   #
-  storage = "/cert/acme.json"
+  storage = "acme.json"
   # or `storage = "traefik/acme/account"` if using KV store.
+
+  # Entrypoint to proxy acme apply certificates to.
+  #
+  # Required
+  #
+  entryPoint = "https"
+  
+  # Enable watch docker changes.
+  #
+  # Optional
+  #
+  watch = true
+
+  # If true, display debug log messages from the acme client library.
+  acmeLogging = true
+  
+  # Enable certificate generation on frontends host rules.
+  onHostRule = true
 
   #Choose Type of Key used for Certificate
   keyType = 'RSA4096'
 
   # Optional
-  # Choose the Certificate Authority Server to be used for Let's Encrypt
   # Default: "https://acme-v02.api.letsencrypt.org/directory"
   #
   # caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
-  caServer = "https://acme-v02.api.letsencrypt.org/directory"
 
 # Use a DNS-01 ACME challenge rather than HTTP-01 challenge.
 # Note: mandatory for wildcard certificate generation.
 
-[certificatesResolvers.le.acme.dnsChallenge]
+[acme.dnsChallenge]
 
   # DNS provider used.
   #
@@ -197,35 +219,3 @@
   # DNS Resolvers
   # Required for Cloudflare
   resolvers = ["1.1.1.1:53", "1.0.0.1:53"]
-
-# Metrics definition
-[metrics]
-  # To enable Traefik to export internal metrics to Prometheus
-  [metrics.prometheus]
-
-    # Name of the related entry point
-    #
-    # Optional
-    # Default: "traefik"
-    #
-    entryPoint = "traefik"
-
-    # Buckets for latency metrics
-    #
-    # Optional
-    # Default: [0.1, 0.3, 1.2, 5.0]
-    #
-    buckets = [0.1,0.3,1.2,5.0]
-
-    # Enable metrics on entry points.
-    #
-    # Optional
-    # Default=true
-  
-    addEntryPointsLabels = true
-
-    # Enable metrics on services.
-    #
-    # Optional
-    # Default=true
-    addServicesLabels = true

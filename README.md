@@ -9,30 +9,6 @@ docker-based plex & usenet media server using custom subdomains with tls
 - keep source repo small (2 required files)
 - require minimal configuration and setup
 
-## All Ports
-
-Traefik
-    EntryPoints:
-        http = ":80"
-        https = ":443"
-        metrics = ":8082"
-Qbittorrent
-    WebUI = 6880
-    Data = 6881
-Plex
-    Loadbalancer  = 32400 NAt 8752
-
-    ??? = 32469
-    ??? = 1900
-Nextcloud
-    WebUI = 9191
-Ombi
-    WebUI = 3579
-Prometheus
-    ???  = 9090
-Grafana
-    ???  = 3000
-
 ## Features
 
 - [Plex](https://hub.docker.com/r/plexinc/pms-docker) organizes video, music and photos from personal media libraries and streams them to smart TVs, streaming boxes and mobile devices. This container is packaged as a standalone Plex Media Server.
@@ -78,7 +54,6 @@ Copy `env.sample` to `.env` and fill all required fields
 cp env.sample .env && nano .env
 ```
 
-Must Run docker compose command in same folder as .env
 ## Deployment
 
 Pull and deploy containers with docker-compose
