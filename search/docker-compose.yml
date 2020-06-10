@@ -1,0 +1,75 @@
+version: '3.7'
+services:
+
+# https://hub.docker.com/r/binhex/arch-qbittorrentvpn
+    qbittorrent:
+        container_name: qbittorrent
+        image: binhex/arch-qbittorrentvpn:latest
+        restart: unless-stopped
+        privileged: true
+        # cap_add:
+        #     - NET_ADMIN
+        environment:
+            PUID: '${PUID}'
+            PGID: '${PGID}'
+            LAN_NETWORK: '${LAN_NETWORK}'
+            VPN_ENABLED: 'yes'
+            VPN_PROV: 'pia'
+            VPN_USER: '${VPN_USER}'
+            VPN_PASS: ' ${VPN_PASS}'
+            WEBUI_PORT: '6880'
+            INCOMING_PORT: '6881'
+            NAME_SERVERS: '${NAME_SERVERS}'
+            STRICT_PORT_FORWARD: 'no'
+            ENABLE_PRIVOXY: 'no'
+            DELUGE_DAEMON_LOG_LEVEL: 'info'
+            DELUGE_WEB_LOG_LEVEL: 'info'
+            DEBUG: 'false'
+        networks:
+            - traefik
+        volumes:
+            - '${CONFIG_DIR}/qbittorrent:/config'
+            - '${DOWNLOADS_DIR}:/downloads'
+            - '/etc/localtime:/etc/localtime:ro'
+        ports:
+            - '6881:6881'
+            - '6881:6881/udp'
+            - '6880:6880'
+        labels:
+            traefik.enable: true
+            traefik.port: 6880
+            traefik.docker.network: traefik
+            traefik.http.routers.qbit.entrypoints: https
+            traefik.http.routers.qbit.tls.certresolver: le
+            traefik.http.routers.qbit.middlewares: basicauth , secureheaders 
+            traefik.http.routers.qbit.rule: Host(`qbit.${DOMAIN}`)
+    
+        # https://hub.docker.com/r/linuxserver/ombi/
+    ombi:
+        container_name: ombi
+        image: linuxserver/ombi:latest
+        restart: unless-stopped
+        environment:
+            PUID: '${PUID}'
+            PGID: '${PGID}'
+            TZ: '${TZ}'
+        networks:
+            - traefik
+        volumes:
+            - '${CONFIG_DIR}/ombi:/config'
+            - '${DOWNLOADS_DIR}:/downloads'
+        ports:
+            - '3579:3579'
+        labels:
+            traefik.enable: true
+            traefik.port: 3579
+            traefik.docker.network: traefik
+            traefik.http.routers.ombi.entrypoints: https
+            traefik.http.routers.ombi.tls.certresolver: le
+            traefik.http.routers.ombi.middlewares: secureheaders 
+            traefik.http.routers.ombi.rule: Host(`ombi.${DOMAIN}`)
+
+networks:
+    traefik:
+        name: traefik
+        attachable: true
