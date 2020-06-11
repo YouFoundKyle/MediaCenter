@@ -1,0 +1,81 @@
+version: '3.7'
+services:
+
+    # https://hub.docker.com/r/prom/prometheus/
+    prometheus:
+        container_name: prometheus
+        image: prom/prometheus
+        restart: unless-stopped
+        user: '${PUID}:${PGID}'
+        command:
+            - '--config.file=/etc/prometheus/prometheus.yml'
+            - '--storage.tsdb.path=/data'
+            - '--storage.tsdb.retention.time=30d'
+        volumes:
+            - './prometheus.yml:/etc/prometheus/prometheus.yml'
+            - '${DATABASE_DIR}/prometheus:/data'
+        networks:
+            - traefik       
+        ports:
+            - '9090:9090'
+        labels:
+            traefik.enable: true
+            traefik.port: 9090
+            traefik.docker.network: traefik
+            traefik.http.routers.prometheus.entrypoints: https
+            traefik.http.routers.prometheus.middlewares: promauth
+            traefik.http.routers.prometheus.tls.certresolver: le
+            traefik.http.routers.prometheus.rule: Host(`prometheus.${DOMAIN}`)
+    
+    # https://hub.docker.com/r/grafana/grafana/
+    grafana:
+        container_name: grafana
+        image: grafana/grafana:latest
+        depends_on:
+            -  mysql-db
+        restart: unless-stopped
+        user: '${PUID}:${PGID}'
+        environment:
+            GF_DATABASE_HOST: 'mysql-db:3306'
+            GF_DATABASE_PASSWORD: '${MYSQL_PASSWORD}'
+            GF_DATABASE_USER: '${MYSQL_USER}'
+        env_file:
+            - ./config.env
+            - ../.env
+        networks:
+            - traefik
+        ports:
+            - '3000:3000'
+        labels:
+            traefik.enable: true
+            traefik.port: 3000
+            traefik.docker.network: traefik
+            traefik.http.routers.grafana.entrypoints: https
+            traefik.http.routers.grafana.tls.certresolver: le
+            traefik.http.routers.grafana.middlewares: secureheaders #, basicauth
+            traefik.http.routers.grafana.rule: Host(`grafana.${DOMAIN}`)
+    
+    # https://hub.docker.com/_/mysql
+    mysql-db:
+        container_name: mysql-db
+        image: mysql:latest
+        restart: unless-stopped
+        user: '${PUID}:${PGID}'
+        volumes:
+            - '${DATABASE_DIR}/mysql:/var/lib/mysql:rw'
+        environment:
+            MYSQL_USER: '${MYSQL_USER}'
+            MYSQL_DATABASE: '${MYSQL_DATABASE}'
+            MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
+            MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
+        networks:
+            - traefik       
+        labels: 
+            traefik.enable: true
+            traefik.docker.network: traefik
+
+networks:
+    traefik:
+        name: traefik
+        attachable: true
+
