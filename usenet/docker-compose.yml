@@ -11,7 +11,7 @@ services:
             PGID: '${PGID}'
             TZ: '${TZ}'
         networks:
-            - traefik
+            - internal
         volumes:
             - '${CONFIG_DIR}/sonarr:/config'
             - '${DOWNLOADS_DIR}:/downloads'
@@ -21,10 +21,10 @@ services:
         labels:
             traefik.enable: true
             traefik.port: 8989
-            traefik.docker.network: traefik
-            traefik.http.routers.sonarr.entrypoints: https
+            traefik.docker.network: internal
+            traefik.http.routers.sonarr.entrypoints: http
             traefik.http.routers.sonarr.tls.certresolver: le
-            traefik.http.routers.sonarr.rule: Host(`sonarr.${DOMAIN}`)
+            traefik.http.routers.sonarr.rule: Host(`sonarr.${LOCAL_DOMAIN}`)
 
 
     # https://hub.docker.com/r/linuxserver/radarr/
@@ -37,7 +37,7 @@ services:
             PGID: '${PGID}'
             TZ: '${TZ}'
         networks:
-            - traefik
+            - internal
         volumes:
             - '${CONFIG_DIR}/radarr:/config'
             - '${DOWNLOADS_DIR}:/downloads'
@@ -47,11 +47,11 @@ services:
         labels:
             traefik.enable: true
             traefik.port: 7878
-            traefik.docker.network: traefik
-            traefik.http.routers.radarr.entrypoints: https
-            traefik.http.routers.radarr.tls.certresolver: le
-            traefik.http.routers.radarr.middlewares: secureheaders 
-            traefik.http.routers.radarr.rule: Host(`radarr.${DOMAIN}`)
+            traefik.docker.network: internal
+            traefik.http.routers.radarr.entrypoints: http
+            # traefik.http.routers.radarr.tls.certresolver: le
+            # traefik.http.routers.radarr.middlewares: secureheaders 
+            traefik.http.routers.radarr.rule: Host(`radarr.${LOCAL_DOMAIN}`)
     
     # https://hub.docker.com/r/linuxserver/hydra2/
     hydra:
@@ -63,7 +63,7 @@ services:
             PGID: '${PGID}'
             TZ: '${TZ}'
         networks:
-            - traefik
+            - internal
         volumes:
             - '${CONFIG_DIR}/hydra:/config'
             - '${DOWNLOADS_DIR}:/downloads'
@@ -72,8 +72,13 @@ services:
         labels:
             traefik.enable: true
             traefik.port: 5076
-            traefik.docker.network: traefik
-            traefik.http.routers.hydra.entrypoints: https
-            traefik.http.routers.hydra.tls.certresolver: le
-            traefik.http.routers.hydra.middlewares: secureheaders 
-            traefik.http.routers.hydra.rule: Host(`hydra.${DOMAIN}`)
+            traefik.docker.network: internal
+            traefik.http.routers.hydra.entrypoints: http
+            # traefik.http.routers.hydra.tls.certresolver: le
+            # traefik.http.routers.hydra.middlewares: secureheaders 
+            traefik.http.routers.hydra.rule: Host(`hydra.${LOCAL_DOMAIN}`)
+
+networks:
+    internal:
+        name: internal
+        attachable: true
