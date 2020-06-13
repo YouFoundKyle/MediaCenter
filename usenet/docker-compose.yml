@@ -23,7 +23,7 @@ services:
             traefik.port: 8989
             traefik.docker.network: internal
             traefik.http.routers.sonarr.entrypoints: http
-            traefik.http.routers.sonarr.tls.certresolver: le
+            # traefik.http.routers.sonarr.tls.certresolver: le
             traefik.http.routers.sonarr.rule: Host(`sonarr.${LOCAL_DOMAIN}`)
 
 
