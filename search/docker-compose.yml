@@ -18,12 +18,9 @@ services:
             VPN_USER: '${VPN_USER}'
             VPN_PASS: ' ${VPN_PASS}'
             WEBUI_PORT: '6880'
-            INCOMING_PORT: '6881'
             NAME_SERVERS: '${NAME_SERVERS}'
             STRICT_PORT_FORWARD: 'no'
             ENABLE_PRIVOXY: 'no'
-            DELUGE_DAEMON_LOG_LEVEL: 'info'
-            DELUGE_WEB_LOG_LEVEL: 'info'
             DEBUG: 'false'
         networks:
             - traefik
@@ -67,7 +64,7 @@ services:
             traefik.http.routers.ombi.entrypoints: https
             traefik.http.routers.ombi.tls.certresolver: le
             traefik.http.routers.ombi.middlewares: secureheaders 
-            traefik.http.routers.ombi.rule: Host(`ombi.${DOMAIN}`)
+            traefik.http.routers.ombi.rule: Host(`request.${DOMAIN}`)
 
 networks:
     traefik:

@@ -1,12 +1,38 @@
-QBittorrent:
+# qBittorrent
 
-Change default user/pass
-setup proxy using PIA
+This is a docker container built with arch 
+## Variables
+
+Variable | Description
+--------- | -------
+PUID						|	UID of the user this container will run as  
+PGID						|	GID of the user this container will run as
+LAN_NETWORK					|	The IP subnet of the LAN. Ex: 192.168.1.0/24
+VPN_ENABLED					|	Enable openVPN on container startup
+VPN_PROV					|	the VPN provider that will be used with openVPN
+VPN_USER					|	username for VPN_PROV credentials 
+VPN_PASS					|	password for VPN_PROV credentials
+WEBUI_PORT					|	Port that the webUI will be accessible on
+NAME_SERVERS				|	'${NAME_SERVERS}'
+STRICT_PORT_FORWARD			|	'no'
+ENABLE_PRIVOXY				|	Enable Privoxy on container startup
+DEBUG						|	Enable debug information to be logged 
+## Configuration
+
+
+
+1. Change default user/pass
+   
+### OpenVPN Setup
+
+1. Setup proxy using PIA
 Generate OpenVPN config 
 Put it in config folder
 
 
-GO to https://www.privateinternetaccess.com/pages/ovpn-config-generator
+Go to [PIA's openVPN config generator](https://www.privateinternetaccess.com/pages/ovpn-config-generator). 
+
+Head to $(CONFIG_DIR)/qbittorrent/config/openVPN
 Generate the proper OpenVPN
 put it in the qbitorrent config/openvpn folder 
     only put one in there
