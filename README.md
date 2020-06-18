@@ -1,4 +1,4 @@
-# Docker Plex & Usenet Media Server #
+# Docker Plex & Services Server #
 
 Acts as a colletion of all self hosted services running on docker.
 
@@ -11,37 +11,28 @@ docker-based plex & usenet media server using custom subdomains with tls
 - run public maintained images with no modifications
 - require minimal configuration and setup
 
-## All Ports
-
-Traefik
-    EntryPoints:
-        http = ":80"
-        https = ":443"
-        metrics = ":8082"
-Qbittorrent
-    WebUI = 6880
-    Data = 6881
-Plex
-    Loadbalancer  = 32400 NAt 8752
-
-    ??? = 32469
-    ??? = 1900
-Nextcloud
-    WebUI = 9191
-Ombi
-    WebUI = 3579
-Prometheus
-    webUI  = 9090
-Grafana
-    webUI  = 3000
-Jackett
-    webUI  = 9117
+## Ports Used
+|Port|Service|Description|Public
+|---|---|---|---|
+|80| Traefik  | HTTP entrypoint  | Y
+|443|Traefik|HTTPS entrypoint|Y
+|8082|Traefik|Metrics entrypoint| Y
+|6880| Qbittorrent | WebUI |Y
+|6881| Qbittorrent| Data Transfer|Y
+|32400|Plex| LoadBalancer|Y
+|32469|Plex| ???|Y
+|1900|Plex| ???|Y
+| 9191| NextCloud | WebUI | Y
+|3579| Ombi | WebUI | Y
+|9090| Prometheus| webUI | N
+|3000| Grafana | WebUI | N
+|9117| Jackett| WebUI| N
 
 ## Services
 
-### User faceing
+### Publicly facing
 - [Plex](https://hub.docker.com/r/plexinc/pms-docker) - organizes video, music and photos from personal media libraries and streams them to smart TVs, streaming boxes and mobile devices. This container is packaged as a standalone Plex Media Server.
-- [qBitorrent](https://hub.docker.com/r/binhex/arch-qbittorrentvpn) - something something something. Includes in OpenVPN instance and built on arch linux
+- [qBittorrent](https://hub.docker.com/r/binhex/arch-qbittorrentvpn) - something something something. Includes in OpenVPN instance and built on arch linux
 - [Ombi](https://hub.docker.com/r/linuxserver/ombi/) - Meant for users to request media.
 - [Nextcloud](https://hub.docker.com/r/linuxserver/ombi/) - stores data.
 ### Backend
@@ -54,7 +45,7 @@ Jackett
 ### Automation
 - [Sonarr](https://hub.docker.com/r/linuxserver/sonarr/) - (formerly NZBdrone) is a PVR for usenet and bittorrent users. It can monitor multiple RSS feeds for new episodes of your favorite shows and will grab, sort and rename them. It can also be configured to automatically upgrade the quality of files already downloaded when a better quality format becomes available.
 - [Radarr](https://hub.docker.com/r/linuxserver/radarr/) - A fork of Sonarr to work with movies à la Couchpotato.
-<!-- - [NZBHydra](https://hub.docker.com/r/linuxserver/hydra2/) 2 is a meta search application for NZB indexers, the "spiritual successor" to NZBmegasearcH, and an evolution of the original application NZBHydra . It provides easy access to a number of raw and newznab based indexers. -->
+- [Jackett](smthing) Its Gud.
 
 
 ## Requirements
@@ -72,7 +63,7 @@ The following subdomains should point to the public IP of your server:
 - `traefik.domain.com`
 - `request.domain.com`
 
-Some services are only accesible on LAN
+Some services are only accessible on LAN
 
 - `grafana.domain.local`
 - `prometheus.domain.local`
