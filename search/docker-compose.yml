@@ -21,8 +21,7 @@ services:
             ENABLE_PRIVOXY: 'no'
             DEBUG: 'false'
         networks:
-            - traefik
-            # - internal
+            - internal
         volumes:
             - '${CONFIG_DIR}/qbittorrent:/config'
             - '${DOWNLOADS_DIR}:/downloads'
@@ -38,7 +37,7 @@ services:
             traefik.http.routers.qbit.entrypoints: https
             traefik.http.routers.qbit.tls.certresolver: le
             traefik.http.routers.qbit.middlewares: basicauth , secureheaders 
-            traefik.http.routers.qbit.rule: Host(`qbit.${DOMAIN}`)
+            traefik.http.routers.qbit.rule: Host(`qbit.${LOCAL_DOMAIN}`)
     
         # https://hub.docker.com/r/linuxserver/ombi/
     ombi:
