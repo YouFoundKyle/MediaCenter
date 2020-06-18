@@ -7,8 +7,6 @@ services:
         image: binhex/arch-qbittorrentvpn:latest
         restart: unless-stopped
         privileged: true
-        # cap_add:
-        #     - NET_ADMIN
         environment:
             PUID: '${PUID}'
             PGID: '${PGID}'
@@ -24,7 +22,7 @@ services:
             DEBUG: 'false'
         networks:
             - traefik
-            - internal
+            # - internal
         volumes:
             - '${CONFIG_DIR}/qbittorrent:/config'
             - '${DOWNLOADS_DIR}:/downloads'
