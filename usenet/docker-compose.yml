@@ -24,9 +24,11 @@ services:
             traefik.docker.network: internal
             traefik.http.routers.jackett.entrypoints: http
             traefik.http.routers.jackett.rule: Host(`jackett.${LOCAL_DOMAIN}`)
-    sonarr:
-        container_name: sonarr
-        image: linuxserver/sonarr:latest
+    
+    # https://hub.docker.com/r/linuxserver/bazarr/
+    bazarr:
+        container_name: bazarr
+        image: linuxserver/bazarr:latest
         restart: unless-stopped
         environment:
             PUID: '${PUID}'
@@ -35,17 +37,17 @@ services:
         networks:
             - internal
         volumes:
-            - '${CONFIG_DIR}/sonarr:/config'
-            - '${DOWNLOADS_DIR}:/downloads'
-            - '${MEDIA_DIR}:/media'
+            - '${CONFIG_DIR}/bazarr:/config'
+            - '${MEDIA_DIR}/tv:/tv'
+            - '${MEDIA_DIR}/movies:/movies'
         ports:
-            - '8989:8989/tcp'
+            - '6767:6767/tcp'
         labels:
             traefik.enable: true
-            traefik.port: 8989
+            traefik.port: 6767
             traefik.docker.network: internal
             traefik.http.routers.sonarr.entrypoints: http
-            traefik.http.routers.sonarr.rule: Host(`sonarr.${LOCAL_DOMAIN}`)
+            traefik.http.routers.sonarr.rule: Host(`bazarr.${LOCAL_DOMAIN}`)
 
     # https://hub.docker.com/r/linuxserver/sonarr/
     sonarr:
@@ -61,7 +63,7 @@ services:
         volumes:
             - '${CONFIG_DIR}/sonarr:/config'
             - '${DOWNLOADS_DIR}:/downloads'
-            - '${MEDIA_DIR}:/media'
+            - '${MEDIA_DIR}/tv:/tv'
         ports:
             - '8989:8989/tcp'
         labels:
@@ -86,7 +88,7 @@ services:
         volumes:
             - '${CONFIG_DIR}/radarr:/config'
             - '${DOWNLOADS_DIR}:/downloads'
-            - '${MEDIA_DIR}:/media'
+            - '${MEDIA_DIR}/movies:/movies'
         ports:
             - '7878:7878/tcp'
         labels:

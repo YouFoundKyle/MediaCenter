@@ -36,7 +36,7 @@ services:
             traefik.docker.network: traefik
             traefik.http.routers.qbit.entrypoints: https
             traefik.http.routers.qbit.tls.certresolver: le
-            traefik.http.routers.qbit.middlewares: basicauth , secureheaders 
+            traefik.http.routers.qbit.middlewares: secureheaders 
             traefik.http.routers.qbit.rule: Host(`qbit.${LOCAL_DOMAIN}`)
     
         # https://hub.docker.com/r/linuxserver/ombi/
