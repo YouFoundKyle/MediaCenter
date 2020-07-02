@@ -46,8 +46,8 @@ services:
             traefik.enable: true
             traefik.port: 6767
             traefik.docker.network: internal
-            traefik.http.routers.sonarr.entrypoints: http
-            traefik.http.routers.sonarr.rule: Host(`bazarr.${LOCAL_DOMAIN}`)
+            traefik.http.routers.bazarr.entrypoints: http
+            traefik.http.routers.bazarr.rule: Host(`bazarr.${LOCAL_DOMAIN}`)
 
     # https://hub.docker.com/r/linuxserver/sonarr/
     sonarr:
