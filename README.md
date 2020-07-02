@@ -27,6 +27,7 @@ docker-based plex & usenet media server using custom subdomains with tls
 |9090| Prometheus| webUI | N
 |3000| Grafana | WebUI | N
 |9117| Jackett| WebUI| N
+|6767| Bazarr| WebUI| N
 
 ## Services
 
@@ -70,7 +71,8 @@ Some services are only accessible on LAN
 - `sonarr.domain.local`
 - `radarr.domain.local`
 - `hydra.domain.local`
-
+- `qbit.domain.local`
+  
 ## Installation
 
 1. install [docker](https://docs.docker.com/install/linux/docker-ce/debian/)
