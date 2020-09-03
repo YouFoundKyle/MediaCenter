@@ -20,6 +20,7 @@ services:
             STRICT_PORT_FORWARD: 'no'
             ENABLE_PRIVOXY: 'no'
             DEBUG: 'false'
+            UMASK: '002'
         networks:
             - internal
         volumes:
