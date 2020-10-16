@@ -1,4 +1,4 @@
-# Docker Plex & Services Server #
+# Self-Hosted Services #
 
 Acts as a colletion of all self hosted services running on docker.
 
@@ -15,14 +15,15 @@ docker-based plex & usenet media server using custom subdomains with tls
 |Port|Service|Description|Public
 |---|---|---|---|
 |80| Traefik  | HTTP entrypoint  | Y
-|443|Traefik|HTTPS entrypoint|Y
-|8082|Traefik|Metrics entrypoint| Y
-|6880| Qbittorrent | WebUI |Y
-|6881| Qbittorrent| Data Transfer|Y
+|443|Traefik|HTTPS entrypoint| Y
+|8082|Traefik|Metrics entrypoint| N
+|6880| Qbittorrent | WebUI | N
+|6881| Qbittorrent| Data Transfer| N
 |32400|Plex| LoadBalancer|Y
 |32469|Plex| ???|Y
 |1900|Plex| ???|Y
-| 9191| NextCloud | WebUI | Y
+|9007| Portainer| WebUI | N
+|9191| NextCloud | WebUI | Y
 |3579| Ombi | WebUI | Y
 |9090| Prometheus| webUI | N
 |3000| Grafana | WebUI | N
@@ -33,11 +34,11 @@ docker-based plex & usenet media server using custom subdomains with tls
 
 ### Publicly facing
 - [Plex](https://hub.docker.com/r/plexinc/pms-docker) - organizes video, music and photos from personal media libraries and streams them to smart TVs, streaming boxes and mobile devices. This container is packaged as a standalone Plex Media Server.
-- [qBittorrent](https://hub.docker.com/r/binhex/arch-qbittorrentvpn) - something something something. Includes in OpenVPN instance and built on arch linux
 - [Ombi](https://hub.docker.com/r/linuxserver/ombi/) - Meant for users to request media.
 - [Nextcloud](https://hub.docker.com/r/linuxserver/ombi/) - stores data.
 ### Backend
 - [Traefik](https://hub.docker.com/_/traefik/) - a modern HTTP reverse proxy and load balancer that makes deploying microservices easy.
+- [qBittorrent](https://hub.docker.com/r/binhex/arch-qbittorrentvpn) - something something something. Includes in OpenVPN instance and built on arch linux
 - [Grafana](https://hub.docker.com/_/traefik/) - visualize metrics.
 - [Prometheus](https://hub.docker.com/_/traefik/) - pull metrics.
 - [Mysql](smthing) - stores metrics
@@ -61,11 +62,11 @@ docker-based plex & usenet media server using custom subdomains with tls
 The following subdomains should point to the public IP of your server:
 
 - `plex.domain.com`
-- `traefik.domain.com`
 - `request.domain.com`
 
 Some services are only accessible on LAN
 
+- `traefik.domain.local`
 - `grafana.domain.local`
 - `prometheus.domain.local`
 - `sonarr.domain.local`
