@@ -54,6 +54,25 @@ services:
             traefik.http.routers.grafana.entrypoints: http
             traefik.http.routers.grafana.rule: Host(`grafana.${LOCAL_DOMAIN}`)
     
+    # https://hub.docker.com/r/portainer/portainer-ce
+    portainer:
+        image: portainer/portainer:latest
+        container_name: portainer
+        environment:
+        ports:
+            - '9007:9000'
+        volumes:
+            - 'portainer_data:/data'
+            - /var/run/docker.sock:/var/run/docker.sock
+        networks:
+            - internal
+        labels:
+            traefik.enable: true
+            traefik.port: 9007
+            traefik.docker.network: internal
+            traefik.http.routers.grafana.entrypoints: http
+            traefik.http.routers.grafana.rule: Host(`portainer.${LOCAL_DOMAIN}`)
+    
     # https://hub.docker.com/_/mysql
     mysql-db:
         container_name: mysql-db
@@ -78,3 +97,5 @@ networks:
         name: internal
         attachable: true
 
+volumes:
+    portainer_data:
