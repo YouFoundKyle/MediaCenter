@@ -1,6 +1,43 @@
 version: '3.7'
 services:
 
+    # https://hub.docker.com/r/binhex/arch-qbittorrentvpn
+    qbittorrent:
+        container_name: qbittorrent
+        image: binhex/arch-qbittorrentvpn:latest
+        restart: unless-stopped
+        privileged: true
+        environment:
+            PUID: '${PUID}'
+            PGID: '${PGID}'
+            LAN_NETWORK: '${LAN_NETWORK}'
+            VPN_ENABLED: 'yes'
+            VPN_PROV: 'pia'
+            VPN_USER: '${VPN_USER}'
+            VPN_PASS: ' ${VPN_PASS}'
+            WEBUI_PORT: '6880'
+            NAME_SERVERS: '${NAME_SERVERS}'
+            STRICT_PORT_FORWARD: 'no'
+            ENABLE_PRIVOXY: 'no'
+            DEBUG: 'false'
+            UMASK: '002'
+        networks:
+            - internal
+        volumes:
+            - '${CONFIG_DIR}/qbittorrent:/config'
+            - '${DOWNLOADS_DIR}:/downloads'
+            - '/etc/localtime:/etc/localtime:ro'
+        ports:
+            - '6881:6881'
+            - '6881:6881/udp'
+            - '6880:6880'
+        labels:
+            traefik.enable: true
+            traefik.port: 6880
+            traefik.docker.network: internal
+            traefik.http.routers.qbit.entrypoints: http
+            traefik.http.routers.qbit.rule: Host(`qbit.${LOCAL_DOMAIN}`)
+            
     # https://hub.docker.com/r/linuxserver/jackett/
     jackett:
         container_name: jackett
