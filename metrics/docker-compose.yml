@@ -69,8 +69,8 @@ services:
             traefik.enable: true
             traefik.port: 9007
             traefik.docker.network: internal
-            traefik.http.routers.grafana.entrypoints: http
-            traefik.http.routers.grafana.rule: Host(`portainer.${LOCAL_DOMAIN}`)
+            traefik.http.routers.portainer.entrypoints: http
+            traefik.http.routers.portainer.rule: Host(`portainer.${LOCAL_DOMAIN}`)
     
     # https://hub.docker.com/_/mysql
     mysql-db:
