@@ -65,6 +65,3 @@ networks:
     traefik:
         name: traefik
         attachable: true
-    internal:
-        name: internal
-        attachable: true

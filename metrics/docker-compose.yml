@@ -13,7 +13,7 @@ services:
             - '--storage.tsdb.path=/data'
             - '--storage.tsdb.retention.time=30d'
         volumes:
-            - './prometheus.yml:/etc/prometheus/prometheus.yml'
+            - './configs/prometheus.yml:/etc/prometheus/prometheus.yml'
             - '${DATABASE_DIR}/prometheus:/data'
         networks:
             - internal       
@@ -25,7 +25,6 @@ services:
             traefik.docker.network: internal
             traefik.http.routers.prometheus.entrypoints: http
             traefik.http.routers.prometheus.middlewares: promauth
-            # traefik.http.routers.prometheus.tls.certresolver: le
             traefik.http.routers.prometheus.rule: Host(`prometheus.${LOCAL_DOMAIN}`)
     
     # https://hub.docker.com/r/grafana/grafana/
@@ -42,7 +41,7 @@ services:
             GF_DATABASE_PASSWORD: '${MYSQL_PASSWORD}'
             GF_DATABASE_USER: '${MYSQL_USER}'
         env_file:
-            - ./config.env
+            - ./configs/grafana.env
             - ../.env
         networks:
             - internal
@@ -53,8 +52,6 @@ services:
             traefik.port: 3000
             traefik.docker.network: internal
             traefik.http.routers.grafana.entrypoints: http
-            # traefik.http.routers.grafana.tls.certresolver: le
-            # traefik.http.routers.grafana.middlewares: secureheaders #, basicauth
             traefik.http.routers.grafana.rule: Host(`grafana.${LOCAL_DOMAIN}`)
     
     # https://hub.docker.com/_/mysql
