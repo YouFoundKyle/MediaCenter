@@ -8,11 +8,6 @@
 ################################################################
 # Entrypoints configuration
 ################################################################
-
-# Entrypoints definition
-#
-# Optional
-# Default:
 [entryPoints]
   [entryPoints.http]
     address = ":80"
