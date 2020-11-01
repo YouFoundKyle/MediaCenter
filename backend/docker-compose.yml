@@ -37,7 +37,8 @@ services:
             traefik.docker.network: internal
             traefik.http.routers.qbit.entrypoints: http
             traefik.http.routers.qbit.rule: Host(`qbit.${LOCAL_DOMAIN}`)
-            
+            traefik.http.routers.qbit.middlewares: internal
+
     # https://hub.docker.com/r/linuxserver/jackett/
     jackett:
         container_name: jackett
@@ -61,7 +62,8 @@ services:
             traefik.docker.network: internal
             traefik.http.routers.jackett.entrypoints: http
             traefik.http.routers.jackett.rule: Host(`jackett.${LOCAL_DOMAIN}`)
-    
+            traefik.http.routers.jackett.middlewares: internal
+
     # https://hub.docker.com/r/linuxserver/bazarr/
     bazarr:
         container_name: bazarr
@@ -86,6 +88,7 @@ services:
             traefik.docker.network: internal
             traefik.http.routers.bazarr.entrypoints: http
             traefik.http.routers.bazarr.rule: Host(`bazarr.${LOCAL_DOMAIN}`)
+            traefik.http.routers.bazarr.middlewares: internal
 
     # https://hub.docker.com/r/linuxserver/sonarr/
     sonarr:
@@ -111,6 +114,7 @@ services:
             traefik.docker.network: internal
             traefik.http.routers.sonarr.entrypoints: http
             traefik.http.routers.sonarr.rule: Host(`sonarr.${LOCAL_DOMAIN}`)
+            traefik.http.routers.sonarr.middlewares: internal
 
 
     # https://hub.docker.com/r/linuxserver/radarr/
@@ -137,30 +141,7 @@ services:
             traefik.docker.network: internal
             traefik.http.routers.radarr.entrypoints: http
             traefik.http.routers.radarr.rule: Host(`radarr.${LOCAL_DOMAIN}`)
-    
-    # https://hub.docker.com/r/linuxserver/hydra2/
-    hydra:
-        container_name: hydra
-        image: linuxserver/hydra2:latest
-        restart: unless-stopped
-        environment:
-            PUID: '${PUID}'
-            PGID: '${PGID}'
-            TZ: '${TZ}'
-            UMASK_SET: '022'
-        networks:
-            - internal
-        volumes:
-            - '${CONFIG_DIR}/hydra:/config'
-            - '${DOWNLOADS_DIR}:/downloads'
-        ports:
-            - '5076:5076/tcp'
-        labels:
-            traefik.enable: true
-            traefik.port: 5076
-            traefik.docker.network: internal
-            traefik.http.routers.hydra.entrypoints: http
-            traefik.http.routers.hydra.rule: Host(`hydra.${LOCAL_DOMAIN}`)
+            traefik.http.routers.radarr.middlewares: internal
 
 networks:
     internal:

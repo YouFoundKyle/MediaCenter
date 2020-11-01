@@ -36,3 +36,14 @@ Head to $(CONFIG_DIR)/qbittorrent/config/openVPN
 Generate the proper OpenVPN
 put it in the qbitorrent config/openvpn folder 
     only put one in there
+
+
+### Slack Notification Setup
+
+1. Navigate to Settings --> Connections --> Slack
+2. Use the Same webhook as Watchtoer
+3. Select specified Vars
+    1. Recommended
+        - Username - "TV Shows"
+        - Icon - https://github.com/Sonarr/Sonarr/raw/phantom-develop/Logo/128.png
+        - Channel - 'tv show'
