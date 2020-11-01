@@ -26,7 +26,7 @@ services:
             traefik.docker.network: traefik
             traefik.http.routers.traefik.entrypoints: https
             traefik.http.routers.traefik.tls.certresolver: le
-            traefik.http.routers.traefik.rule: (Host(`traefik.${LOCAL_DOMAIN}`))
+            traefik.http.routers.traefik.rule: Host(`traefik.${LOCAL_DOMAIN}`)
             traefik.http.routers.traefik.middlewares: basicauth , secureheaders 
             traefik.http.routers.traefik.service: api@internal
             traefik.http.routers.http.entrypoints: http
@@ -43,8 +43,9 @@ services:
             traefik.http.middlewares.secureheaders.headers.contentTypeNosniff: true
             traefik.http.middlewares.secureheaders.headers.forceSTSHeader: true
             traefik.http.middlewares.secureheaders.headers.stsPreload: true
-            traefik.http.middlewares.secureheaders.headers.customResponseHeaders.X-Robots-Tag: none
             traefik.http.middlewares.secureheaders.headers.customFrameOptionsValue: SAMEORIGIN
+            traefik.http.middlewares.secureheaders.headers.customResponseHeaders.X-Robots-Tag: none
+            traefik.http.middlewares.internal.ipwhitelist.sourcerange: ${LAN_NETWORK} 
 networks:
     traefik:
         name: traefik

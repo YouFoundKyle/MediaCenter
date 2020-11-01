@@ -13,7 +13,7 @@ services:
             - '--storage.tsdb.path=/data'
             - '--storage.tsdb.retention.time=30d'
         volumes:
-            - './prometheus.yml:/etc/prometheus/prometheus.yml'
+            - './configs/prometheus.yml:/etc/prometheus/prometheus.yml'
             - '${DATABASE_DIR}/prometheus:/data'
         networks:
             - internal       
@@ -25,7 +25,6 @@ services:
             traefik.docker.network: internal
             traefik.http.routers.prometheus.entrypoints: http
             traefik.http.routers.prometheus.middlewares: promauth
-            # traefik.http.routers.prometheus.tls.certresolver: le
             traefik.http.routers.prometheus.rule: Host(`prometheus.${LOCAL_DOMAIN}`)
     
     # https://hub.docker.com/r/grafana/grafana/
@@ -42,7 +41,7 @@ services:
             GF_DATABASE_PASSWORD: '${MYSQL_PASSWORD}'
             GF_DATABASE_USER: '${MYSQL_USER}'
         env_file:
-            - ./config.env
+            - ./configs/grafana.env
             - ../.env
         networks:
             - internal
@@ -53,10 +52,29 @@ services:
             traefik.port: 3000
             traefik.docker.network: internal
             traefik.http.routers.grafana.entrypoints: http
-            # traefik.http.routers.grafana.tls.certresolver: le
-            # traefik.http.routers.grafana.middlewares: secureheaders #, basicauth
             traefik.http.routers.grafana.rule: Host(`grafana.${LOCAL_DOMAIN}`)
-    
+            traefik.http.routers.grafana.middlewares: internal
+
+    # https://hub.docker.com/r/portainer/portainer-ce
+    portainer:
+        image: portainer/portainer:latest
+        container_name: portainer
+        privileged: true
+        ports:
+            - '9007:9000'
+        volumes:
+            - 'portainer_data:/data'
+            - '/var/run/docker.sock:/var/run/docker.sock'
+        networks:
+            - internal
+        labels:
+            traefik.enable: true
+            traefik.port: 9007
+            traefik.docker.network: internal
+            traefik.http.routers.portainer.entrypoints: http
+            traefik.http.routers.portainer.rule: Host(`portainer.${LOCAL_DOMAIN}`)
+            traefik.http.routers.portainer.middlewares: internal
+
     # https://hub.docker.com/_/mysql
     mysql-db:
         container_name: mysql-db
@@ -72,12 +90,29 @@ services:
             MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
         networks:
             - internal       
-        labels: 
-            traefik.enable: true
-            traefik.docker.network: internal
+
+    # https://hub.docker.com/r/containrrr/watchtower
+    watchtower:
+        container_name: watchtower
+        image: containrrr/watchtower:latest
+        restart: unless-stopped
+        volumes:
+            - '/var/run/docker.sock:/var/run/docker.sock:ro'
+            - '/etc/timezone:/etc/timezone:ro'
+        command: --cleanup
+        networks:
+            - internal  
+        environment:
+            WATCHTOWER_NOTIFICATIONS: 'slack'
+            WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL: '${WATCHTOWER_SLACK_HOOK_URL}'
+            WATCHTOWER_NOTIFICATION_SLACK_IDENTIFIER: 'Watchtower'
+            WATCHTOWER_NOTIFICATION_SLACK_CHANNEL: '${WATCHTOWER_SLACK_CHANNEL}'
+            WATCHTOWER_NOTIFICATION_SLACK_ICON_URL: '${WATCHTOWER_SLACK_ICON}'
 
 networks:
     internal:
         name: internal
         attachable: true
 
+volumes:
+    portainer_data:

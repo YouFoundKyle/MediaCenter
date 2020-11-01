@@ -34,8 +34,37 @@ services:
             traefik.http.routers.plex.middlewares: secureheaders 
             traefik.http.services.plex_mediaserver.loadbalancer.server.port: 32400
             traefik.http.services.plex_mediaserver.loadbalancer.server.scheme: http
+    
+    # https://hub.docker.com/r/linuxserver/ombi/
+    ombi:
+        container_name: ombi
+        image: linuxserver/ombi:latest
+        restart: unless-stopped
+        environment:
+            PUID: '${PUID}'
+            PGID: '${PGID}'
+            TZ: '${TZ}'
+        networks:
+            - traefik
+            - internal
+        volumes:
+            - '${CONFIG_DIR}/ombi:/config'
+            - '${DOWNLOADS_DIR}:/downloads'
+        ports:
+            - '3579:3579'
+        labels:
+            traefik.enable: true
+            traefik.port: 3579
+            traefik.docker.network: traefik
+            traefik.http.routers.ombi.entrypoints: https
+            traefik.http.routers.ombi.tls.certresolver: le
+            traefik.http.routers.ombi.middlewares: secureheaders 
+            traefik.http.routers.ombi.rule: Host(`request.${DOMAIN}`)
 
 networks:
     traefik:
         name: traefik
+        attachable: true
+    internal:
+        name: internal
         attachable: true
