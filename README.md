@@ -103,12 +103,13 @@ Pull and deploy containers with docker-compose
 docker-compose pull
 docker-compose up -d  
 ```
-## CentOS Specific
-smthing
+## SELinux Specific
+
+If running any services on a Linux instance that uses SELinux, permission issues may arise. If that happens, follow the instructions in [this article](https://www.projectatomic.io/blog/2015/06/using-volumes-with-docker-can-cause-problems-with-selinux/).
 
 ## Acknowledgments
 
-This was initially adapted from [Kyle Harding](https://klutchell.dev) and his [MediaServer](https://github.com/klutchell/mediaserver.git) repo
+This was initially adapted from [Kyle Harding](https://klutchell.dev) and his [MediaServer](https://github.com/klutchell/mediaserver.git) repo.
 I didn't create any of these docker images myself, so credit goes to the
 maintainers, and the original software creators.
 
