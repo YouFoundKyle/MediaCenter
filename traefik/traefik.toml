@@ -5,6 +5,8 @@
   checkNewVersion = true
   sendAnonymousUsage = false
 
+[providers.file]
+  directory = "/etc/traefik/traefik.toml"
 ################################################################
 # Entrypoints configuration
 ################################################################
@@ -21,20 +23,10 @@
 ################################################################
 # Traefik logs configuration
 ################################################################
-
-# Traefik logs
 # Enabled by default and log to stdout
-#
-# Optional
-#
 [log]
 
   # Log level
-  #
-  # Optional
-  # Default: "ERROR"
-  # 
-  # level = "DEBUG"
   level = "ERROR"
 
   # Sets the filepath for the traefik log. If not specified, stdout will be used.
@@ -46,22 +38,11 @@
   # filePath = "log/traefik.log"
 
   # Format is either "json" or "common".
-  #
-  # Optional
-  # Default: "common"
-  #
-  # format = "json"
+  format = "common"
 
 ################################################################
 # Access logs configuration
 ################################################################
-
-# Enable access logs
-# By default it will write to stdout and produce logs in the textual
-# Common Log Format (CLF), extended with additional fields.
-#
-# Optional
-#
 [accessLog]
 
   # Sets the file path for the access log. If not specified, stdout will be used.
@@ -73,11 +54,7 @@
   # filePath = "/path/to/log/log.txt"
 
   # Format is either "json" or "common".
-  #
-  # Optional
-  # Default: "common"
-  #
-  # format = "json"
+  format = "common"
 
 ################################################################
 # API and dashboard configuration
@@ -85,14 +62,6 @@
 
 # Enable API and dashboard
 [api]
-
-  # Enable the API in insecure mode
-  #
-  # Optional
-  # Default: true
-  #
-  # insecure = false
-
   # Enabled Dashboard
   dashboard = true
 
@@ -119,35 +88,34 @@
 ################################################################
 # Middleware configuration
 ################################################################
-# [http]
-#   [http.routers]
-#     [http.routers.http]
-#       middlewares = 'redirectscheme'
+[http.routers]
+  [http.routers.http]
+    middlewares = 'redirectscheme'
 
-#   [http.middlewares]
-#     [http.middlewares.secureheaders]
-#       [http.middlewares.secureheaders.headers]
-#         stsSeconds = 15552000
-#         framedeny = true
-#         sslForceHost = true
-#         sslRedirect = true
-#         stsIncludeSubdomains = true
-#         browserXssFilter = true
-#         contentTypeNosniff = true
-#         forceSTSHeader = true
-#         stsPreload = true
-#         customFrameOptionsValue = 'SAMEORIGIN'
-      
-#       [http.middlewares.secureheaders.headers.customResponseHeaders]
-#         X-Robots-Tag = 'none'
+[http.middlewares]
+  [http.middlewares.secureheaders]
+    [http.middlewares.secureheaders.headers]
+      stsSeconds = 15552000
+      framedeny = true
+      sslForceHost = true
+      sslRedirect = true
+      stsIncludeSubdomains = true
+      browserXssFilter = true
+      contentTypeNosniff = true
+      forceSTSHeader = true
+      stsPreload = true
+      customFrameOptionsValue = 'SAMEORIGIN'
+    
+    [http.middlewares.secureheaders.headers.customResponseHeaders]
+      X-Robots-Tag = 'none'
 
-#     [http.middlewares.internal]
-#       [http.middlewares.internal.ipWhiteList]
-#           sourceRange = ["192.168.0.0/24"]
+  [http.middlewares.internal]
+    [http.middlewares.internal.ipWhiteList]
+        sourceRange = ["192.168.0.0/24"]
 
-#     [http.middlewares.redirectscheme]
-#       [http.middlewares.redirectscheme.redirectscheme]
-#         scheme= 'https'
+  [http.middlewares.redirectscheme]
+    [http.middlewares.redirectscheme.redirectscheme]
+      scheme= 'https'
 
 ################################################################
 # Docker configuration backend
@@ -163,20 +131,12 @@
   # Enable ACME (Let's Encrypt): automatic SSL.
 [certificatesResolvers.le.acme]
   # File or key used for certificates storage.
-  #
-  # Required
-  #
   storage = "/cert/acme.json"
-  # or `storage = "traefik/acme/account"` if using KV store.
 
   #Choose Type of Key used for Certificate
   keyType = 'RSA4096'
 
-  # Optional
   # Choose the Certificate Authority Server to be used for Let's Encrypt
-  # Default: "https://acme-v02.api.letsencrypt.org/directory"
-  #
-  # caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
   caServer = "https://acme-v02.api.letsencrypt.org/directory"
 
 # Use a DNS-01 ACME challenge rather than HTTP-01 challenge.
@@ -185,9 +145,6 @@
 [certificatesResolvers.le.acme.dnsChallenge]
 
   # DNS provider used.
-  #
-  # Required
-  #
   provider = "cloudflare"
 
   # By default, the provider will verify the TXT DNS challenge record before letting ACME verify.
@@ -205,28 +162,13 @@
   [metrics.prometheus]
 
     # Name of the related entry point
-    #
-    # Optional
-    # Default: "traefik"
-    #
     entryPoint = "traefik"
 
     # Buckets for latency metrics
-    #
-    # Optional
-    # Default: [0.1, 0.3, 1.2, 5.0]
-    #
     buckets = [0.1,0.3,1.2,5.0]
 
     # Enable metrics on entry points.
-    #
-    # Optional
-    # Default=true
-  
     addEntryPointsLabels = true
 
     # Enable metrics on services.
-    #
-    # Optional
-    # Default=true
     addServicesLabels = true

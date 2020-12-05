@@ -19,8 +19,9 @@ services:
             - '/var/run/docker.sock:/var/run/docker.sock:ro'
             - './traefik.toml:/etc/traefik/traefik.toml'
             - './cert:/cert/'
-        command:
-            - "--certificatesresolvers.le.acme.email=${ACME_EMAIL}"
+        # command:
+        #     - "--certificatesresolvers.le.acme.email=${ACME_EMAIL}"
+        # --providers.file.directory=/path/to/dynamic/conf
         labels:
             traefik.enable: true
             traefik.docker.network: traefik
@@ -30,6 +31,7 @@ services:
             traefik.http.routers.traefik.middlewares: basicauth , secureheaders 
             traefik.http.routers.traefik.service: api@internal
             traefik.http.routers.http.entrypoints: http
+            traefik.certificatesresolvers.le.acme.email: ${ACME_EMAIL}
             traefik.http.routers.http.middlewares: redirectscheme
             traefik.http.middlewares.redirectscheme.redirectscheme.scheme: https
             traefik.http.middlewares.basicauth.basicauth.users: ${HTPASSWD}

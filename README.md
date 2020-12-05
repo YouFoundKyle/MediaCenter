@@ -34,15 +34,15 @@ docker-based plex & usenet media server using custom subdomains with tls
 
 ### Publicly facing
 - [Plex](https://hub.docker.com/r/plexinc/pms-docker) - organizes video, music and photos from personal media libraries and streams them to smart TVs, streaming boxes and mobile devices. This container is packaged as a standalone Plex Media Server.
-- [Ombi](https://hub.docker.com/r/linuxserver/ombi/) - Meant for users to request media.
-- [Nextcloud](https://hub.docker.com/r/linuxserver/ombi/) - stores data.
+- [Ombi](https://hub.docker.com/r/linuxserver/ombi/) - Allows you to host your own Plex Request and user management system.
+- [Nextcloud](https://hub.docker.com/r/linuxserver/ombi/) - A full-fledged open-source replacement for Google Suite or Microsoft 365. 
 ### Backend
 - [Traefik](https://hub.docker.com/_/traefik/) - a modern HTTP reverse proxy and load balancer that makes deploying microservices easy.
-- [qBittorrent](https://hub.docker.com/r/binhex/arch-qbittorrentvpn) - something something something. Includes in OpenVPN instance and built on arch linux
-- [Grafana](https://hub.docker.com/_/traefik/) - visualize metrics.
-- [Prometheus](https://hub.docker.com/_/traefik/) - pull metrics.
-- [Mysql](smthing) - stores metrics
-- [MariaDB](smthing) - stores nextcloud data  
+- [qBittorrent](https://hub.docker.com/r/binhex/arch-qbittorrentvpn) - An fast and stable bittorrent client that provides many featurues. This includes in OpenVPN instance based on arch linux that proxies all network requests.  
+- [Grafana](https://hub.docker.com/r/grafana/grafana/) - Solution for visualizing analytics & simplifying monitoring. 
+- [Prometheus](https://hub.docker.com/r/prom/prometheus/) - Systems monitoring and alerting toolkit. Collects metrics from configured targets at given intervals, evaluates rule expressions, displays the results, and can trigger alerts if some condition is observed to be true
+- [Mysql](https://hub.docker.com/_/mysql) - Leading open-source database used for storing metrics
+- [MariaDB](https://hub.docker.com/_/mariadb) -Community-developed fork of the MySQL used to store NextCloud Data. 
 
 ### Automation
 - [Sonarr](https://hub.docker.com/r/linuxserver/sonarr/) - (formerly NZBdrone) is a PVR for usenet and bittorrent users. It can monitor multiple RSS feeds for new episodes of your favorite shows and will grab, sort and rename them. It can also be configured to automatically upgrade the quality of files already downloaded when a better quality format becomes available.
@@ -93,9 +93,9 @@ Copy `env.sample` to `.env` and fill all required fields
 cp env.sample .env && vim .env
 ```
 
-Must Run docker compose command in same folder as .env
+Note: YOu must run `docker-compose` in same folder as .env
+
 ## Deployment
- Create a user called  
 
 Pull and deploy containers with docker-compose
 
@@ -103,12 +103,13 @@ Pull and deploy containers with docker-compose
 docker-compose pull
 docker-compose up -d  
 ```
-## CentOS Specific
-smthing
+## SELinux Specific
+
+If running any services on a Linux instance that uses SELinux, permission issues may arise. If that happens, follow the instructions in [this article](https://www.projectatomic.io/blog/2015/06/using-volumes-with-docker-can-cause-problems-with-selinux/).
 
 ## Acknowledgments
 
-This was initially adapted from [Kyle Harding](https://klutchell.dev) and his [MediaServer](https://github.com/klutchell/mediaserver.git) repo
+This was initially adapted from [Kyle Harding](https://klutchell.dev) and his [MediaServer](https://github.com/klutchell/mediaserver.git) repo.
 I didn't create any of these docker images myself, so credit goes to the
 maintainers, and the original software creators.
 

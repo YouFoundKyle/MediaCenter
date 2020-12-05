@@ -18,4 +18,5 @@ The `redirectscheme` middleware allows requests from one router to be redirected
 The `secureheaders` middleware adds various headers to requests moving through Trafik with the intent of increasing security standards.
 
 ## Additional Information
+----
 The official Traefik documentation can be found [here](https://doc.traefik.io/traefik/)
