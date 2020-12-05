@@ -17,9 +17,10 @@ NAME_SERVERS				|	'${NAME_SERVERS}'
 STRICT_PORT_FORWARD			|	'no'
 ENABLE_PRIVOXY				|	Enable Privoxy on container startup
 DEBUG						|	Enable debug information to be logged 
+
+
 ## Configuration
-
-
+---
 
 1. Change default user/pass
    
@@ -29,16 +30,16 @@ DEBUG						|	Enable debug information to be logged
 Generate OpenVPN config 
 Put it in config folder
 
+    Go to [PIA's openVPN config generator](https://www.privateinternetaccess.com/pages/ovpn-config-generator). 
 
-Go to [PIA's openVPN config generator](https://www.privateinternetaccess.com/pages/ovpn-config-generator). 
+    Generate the proper OpenVPN profile and navigate to $(CONFIG_DIR)/qbittorrent/config/openVPN
+    
+    Note: Make sure to only place one profile in this folder.
 
-Head to $(CONFIG_DIR)/qbittorrent/config/openVPN
-Generate the proper OpenVPN
-put it in the qbitorrent config/openvpn folder 
-    only put one in there
+## Slack Notification Setup
+---
 
-
-### Slack Notification Setup
+If you wish to be notified when Radarr or Sonarr pick up any new videos, follow the following instructions for each application. 
 
 1. Navigate to Settings --> Connections --> Slack
 2. Use the Same webhook as Watchtoer
