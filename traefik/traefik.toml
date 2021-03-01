@@ -5,17 +5,41 @@
   checkNewVersion = true
   sendAnonymousUsage = false
 
+# ###############################################################
+# Providers configuration
+# ###############################################################
 [providers.file]
-  directory = "/etc/traefik/traefik.toml"
+  directory = "/config/"
+  watch = true
 ################################################################
 # Entrypoints configuration
 ################################################################
 [entryPoints]
   [entryPoints.http]
     address = ":80"
+    # [entryPoints.http.http.redirections]
+    #   [entryPoints.http.http.redirections.entryPoint]
+    #     to = "https"
+    #     scheme = "https"
 
   [entryPoints.https]
     address = ":443"
+      [entryPoints.https.forwardedHeaders]
+      # Trust Headers from CloudFlare Proxy IPs to enable whitelisting
+        trustedIPs = ["173.245.48.0/20",
+                      "103.21.244.0/22",
+                      "103.22.200.0/22",
+                      "103.31.4.0/22",
+                      "141.101.64.0/18",
+                      "108.162.192.0/18",
+                      "190.93.240.0/20",
+                      "188.114.96.0/20",
+                      "197.234.240.0/22",
+                      "198.41.128.0/17",
+                      "162.158.0.0/15",
+                      "104.16.0.0/12",
+                      "172.64.0.0/13",
+                      "131.0.72.0/22"]
 
   [entryPoints.metrics]
     address = ":8082"
@@ -27,7 +51,7 @@
 [log]
 
   # Log level
-  level = "ERROR"
+  level = "INFO"
 
   # Sets the filepath for the traefik log. If not specified, stdout will be used.
   # Intermediate directories are created if necessary.
@@ -83,7 +107,7 @@
 # Router configuration
 ################################################################
 [serversTransport]
-  insecureSkipVerify = true
+  insecureSkipVerify = false
 
 ################################################################
 # Middleware configuration
@@ -91,6 +115,7 @@
 [http.routers]
   [http.routers.http]
     middlewares = 'redirectscheme'
+    entryPoints = 'http'
 
 [http.middlewares]
   [http.middlewares.secureheaders]
@@ -108,6 +133,7 @@
     
     [http.middlewares.secureheaders.headers.customResponseHeaders]
       X-Robots-Tag = 'none'
+      server = ''
 
   [http.middlewares.internal]
     [http.middlewares.internal.ipWhiteList]
@@ -126,7 +152,7 @@
   # Expose containers by default in traefik
   exposedByDefault = false
   # Name of the network Containers will connect to
-  network = 'traefik'
+  network = 'external'
 
   # Enable ACME (Let's Encrypt): automatic SSL.
 [certificatesResolvers.le.acme]

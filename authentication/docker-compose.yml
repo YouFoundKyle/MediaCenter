@@ -1,0 +1,63 @@
+version: '3.7'
+services:
+
+    # https://hub.docker.com/r/jboss/keycloak/
+    keycloak:
+        container_name: keycloak
+        image: jboss/keycloak
+        restart: unless-stopped
+        environment:
+            # KEYCLOAK_USER: '${KEYCLOAK_ADMIN_USER}'
+            # KEYCLOAK_PASSWORD: '${KEYCLOAK_ADMIN_PASSWORD}'
+            PROXY_ADDRESS_FORWARDING: 'true'
+            DB_VENDOR: 'mysql'
+            DB_ADDR: 'mysql'
+            DB_PORT: '3306'
+            DB_SCHEMA: 'keycloak'
+            DB_USER: 'root'
+            DB_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
+            KEYCLOAK_HOSTNAME: 'sso.${DOMAIN}'
+            KEYCLOAK_LOGLEVEL: 'ERROR'
+        # volumes:
+        #     - '${CONFIG_DIR}/keycloak:/opt/jboss/keycloak'
+        networks:
+            - external
+            - mysql
+        ports:
+            - '8180:8080'
+        labels:
+            traefik.enable: true
+            traefik.port: 8180
+            traefik.docker.network: external
+            traefik.http.routers.keycloak.tls.certresolver: le
+            traefik.http.routers.keycloak.entrypoints: https
+            traefik.http.routers.keycloak.rule: Host(`sso.${DOMAIN}`)
+            traefik.http.routers.keycloak.middlewares: secureheaders@file, cf-whitelist@file
+
+    # https://hub.docker.com/r/thomseddon/traefik-forward-auth
+    forward-auth:
+        container_name: forward-auth
+        image: thomseddon/traefik-forward-auth:2.2
+        restart: unless-stopped
+        environment:
+            DEFAULT_PROVIDER: 'oidc'
+            PROVIDERS_OIDC_CLIENT_ID: '${KEYCLOAK_CLIENT_ID}'
+            PROVIDERS_OIDC_CLIENT_SECRET: '${KEYCLOAK_CLIENT_SECRET}'
+            PROVIDERS_OIDC_ISSUER_URL: 'https://sso.${DOMAIN}/auth/realms/${KEYCLOAK_REALM}'
+            SECRET: '${FORWARD_AUTH_SECRET}'
+            # AUTH_HOST: 'auth.${DOMAIN}'
+            COOKIE_DOMAIN: '${DOMAIN}'
+            LOG_LEVEL: 'ERROR'
+            # INSECURE_COOKIE: true # Example assumes no https, do not use in production
+        networks:
+            - external
+        ports:
+            - '4181:4181'
+       
+networks:
+    external:
+        name: external
+        attachable: true
+    mysql:
+        name: mysql
+        attachable: true

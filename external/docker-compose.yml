@@ -12,7 +12,7 @@ services:
             TZ: '${TZ}'
             PLEX_CLAIM: '${PLEX_CLAIM}'
         networks:
-            - traefik
+            - external
         ports:
             - "32400:32400"
             - "32400:32400/udp"
@@ -24,17 +24,7 @@ services:
             - '${MEDIA_DIR}/tv:/data/tv'
             - '${MEDIA_DIR}/movies:/data/movies'
             - '${MEDIA_DIR}/transcode:/transcode'
-        labels:
-            traefik.enable: true
-            traefik.docker.network: traefik
-            traefik.port: 32400
-            traefik.http.routers.plex.entrypoints: https
-            traefik.http.routers.plex.tls.certresolver: le
-            traefik.http.routers.plex.rule: Host(`plex.${DOMAIN}`)
-            traefik.http.routers.plex.middlewares: secureheaders 
-            traefik.http.services.plex_mediaserver.loadbalancer.server.port: 32400
-            traefik.http.services.plex_mediaserver.loadbalancer.server.scheme: http
-    
+
     # https://hub.docker.com/r/linuxserver/ombi/
     ombi:
         container_name: ombi
@@ -45,25 +35,17 @@ services:
             PGID: '${PGID}'
             TZ: '${TZ}'
         networks:
-            - traefik
+            - external
             - internal
         volumes:
             - '${CONFIG_DIR}/ombi:/config'
             - '${DOWNLOADS_DIR}:/downloads'
         ports:
             - '3579:3579'
-        labels:
-            traefik.enable: true
-            traefik.port: 3579
-            traefik.docker.network: traefik
-            traefik.http.routers.ombi.entrypoints: https
-            traefik.http.routers.ombi.tls.certresolver: le
-            traefik.http.routers.ombi.middlewares: secureheaders 
-            traefik.http.routers.ombi.rule: Host(`request.${DOMAIN}`)
 
 networks:
-    traefik:
-        name: traefik
+    external:
+        name: external
         attachable: true
     internal:
         name: internal

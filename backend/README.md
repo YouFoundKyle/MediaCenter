@@ -48,3 +48,11 @@ If you wish to be notified when Radarr or Sonarr pick up any new videos, follow 
         - Username - "TV Shows"
         - Icon - https://github.com/Sonarr/Sonarr/raw/phantom-develop/Logo/128.png
         - Channel - 'tv show'
+
+### Qbittorrent Setup
+
+1. Navigate to Tools --> Options --> Downloads. Change the "Default Save Path:" to "/downloads/" 
+ - Select the "Append .!qB extension to incomplete files" Option 
+2. Navigate to Tools --> Options --> Bittorrent
+  - In the "Seeding Limits" set "When seeding time reaches" to 180 Minutes
+  - This will automatically delete the files after then have been picked up by the appropriate service.
