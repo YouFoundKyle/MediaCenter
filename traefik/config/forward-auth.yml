@@ -1,0 +1,17 @@
+http:
+  routers:
+    auth:
+      rule: Host(`auth.{{ env "DOMAIN" }}`)
+      service: auth
+      entrypoints: https
+      middlewares:
+        - secureheaders
+        - cf-whitelist
+      tls:
+        certresolver: le
+  services:
+    auth:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: 'http://forward-auth:4181'

@@ -1,0 +1,22 @@
+http:
+{{ $routers := dict "sonarr" "tv" "radarr" "movie" "qbittorrent" "qbit" }}
+  routers:
+    {{ range $service, $subdomain := $routers }}
+    {{ $service }}:
+      rule: Host(`{{ $subdomain }}.{{ env "DOMAIN" }}`)
+      service: {{ $service }}
+      entrypoints: https
+      middlewares:
+        - secure-internal
+      tls:
+        certresolver: le
+    {{ end }}
+  services:
+  {{ $services := dict "sonarr" "8989" "radarr" "7878" "qbittorrent" "6880" }}
+  {{ range $service, $port := $services }}
+    {{ $service }}:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: 'http://{{ $service }}:{{ $port }}'
+  {{ end }}
