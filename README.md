@@ -2,7 +2,6 @@
 
 Acts as a colletion of all self hosted services running on docker.
 
-
 docker-based plex & usenet media server using custom subdomains with tls
 
 ## Motivation
@@ -29,6 +28,8 @@ docker-based plex & usenet media server using custom subdomains with tls
 |3000| Grafana | WebUI | N
 |9117| Jackett| WebUI| N
 |6767| Bazarr| WebUI| N
+|8180| Auth| WebUI| Y
+|4181| Traefik Forward Auth| Y
 
 ## Services
 
@@ -48,7 +49,7 @@ docker-based plex & usenet media server using custom subdomains with tls
 - [Sonarr](https://hub.docker.com/r/linuxserver/sonarr/) - (formerly NZBdrone) is a PVR for usenet and bittorrent users. It can monitor multiple RSS feeds for new episodes of your favorite shows and will grab, sort and rename them. It can also be configured to automatically upgrade the quality of files already downloaded when a better quality format becomes available.
 - [Radarr](https://hub.docker.com/r/linuxserver/radarr/) - A fork of Sonarr to work with movies à la Couchpotato.
 - [Jackett](smthing) Its Gud.
-
+- [Prometheus](smth) Stats. 
 
 ## Requirements
 
@@ -109,7 +110,6 @@ If running any services on a Linux instance that uses SELinux, permission issues
 
 ## Acknowledgments
 
-This was initially adapted from [Kyle Harding](https://klutchell.dev) and his [MediaServer](https://github.com/klutchell/mediaserver.git) repo.
 I didn't create any of these docker images myself, so credit goes to the
 maintainers, and the original software creators.
 

@@ -9,52 +9,28 @@ services:
         environment:
             TZ: '${TZ}'
             CLOUDFLARE_DNS_API_TOKEN: '${CLOUDFLARE_DNS_API_TOKEN}'
+            DOMAIN: '${DOMAIN}'
+            HOST_IP: '${HOST_IP}'
         networks:
-            - traefik
+            - external
             - internal
         ports:
             - '80:80/tcp'
             - '443:443/tcp'
         volumes:
             - '/var/run/docker.sock:/var/run/docker.sock:ro'
-            - './traefik.toml:/etc/traefik/traefik.toml'
+            - './config/:/config/'
             - './cert:/cert/'
-        # command:
-        #     - "--certificatesresolvers.le.acme.email=${ACME_EMAIL}"
-        # --providers.file.directory=/path/to/dynamic/conf
+            - './traefik.toml:/etc/traefik/traefik.toml'
         labels:
             traefik.enable: true
-            traefik.docker.network: traefik
-            traefik.http.routers.traefik.entrypoints: https
-            traefik.http.routers.traefik.tls.certresolver: le
-            traefik.http.routers.traefik.rule: Host(`traefik.${LOCAL_DOMAIN}`)
-            traefik.http.routers.traefik.middlewares: basicauth , secureheaders 
-            traefik.http.routers.traefik.service: api@internal
-            traefik.http.routers.http.entrypoints: http
             traefik.certificatesresolvers.le.acme.email: ${ACME_EMAIL}
-            traefik.http.routers.http.middlewares: redirectscheme
-            traefik.http.middlewares.redirectscheme.redirectscheme.scheme: https
+            traefik.http.routers.http.entrypoints: http
             traefik.http.middlewares.basicauth.basicauth.users: ${HTPASSWD}
-            traefik.http.middlewares.promauth.basicauth.users: ${GRAFPASSWD}
-            traefik.http.middlewares.secureheaders.headers.stsSeconds: 15552000
-            traefik.http.middlewares.secureheaders.headers.framedeny: true
-            traefik.http.middlewares.secureheaders.headers.sslForceHost: true
-            traefik.http.middlewares.secureheaders.headers.sslRedirect: true
-            traefik.http.middlewares.secureheaders.headers.stsIncludeSubdomains: true
-            traefik.http.middlewares.secureheaders.headers.browserXssFilter: true
-            traefik.http.middlewares.secureheaders.headers.contentTypeNosniff: true
-            traefik.http.middlewares.secureheaders.headers.forceSTSHeader: true
-            traefik.http.middlewares.secureheaders.headers.stsPreload: true
-            traefik.http.middlewares.secureheaders.headers.customFrameOptionsValue: SAMEORIGIN
-            traefik.http.middlewares.secureheaders.headers.customResponseHeaders.X-Robots-Tag: none
-            traefik.http.middlewares.internal.ipwhitelist.sourcerange: ${LAN_NETWORK} 
 networks:
-    traefik:
-        name: traefik
+    external:
+        name: external
         attachable: true
     internal:
         name: internal
         attachable: true
-
-volumes:
-    traefik:

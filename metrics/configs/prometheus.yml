@@ -17,4 +17,4 @@ scrape_configs:
     scheme: http
     static_configs:
       - targets:
-        - traefik:8080
+        - traefik:8082

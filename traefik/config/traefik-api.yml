@@ -1,0 +1,10 @@
+http:
+  routers:
+    dashboard:
+      rule: Host(`proxy.{{ env "DOMAIN" }}`)
+      service: api@internal
+      entrypoints: https
+      middlewares:
+        - secure-internal
+      tls:
+        certresolver: le

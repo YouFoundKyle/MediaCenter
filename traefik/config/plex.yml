@@ -1,0 +1,22 @@
+http:
+{{ $routers := dict "plex" "plex" "ombi" "request"  }}
+  routers:
+    {{ range $service, $subdomain := $routers }}
+    {{ $service }}:
+      rule: Host(`{{ $subdomain }}.{{ env "DOMAIN" }}`)
+      service: {{ $service }}
+      entrypoints: https
+      middlewares:
+        - secure-external
+      tls:
+        certresolver: le
+    {{ end }}
+  services:
+  {{ $services := dict "plex" "32400" "ombi" "3579" }}
+  {{ range $service, $port := $services }}
+    {{ $service }}:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: 'http://{{ $service }}:{{ $port }}'
+  {{ end }}
